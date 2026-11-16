@@ -17,6 +17,7 @@ import { AuditService } from '../../audit/audit.service.js';
 import { LoginAdminDto } from '../dto/login-admin.dto.js';
 import { AdminAuthGuard } from '../guards/admin-auth.guard.js';
 import { AuthService } from './auth.service.js';
+import { regenerateSession, saveSession } from './session-lifecycle.js';
 
 @Controller('admin/auth')
 export class AuthController {
@@ -40,7 +41,7 @@ export class AuthController {
 
     try {
       // Prevent session fixation.
-      await request.session.regenerate();
+      await regenerateSession(request);
 
       request.session.adminId = admin.id;
       request.session.adminEmail = admin.email;
@@ -50,7 +51,7 @@ export class AuthController {
       await this.authService.updateLastLogin(admin.id);
 
       // Persist session.
-      await request.session.save();
+      await saveSession(request);
       await this.writeAuthAudit({
         actorAdminId: admin.id,
         action: 'ADMIN_LOGIN_SUCCESS',
