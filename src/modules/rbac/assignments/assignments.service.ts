@@ -1,10 +1,11 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-
 import { PrismaService } from '../../../database/prisma.service.js';
+import { lockSuperAdminProtection } from '../security/super-admin-lock.js';
 import { SuperAdminProtectionService } from '../security/super-admin-protection.service.js';
 
 @Injectable()
@@ -76,7 +77,8 @@ export class AssignmentsService {
   }
 
   // Assign roles to admin
-  async assignRoles(adminId: string, roleIds: string[]) {
+
+  async assignRoles(adminId: string, roleIds: string[], actorId: string) {
     const uniqueIds = [...new Set(roleIds)];
 
     return this.prisma.$transaction(async (tx) => {
@@ -91,11 +93,41 @@ export class AssignmentsService {
 
       const roles = await tx.role.findMany({
         where: { id: { in: uniqueIds } },
-        select: { id: true },
+        select: {
+          id: true,
+          name: true,
+        },
       });
 
       if (roles.length !== uniqueIds.length) {
         throw new BadRequestException('One or more roles are invalid');
+      }
+
+      const assigningSuperAdmin = roles.some(
+        (role) => role.name === 'Super Admin',
+      );
+
+      if (assigningSuperAdmin) {
+        const actor = await tx.adminUser.findFirst({
+          where: {
+            id: actorId,
+            status: 'ACTIVE',
+            roles: {
+              some: {
+                role: {
+                  name: 'Super Admin',
+                },
+              },
+            },
+          },
+          select: { id: true },
+        });
+
+        if (!actor) {
+          throw new ForbiddenException(
+            'Only an active Super Admin can assign the Super Admin role',
+          );
+        }
       }
 
       await tx.adminRole.createMany({
@@ -118,30 +150,46 @@ export class AssignmentsService {
   }
 
   // Remove role from admin
+
   async removeRole(adminId: string, roleId: string) {
-    const role = await this.prisma.role.findUnique({
-      where: { id: roleId },
-      select: { name: true },
+    return this.prisma.$transaction(async (tx) => {
+      // Serialize Super Admin protection operations
+      await lockSuperAdminProtection(tx);
+
+      const role = await tx.role.findUnique({
+        where: { id: roleId },
+        select: { name: true },
+      });
+
+      if (!role) {
+        throw new NotFoundException('Role not found');
+      }
+
+      if (role.name === 'Super Admin') {
+        await this.superAdminProtection.assertCanRemoveSuperAdmin(adminId, tx);
+      }
+
+      const assignment = await tx.adminRole.findUnique({
+        where: {
+          adminId_roleId: {
+            adminId,
+            roleId,
+          },
+        },
+      });
+
+      if (!assignment) {
+        throw new NotFoundException('Admin role assignment not found');
+      }
+
+      await tx.adminRole.delete({
+        where: { id: assignment.id },
+      });
+
+      return {
+        message: 'Role removed from admin',
+      };
     });
-
-    if (role?.name === 'Super Admin') {
-      await this.superAdminProtection.assertCanRemoveSuperAdmin(adminId);
-    }
-    const assignment = await this.prisma.adminRole.findFirst({
-      where: { adminId, roleId },
-    });
-
-    if (!assignment) {
-      throw new NotFoundException('Admin role assignment not found');
-    }
-
-    await this.prisma.adminRole.delete({
-      where: { id: assignment.id },
-    });
-
-    return {
-      message: 'Role removed from admin',
-    };
   }
 
   // Get admin's assigned roles and effective permissions

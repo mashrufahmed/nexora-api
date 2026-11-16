@@ -1,10 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { createHash } from 'node:crypto';
 import { RedisService } from '../../../redis/redis.service.js';
 
 @Injectable()
 export class LoginAttemptService {
-  constructor(private readonly redisService: RedisService) {}
+  constructor(
+    private readonly redisService: RedisService,
+    private readonly config: ConfigService,
+  ) {}
 
   private getEmailHash(email: string) {
     return createHash('sha256')
@@ -28,20 +32,47 @@ export class LoginAttemptService {
     return (await redis.exists(lock)) === 1;
   }
 
-  async recordFailedAttempt(email: string) {
+  async recordFailedAttempt(email: string): Promise<void> {
     const redis = this.redisService.getClient();
     const { attempts, lock } = this.getKeys(email);
 
-    const count = await redis.incr(attempts);
+    const attemptTtl = this.config.getOrThrow<number>(
+      'ADMIN_LOGIN_ATTEMPT_TTL',
+    );
 
-    if (count === 1) {
-      await redis.expire(attempts, 900);
-    }
+    const maxAttempts = this.config.getOrThrow<number>(
+      'ADMIN_LOGIN_MAX_ATTEMPTS',
+    );
 
-    if (count >= 5) {
-      await redis.set(lock, '1', 'EX', 900);
-      await redis.del(attempts);
+    const lockTtl = this.config.getOrThrow<number>('ADMIN_LOGIN_LOCK_TTL');
 
+    const script = `
+    local count = redis.call('INCR', KEYS[1])
+
+    if count == 1 then
+      redis.call('EXPIRE', KEYS[1], ARGV[1])
+    end
+
+    if count >= tonumber(ARGV[2]) then
+      redis.call('SET', KEYS[2], '1', 'EX', ARGV[3])
+      redis.call('DEL', KEYS[1])
+      return count
+    end
+
+    return count
+  `;
+
+    const count = await redis.eval(
+      script,
+      2,
+      attempts,
+      lock,
+      String(attemptTtl),
+      String(maxAttempts),
+      String(lockTtl),
+    );
+
+    if (Number(count) >= maxAttempts) {
       throw new UnauthorizedException(
         'Too many failed attempts. Try again later.',
       );

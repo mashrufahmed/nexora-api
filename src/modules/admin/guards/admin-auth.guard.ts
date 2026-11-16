@@ -42,8 +42,11 @@ export class AdminAuthGuard implements CanActivate {
       !admin.emailVerifiedAt ||
       admin.sessionVersion !== request.session.sessionVersion
     ) {
-      await request.session.destroy();
-
+      try {
+        await request.session.destroy();
+      } catch {
+        // Ignore cleanup failure.
+      }
       throw new UnauthorizedException('Session expired. Please login again.');
     }
 

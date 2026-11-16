@@ -126,6 +126,10 @@ export class RolesService {
       throw new BadRequestException('System role cannot be modified');
     }
 
+    if (role.name === 'Super Admin') {
+      throw new BadRequestException('Super Admin role cannot be modified');
+    }
+    
     try {
       return await this.prisma.role.update({
         where: { id },

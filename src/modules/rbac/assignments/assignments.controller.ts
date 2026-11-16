@@ -5,15 +5,16 @@ import {
   Get,
   Param,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
-
-import { AssignAdminRolesDto } from '../dto/assign-admin-role.dto.js';
-import { AssignRolePermissionsDto } from '../dto/assign-role-permissions.dto.js';
-import { AssignmentsService } from './assignments.service.js';
+import type { FastifyRequest } from 'fastify';
 import { AdminAuthGuard } from '../../admin/guards/admin-auth.guard.js';
 import { Permissions } from '../decorators/permissions.decorator.js';
+import { AssignAdminRolesDto } from '../dto/assign-admin-role.dto.js';
+import { AssignRolePermissionsDto } from '../dto/assign-role-permissions.dto.js';
 import { PermissionGuard } from '../guards/permission.guard.js';
+import { AssignmentsService } from './assignments.service.js';
 
 @Controller('rbac')
 @UseGuards(AdminAuthGuard, PermissionGuard)
@@ -40,13 +41,19 @@ export class AssignmentsController {
   }
 
   // Admin Role Assignment
+
   @Post('admins/:adminId/roles')
   @Permissions('rbac.admins.assign_roles')
   assignRoles(
     @Param('adminId') adminId: string,
     @Body() dto: AssignAdminRolesDto,
+    @Req() request: FastifyRequest,
   ) {
-    return this.assignmentsService.assignRoles(adminId, dto.roleIds);
+    return this.assignmentsService.assignRoles(
+      adminId,
+      dto.roleIds,
+      request.admin!.id,
+    );
   }
 
   @Delete('admins/:adminId/roles/:roleId')

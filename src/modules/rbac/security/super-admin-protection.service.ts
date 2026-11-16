@@ -1,12 +1,16 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Prisma } from '../../../database/generated/prisma/client.js';
 import { PrismaService } from '../../../database/prisma.service.js';
 
 @Injectable()
 export class SuperAdminProtectionService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async assertCanRemoveSuperAdmin(adminId: string) {
-    const admin = await this.prisma.adminUser.findUnique({
+  async assertCanRemoveSuperAdmin(
+    adminId: string,
+    tx: Prisma.TransactionClient,
+  ): Promise<void> {
+    const admin = await tx.adminUser.findUnique({
       where: { id: adminId },
       include: {
         roles: {
@@ -29,7 +33,7 @@ export class SuperAdminProtectionService {
       return;
     }
 
-    const activeSuperAdmins = await this.prisma.adminUser.count({
+    const activeSuperAdmins = await tx.adminUser.count({
       where: {
         status: 'ACTIVE',
         roles: {
@@ -47,7 +51,7 @@ export class SuperAdminProtectionService {
     }
   }
 
-  async assertCanDeleteSystemRole(roleId: string) {
+  async assertCanDeleteSystemRole(roleId: string): Promise<void> {
     const role = await this.prisma.role.findUnique({
       where: { id: roleId },
       select: {

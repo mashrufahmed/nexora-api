@@ -243,7 +243,7 @@ export class AdminManagementService {
       await lockSuperAdminProtection(tx);
 
       // Check Super Admin protection inside transaction
-      await this.superAdminProtection.assertCanRemoveSuperAdmin(id);
+      await this.superAdminProtection.assertCanRemoveSuperAdmin(id, tx);
 
       const admin = await tx.adminUser.findUnique({
         where: { id },

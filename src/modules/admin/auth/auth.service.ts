@@ -10,6 +10,9 @@ import { LoginAttemptService } from './login-attempt.service.js';
 
 @Injectable()
 export class AuthService {
+  private readonly dummyPasswordHash = argon2.hash(
+    'nexora-dummy-password-verification',
+  );
   constructor(
     private readonly prisma: PrismaService,
     private readonly loginAttemptService: LoginAttemptService,
@@ -31,8 +34,9 @@ export class AuthService {
     });
 
     // 3. Verify password
-    const passwordValid =
-      admin && (await argon2.verify(admin.password, password));
+    const hash = admin ? admin.password : await this.dummyPasswordHash;
+
+    const passwordValid = await argon2.verify(hash, password);
 
     if (!passwordValid) {
       await this.loginAttemptService.recordFailedAttempt(normalizedEmail);
@@ -44,7 +48,7 @@ export class AuthService {
     await this.loginAttemptService.resetAttempts(normalizedEmail);
 
     // 5. Verify email
-    if (!admin.emailVerifiedAt) {
+    if (!admin?.emailVerifiedAt) {
       throw new ForbiddenException(
         'Please verify your email before logging in',
       );
