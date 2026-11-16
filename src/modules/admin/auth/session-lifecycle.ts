@@ -1,6 +1,4 @@
-import { FastifyRequest } from 'fastify';
-
-export type SessionCallback = (error?: Error | null) => void;
+import type { FastifyRequest } from 'fastify';
 
 export function regenerateSession(request: FastifyRequest): Promise<void> {
   return new Promise((resolve, reject) => {

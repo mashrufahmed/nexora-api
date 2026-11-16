@@ -17,7 +17,11 @@ import { AuditService } from '../../audit/audit.service.js';
 import { LoginAdminDto } from '../dto/login-admin.dto.js';
 import { AdminAuthGuard } from '../guards/admin-auth.guard.js';
 import { AuthService } from './auth.service.js';
-import { regenerateSession, saveSession } from './session-lifecycle.js';
+import {
+  destroySession,
+  regenerateSession,
+  saveSession,
+} from './session-lifecycle.js';
 
 @Controller('admin/auth')
 export class AuthController {
@@ -36,7 +40,11 @@ export class AuthController {
       ttl: seconds(60),
     },
   })
-  async login(@Body() dto: LoginAdminDto, @Req() request: FastifyRequest) {
+  async login(
+    @Body() dto: LoginAdminDto,
+    @Req() request: FastifyRequest,
+    @Res({ passthrough: true }) reply: FastifyReply,
+  ) {
     const admin = await this.authService.validateAdmin(dto.email, dto.password);
 
     try {
@@ -61,12 +69,17 @@ export class AuthController {
         userAgent: request.headers['user-agent'] ?? null,
       });
     } catch (error) {
-      // Best-effort cleanup of a partially created session.
       try {
         await request.session.destroy();
       } catch {
-        // Preserve the original login error.
+        // Preserve original error.
+      } finally {
+        reply.clearCookie(
+          this.config.getOrThrow<string>('SESSION_COOKIE_NAME'),
+          { path: '/' },
+        );
       }
+
       throw error;
     }
 
@@ -98,20 +111,21 @@ export class AuthController {
     @Res({ passthrough: true }) reply: FastifyReply,
   ) {
     try {
-      await request.session.destroy();
+      await destroySession(request);
+      await this.writeAuthAudit({
+        actorAdminId: request.admin!.id,
+        action: 'ADMIN_LOGOUT',
+        entityType: 'admin_auth',
+        entityId: request.admin!.id,
+        ipAddress: request.ip,
+        userAgent: request.headers['user-agent'] ?? null,
+      });
     } finally {
       reply.clearCookie(this.config.getOrThrow<string>('SESSION_COOKIE_NAME'), {
         path: '/',
       });
     }
-    await this.writeAuthAudit({
-      actorAdminId: request.admin!.id,
-      action: 'ADMIN_LOGOUT',
-      entityType: 'admin_auth',
-      entityId: request.admin!.id,
-      ipAddress: request.ip,
-      userAgent: request.headers['user-agent'] ?? null,
-    });
+
     return {
       message: 'Logout successful',
     };
