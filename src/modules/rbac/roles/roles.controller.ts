@@ -7,9 +7,11 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 
+import type { FastifyRequest } from 'fastify';
 import { AdminAuthGuard } from '../../admin/guards/admin-auth.guard.js';
 import { Permissions } from '../decorators/permissions.decorator.js';
 import { CreateRoleDto } from '../dto/create-role.dto.js';
@@ -24,8 +26,12 @@ export class RolesController {
 
   @Post()
   @Permissions('rbac.roles.create')
-  create(@Body() dto: CreateRoleDto) {
-    return this.rolesService.create(dto);
+  create(@Body() dto: CreateRoleDto, @Req() request: FastifyRequest) {
+    return this.rolesService.create(dto, {
+      actorAdminId: request.admin!.id,
+      ipAddress: request.ip,
+      userAgent: request.headers['user-agent'],
+    });
   }
 
   @Get()

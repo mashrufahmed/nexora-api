@@ -82,6 +82,7 @@ export class AssignmentsService {
     const uniqueIds = [...new Set(roleIds)];
 
     return this.prisma.$transaction(async (tx) => {
+      await lockSuperAdminProtection(tx);
       const admin = await tx.adminUser.findUnique({
         where: { id: adminId },
         select: { id: true },

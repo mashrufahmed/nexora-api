@@ -7,14 +7,21 @@ import {
 
 import { Prisma } from '../../../database/generated/prisma/client.js';
 import { PrismaService } from '../../../database/prisma.service.js';
+import { AuditContext } from '../../../types/index.js';
 import { CreateRoleDto } from '../dto/create-role.dto.js';
 import { UpdateRoleDto } from '../dto/update-role.dto.js';
+import { SuperAdminProtectionService } from '../security/super-admin-protection.service.js';
+import { AuditService } from '../../audit/audit.service.js';
 
 @Injectable()
 export class RolesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly superAdminProtection: SuperAdminProtectionService,
+    private readonly auditService: AuditService,
+  ) {}
 
-  async create(dto: CreateRoleDto) {
+  async create(dto: CreateRoleDto, audit: AuditContext) {
     const name = dto.name.trim();
 
     if (!name) {
@@ -22,12 +29,26 @@ export class RolesService {
     }
 
     try {
-      return await this.prisma.role.create({
+      const role = await this.prisma.role.create({
         data: {
-          name,
+          name: dto.name.trim(),
           description: dto.description?.trim() || null,
         },
       });
+
+      await this.auditService.log({
+        actorAdminId: audit.actorAdminId,
+        action: 'role.created',
+        entityType: 'role',
+        entityId: role.id,
+        metadata: {
+          name: role.name,
+        },
+        ipAddress: audit.ipAddress,
+        userAgent: audit.userAgent,
+      });
+
+      return role;
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -129,7 +150,7 @@ export class RolesService {
     if (role.name === 'Super Admin') {
       throw new BadRequestException('Super Admin role cannot be modified');
     }
-    
+
     try {
       return await this.prisma.role.update({
         where: { id },
@@ -166,6 +187,8 @@ export class RolesService {
     if (role.isSystem) {
       throw new BadRequestException('System role cannot be deleted');
     }
+
+    await this.superAdminProtection.assertCanDeleteSystemRole(id);
 
     await this.prisma.role.delete({
       where: { id },

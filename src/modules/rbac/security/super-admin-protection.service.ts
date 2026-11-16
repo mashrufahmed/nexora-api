@@ -60,8 +60,10 @@ export class SuperAdminProtectionService {
       },
     });
 
-    if (role?.name === 'Super Admin' && role.isSystem) {
-      throw new ForbiddenException('Super Admin system role cannot be deleted');
+    if (role && (role.name === 'Super Admin' || role.isSystem)) {
+      throw new ForbiddenException(
+        'System roles and Super Admin role cannot be deleted',
+      );
     }
   }
 }

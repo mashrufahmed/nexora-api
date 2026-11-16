@@ -59,17 +59,13 @@ export class PermissionGuard implements CanActivate {
         assignment.role.permissions.map(({ permission }) => permission.code),
       ),
     );
-    if (!requiredPermissions.every((code) => permissions.has(code))) {
-      throw new ForbiddenException('Insufficient permissions');
-    }
+
     const hasAllPermissions = requiredPermissions.every((permission) =>
       permissions.has(permission),
     );
 
     if (!hasAllPermissions) {
-      throw new ForbiddenException(
-        'You do not have permission to perform this action',
-      );
+      throw new ForbiddenException('Insufficient permissions');
     }
 
     return true;

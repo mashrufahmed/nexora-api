@@ -3,6 +3,7 @@ import * as argon2 from 'argon2';
 
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
+import { lockSuperAdminProtection } from '../rbac/security/super-admin-lock.js';
 import { CreateAdminDto } from './dto/create-admin.dto.js';
 import { EmailVerificationService } from './email-verification/email-verification.service.js';
 
@@ -32,21 +33,32 @@ export class AdminService {
     let admin;
 
     try {
-      admin = await this.prisma.adminUser.create({
-        data: {
-          name: dto.name.trim(),
-          email,
-          password: passwordHash,
-          status: 'INACTIVE',
-        },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          status: true,
-          emailVerifiedAt: true,
-          createdAt: true,
-        },
+      admin = await this.prisma.$transaction(async (tx) => {
+        // Lock bootstrap to prevent concurrent admin creation
+        await lockSuperAdminProtection(tx);
+        // Check admin count AFTER acquiring lock
+        const adminCount = await tx.adminUser.count();
+
+        if (adminCount > 0) {
+          throw new ConflictException('Bootstrap is already completed');
+        }
+
+        return tx.adminUser.create({
+          data: {
+            name: dto.name.trim(),
+            email,
+            password: passwordHash,
+            status: 'INACTIVE',
+          },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            status: true,
+            emailVerifiedAt: true,
+            createdAt: true,
+          },
+        });
       });
     } catch (error) {
       if (
