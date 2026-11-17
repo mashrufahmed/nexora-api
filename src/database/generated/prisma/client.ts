@@ -52,6 +52,191 @@ export type SystemCheck = Prisma.SystemCheckModel
  */
 export type AdminUser = Prisma.AdminUserModel
 /**
+ * Model Site
+ * 
+ */
+export type Site = Prisma.SiteModel
+/**
+ * Model Content
+ * 
+ */
+export type Content = Prisma.ContentModel
+/**
+ * Model Author
+ * 
+ */
+export type Author = Prisma.AuthorModel
+/**
+ * Model ContentAuthor
+ * 
+ */
+export type ContentAuthor = Prisma.ContentAuthorModel
+/**
+ * Model MediaAsset
+ * 
+ */
+export type MediaAsset = Prisma.MediaAssetModel
+/**
+ * Model PageTemplate
+ * 
+ */
+export type PageTemplate = Prisma.PageTemplateModel
+/**
+ * Model PageTemplateRevision
+ * 
+ */
+export type PageTemplateRevision = Prisma.PageTemplateRevisionModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model SiteContent
+ * 
+ */
+export type SiteContent = Prisma.SiteContentModel
+/**
+ * Model Tag
+ * 
+ */
+export type Tag = Prisma.TagModel
+/**
+ * Model SiteContentTag
+ * 
+ */
+export type SiteContentTag = Prisma.SiteContentTagModel
+/**
+ * Model Redirect
+ * 
+ */
+export type Redirect = Prisma.RedirectModel
+/**
+ * Model AnalyticsEvent
+ * 
+ */
+export type AnalyticsEvent = Prisma.AnalyticsEventModel
+/**
+ * Model SiteContentCategory
+ * 
+ */
+export type SiteContentCategory = Prisma.SiteContentCategoryModel
+/**
+ * Model Brand
+ * 
+ */
+export type Brand = Prisma.BrandModel
+/**
+ * Model Product
+ * 
+ */
+export type Product = Prisma.ProductModel
+/**
+ * Model ProductVariant
+ * 
+ */
+export type ProductVariant = Prisma.ProductVariantModel
+/**
+ * Model ProductImage
+ * 
+ */
+export type ProductImage = Prisma.ProductImageModel
+/**
+ * Model ReviewScoreCriterion
+ * 
+ */
+export type ReviewScoreCriterion = Prisma.ReviewScoreCriterionModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
+ * Model ReviewCriterionScore
+ * 
+ */
+export type ReviewCriterionScore = Prisma.ReviewCriterionScoreModel
+/**
+ * Model SiteProduct
+ * 
+ */
+export type SiteProduct = Prisma.SiteProductModel
+/**
+ * Model Merchant
+ * 
+ */
+export type Merchant = Prisma.MerchantModel
+/**
+ * Model AffiliateLink
+ * 
+ */
+export type AffiliateLink = Prisma.AffiliateLinkModel
+/**
+ * Model AffiliateClick
+ * 
+ */
+export type AffiliateClick = Prisma.AffiliateClickModel
+/**
+ * Model BuyingGuide
+ * 
+ */
+export type BuyingGuide = Prisma.BuyingGuideModel
+/**
+ * Model BuyingGuideItem
+ * 
+ */
+export type BuyingGuideItem = Prisma.BuyingGuideItemModel
+/**
+ * Model Comparison
+ * 
+ */
+export type Comparison = Prisma.ComparisonModel
+/**
+ * Model ComparisonItem
+ * 
+ */
+export type ComparisonItem = Prisma.ComparisonItemModel
+/**
+ * Model Verification
+ * 
+ */
+export type Verification = Prisma.VerificationModel
+/**
+ * Model NewsletterSubscriber
+ * 
+ */
+export type NewsletterSubscriber = Prisma.NewsletterSubscriberModel
+/**
+ * Model EmailSender
+ * 
+ */
+export type EmailSender = Prisma.EmailSenderModel
+/**
+ * Model EmailTemplate
+ * 
+ */
+export type EmailTemplate = Prisma.EmailTemplateModel
+/**
+ * Model EmailMessage
+ * 
+ */
+export type EmailMessage = Prisma.EmailMessageModel
+/**
+ * Model SiteDomain
+ * 
+ */
+export type SiteDomain = Prisma.SiteDomainModel
+/**
+ * Model SiteSecret
+ * 
+ */
+export type SiteSecret = Prisma.SiteSecretModel
+/**
+ * Model UserSiteAccess
+ * 
+ */
+export type UserSiteAccess = Prisma.UserSiteAccessModel
+/**
  * Model Role
  * 
  */

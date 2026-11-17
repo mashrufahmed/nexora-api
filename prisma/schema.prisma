@@ -21,22 +21,743 @@ enum AdminStatus {
   SUSPENDED
 }
 
+enum SiteStatus {
+  INACTIVE
+  ACTIVE
+}
+
+enum SiteSecretStatus {
+  ACTIVE
+  REVOKED
+}
+
+enum ContentType {
+  ARTICLE
+  REVIEW
+  GUIDE
+  COMPARISON
+}
+
+enum ContentStatus {
+  DRAFT
+  IN_REVIEW
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ProductStatus {
+  INACTIVE
+  ACTIVE
+}
+
+enum AuthorStatus {
+  INACTIVE
+  ACTIVE
+}
+
+enum MediaStatus {
+  ACTIVE
+  DELETED
+}
+
+enum PageTemplateStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum AffiliateStatus {
+  INACTIVE
+  ACTIVE
+}
+
+enum GuideStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  EXPIRED
+  FAILED
+}
+
+enum NewsletterStatus {
+  PENDING
+  ACTIVE
+  UNSUBSCRIBED
+}
+
+enum EmailStatus {
+  QUEUED
+  SENT
+  FAILED
+}
+
+enum RedirectStatus {
+  INACTIVE
+  ACTIVE
+}
+
+enum AnalyticsEventType {
+  PAGE_VIEW
+  AFFILIATE_CLICK
+}
+
 model AdminUser {
-  id              String      @id @default(nanoid())
+  id              String           @id @default(nanoid())
   name            String
-  email           String      @unique
-  password        String      @map("password")
-  status          AdminStatus @default(INACTIVE)
-  emailVerifiedAt DateTime?   @map("email_verified_at")
-  lastLoginAt     DateTime?   @map("last_login_at")
-  createdAt       DateTime    @default(now()) @map("created_at")
-  updatedAt       DateTime    @updatedAt @map("updated_at")
+  email           String           @unique
+  password        String           @map("password")
+  status          AdminStatus      @default(INACTIVE)
+  emailVerifiedAt DateTime?        @map("email_verified_at")
+  lastLoginAt     DateTime?        @map("last_login_at")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
   roles           AdminRole[]
-  auditLogs       AuditLog[]  @relation("AuditActor")
-  sessionVersion  Int         @default(0) @map("session_version")
+  siteAccess      UserSiteAccess[]
+  auditLogs       AuditLog[]       @relation("AuditActor")
+  sessionVersion  Int              @default(0) @map("session_version")
 
   @@index([status])
   @@map("admin_users")
+}
+
+model Site {
+  id              String                 @id @default(nanoid())
+  name            String
+  slug            String                 @unique
+  status          SiteStatus             @default(INACTIVE)
+  logoMediaId     String?                @map("logo_media_id")
+  faviconMediaId  String?                @map("favicon_media_id")
+  settings        Json?
+  seoSettings     Json?                  @map("seo_settings")
+  createdAt       DateTime               @default(now()) @map("created_at")
+  updatedAt       DateTime               @updatedAt @map("updated_at")
+  domains         SiteDomain[]
+  secrets         SiteSecret[]
+  userAccess      UserSiteAccess[]
+  categories      Category[]
+  siteContents    SiteContent[]
+  siteProducts    SiteProduct[]
+  reviewCriteria  ReviewScoreCriterion[]
+  mediaAssets     MediaAsset[]
+  authors         Author[]
+  pageTemplates   PageTemplate[]
+  affiliateLinks  AffiliateLink[]
+  guides          BuyingGuide[]
+  comparisons     Comparison[]
+  subscribers     NewsletterSubscriber[]
+  emailSenders    EmailSender[]
+  emailTemplates  EmailTemplate[]
+  tags            Tag[]
+  redirects       Redirect[]
+  analyticsEvents AnalyticsEvent[]
+  affiliateClicks AffiliateClick[]
+  emailMessages   EmailMessage[]
+
+  @@index([status])
+  @@map("sites")
+}
+
+model Content {
+  id              String          @id @default(nanoid())
+  type            ContentType
+  title           String
+  slug            String
+  excerpt         String?
+  body            Json?
+  featuredMediaId String?         @map("featured_media_id")
+  status          ContentStatus   @default(DRAFT)
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  authors         ContentAuthor[]
+  siteContents    SiteContent[]
+
+  @@index([status])
+  @@map("contents")
+}
+
+model Author {
+  id            String          @id @default(nanoid())
+  siteId        String?         @map("site_id")
+  name          String
+  slug          String
+  avatarMediaId String?         @map("avatar_media_id")
+  bio           String?
+  shortBio      String?         @map("short_bio")
+  designation   String?
+  website       String?
+  socialLinks   Json?           @map("social_links")
+  email         String?
+  status        AuthorStatus    @default(ACTIVE)
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  site          Site?           @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  contentLinks  ContentAuthor[]
+
+  @@unique([siteId, slug])
+  @@index([siteId, status])
+  @@map("authors")
+}
+
+model ContentAuthor {
+  id        String  @id @default(nanoid())
+  contentId String  @map("content_id")
+  authorId  String  @map("author_id")
+  position  Int     @default(0)
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  author    Author  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@unique([contentId, authorId])
+  @@index([authorId])
+  @@map("content_authors")
+}
+
+model MediaAsset {
+  id               String      @id @default(nanoid())
+  siteId           String?     @map("site_id")
+  originalFilename String      @map("original_filename")
+  storageKey       String      @unique @map("storage_key")
+  mimeType         String      @map("mime_type")
+  extension        String
+  size             Int
+  width            Int?
+  height           Int?
+  alt              String?
+  caption          String?
+  metadata         Json?
+  status           MediaStatus @default(ACTIVE)
+  createdAt        DateTime    @default(now()) @map("created_at")
+  updatedAt        DateTime    @updatedAt @map("updated_at")
+  site             Site?       @relation(fields: [siteId], references: [id], onDelete: SetNull)
+
+  @@index([siteId, status])
+  @@index([mimeType])
+  @@map("media_assets")
+}
+
+model PageTemplate {
+  id                String                 @id @default(nanoid())
+  siteId            String                 @map("site_id")
+  name              String
+  type              String
+  status            PageTemplateStatus     @default(DRAFT)
+  currentRevisionId String?                @map("current_revision_id")
+  createdAt         DateTime               @default(now()) @map("created_at")
+  updatedAt         DateTime               @updatedAt @map("updated_at")
+  site              Site                   @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  revisions         PageTemplateRevision[]
+
+  @@unique([siteId, name])
+  @@index([siteId, type, status])
+  @@map("page_templates")
+}
+
+model PageTemplateRevision {
+  id             String       @id @default(nanoid())
+  pageTemplateId String       @map("page_template_id")
+  revisionNumber Int          @map("revision_number")
+  config         Json
+  createdBy      String       @map("created_by")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  publishedAt    DateTime?    @map("published_at")
+  pageTemplate   PageTemplate @relation(fields: [pageTemplateId], references: [id], onDelete: Cascade)
+
+  @@unique([pageTemplateId, revisionNumber])
+  @@index([pageTemplateId, publishedAt])
+  @@map("page_template_revisions")
+}
+
+model Category {
+  id        String                @id @default(nanoid())
+  siteId    String                @map("site_id")
+  name      String
+  slug      String
+  parentId  String?               @map("parent_id")
+  createdAt DateTime              @default(now()) @map("created_at")
+  updatedAt DateTime              @updatedAt @map("updated_at")
+  site      Site                  @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  parent    Category?             @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children  Category[]            @relation("CategoryTree")
+  contents  SiteContentCategory[]
+
+  @@unique([siteId, slug])
+  @@index([siteId, parentId])
+  @@map("categories")
+}
+
+model SiteContent {
+  id              String                @id @default(nanoid())
+  siteId          String                @map("site_id")
+  contentId       String                @map("content_id")
+  slug            String
+  titleOverride   String?               @map("title_override")
+  excerptOverride String?               @map("excerpt_override")
+  seoMetadata     Json?                 @map("seo_metadata")
+  status          ContentStatus         @default(DRAFT)
+  publishedAt     DateTime?             @map("published_at")
+  scheduledAt     DateTime?             @map("scheduled_at")
+  createdAt       DateTime              @default(now()) @map("created_at")
+  updatedAt       DateTime              @updatedAt @map("updated_at")
+  site            Site                  @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  content         Content               @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  categories      SiteContentCategory[]
+  tags            SiteContentTag[]
+
+  @@unique([siteId, slug])
+  @@unique([siteId, contentId])
+  @@index([siteId, status])
+  @@map("site_contents")
+}
+
+model Tag {
+  id        String           @id @default(nanoid())
+  siteId    String           @map("site_id")
+  name      String
+  slug      String
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+  site      Site             @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  contents  SiteContentTag[]
+
+  @@unique([siteId, slug])
+  @@map("tags")
+}
+
+model SiteContentTag {
+  id            String      @id @default(nanoid())
+  siteContentId String      @map("site_content_id")
+  tagId         String      @map("tag_id")
+  siteContent   SiteContent @relation(fields: [siteContentId], references: [id], onDelete: Cascade)
+  tag           Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([siteContentId, tagId])
+  @@map("site_content_tags")
+}
+
+model Redirect {
+  id         String         @id @default(nanoid())
+  siteId     String         @map("site_id")
+  fromPath   String         @map("from_path")
+  toPath     String         @map("to_path")
+  statusCode Int            @default(301) @map("status_code")
+  status     RedirectStatus @default(ACTIVE)
+  createdAt  DateTime       @default(now()) @map("created_at")
+  updatedAt  DateTime       @updatedAt @map("updated_at")
+  site       Site           @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([siteId, fromPath])
+  @@index([siteId, status])
+  @@map("redirects")
+}
+
+model AnalyticsEvent {
+  id            String             @id @default(nanoid())
+  siteId        String             @map("site_id")
+  type          AnalyticsEventType
+  path          String?
+  entityType    String?            @map("entity_type")
+  entityId      String?            @map("entity_id")
+  referrer      String?
+  userAgentHash String?            @map("user_agent_hash")
+  occurredAt    DateTime           @default(now()) @map("occurred_at")
+  site          Site               @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@index([siteId, type, occurredAt])
+  @@index([siteId, entityType, entityId])
+  @@map("analytics_events")
+}
+
+model SiteContentCategory {
+  id            String      @id @default(nanoid())
+  siteContentId String      @map("site_content_id")
+  categoryId    String      @map("category_id")
+  siteContent   SiteContent @relation(fields: [siteContentId], references: [id], onDelete: Cascade)
+  category      Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([siteContentId, categoryId])
+  @@map("site_content_categories")
+}
+
+model Brand {
+  id          String        @id @default(nanoid())
+  name        String
+  slug        String        @unique
+  description String?
+  status      ProductStatus @default(ACTIVE)
+  products    Product[]
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@map("brands")
+}
+
+model Product {
+  id             String           @id @default(nanoid())
+  brandId        String?          @map("brand_id")
+  name           String
+  slug           String           @unique
+  modelNumber    String?          @map("model_number")
+  description    String?
+  specifications Json?
+  status         ProductStatus    @default(ACTIVE)
+  brand          Brand?           @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  siteProducts   SiteProduct[]
+  variants       ProductVariant[]
+  images         ProductImage[]
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  @@index([brandId])
+  @@map("products")
+}
+
+model ProductVariant {
+  id         String        @id @default(nanoid())
+  productId  String        @map("product_id")
+  name       String
+  sku        String        @unique
+  attributes Json?
+  status     ProductStatus @default(ACTIVE)
+  product    Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model ProductImage {
+  id           String  @id @default(nanoid())
+  productId    String  @map("product_id")
+  mediaAssetId String  @map("media_asset_id")
+  alt          String?
+  caption      String?
+  position     Int     @default(0)
+  isPrimary    Boolean @default(false) @map("is_primary")
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, mediaAssetId])
+  @@index([productId, position])
+  @@map("product_images")
+}
+
+enum ReviewStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+model ReviewScoreCriterion {
+  id          String                 @id @default(nanoid())
+  siteId      String                 @map("site_id")
+  name        String
+  description String?
+  weight      Decimal                @db.Decimal(8, 3)
+  position    Int                    @default(0)
+  status      ProductStatus          @default(ACTIVE)
+  site        Site                   @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  scores      ReviewCriterionScore[]
+
+  @@unique([siteId, name])
+  @@index([siteId, position])
+  @@map("review_score_criteria")
+}
+
+model Review {
+  id            String                 @id @default(nanoid())
+  siteProductId String                 @map("site_product_id")
+  authorId      String                 @map("author_id")
+  title         String
+  verdict       String?
+  body          Json?
+  overallScore  Decimal?               @map("overall_score") @db.Decimal(8, 3)
+  status        ReviewStatus           @default(DRAFT)
+  publishedAt   DateTime?              @map("published_at")
+  createdAt     DateTime               @default(now()) @map("created_at")
+  updatedAt     DateTime               @updatedAt @map("updated_at")
+  siteProduct   SiteProduct            @relation(fields: [siteProductId], references: [id], onDelete: Cascade)
+  scores        ReviewCriterionScore[]
+
+  @@index([siteProductId, status])
+  @@map("reviews")
+}
+
+model ReviewCriterionScore {
+  id          String               @id @default(nanoid())
+  reviewId    String               @map("review_id")
+  criterionId String               @map("criterion_id")
+  score       Decimal              @db.Decimal(8, 3)
+  notes       String?
+  review      Review               @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  criterion   ReviewScoreCriterion @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+
+  @@unique([reviewId, criterionId])
+  @@map("review_criterion_scores")
+}
+
+model SiteProduct {
+  id              String            @id @default(nanoid())
+  siteId          String            @map("site_id")
+  productId       String            @map("product_id")
+  slug            String
+  title           String?
+  summary         String?
+  status          ProductStatus     @default(INACTIVE)
+  isFeatured      Boolean           @default(false) @map("is_featured")
+  seoMetadata     Json?             @map("seo_metadata")
+  publishedAt     DateTime?         @map("published_at")
+  site            Site              @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  product         Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  reviews         Review[]
+  guideItems      BuyingGuideItem[]
+  comparisonItems ComparisonItem[]
+  affiliateLinks  AffiliateLink[]
+
+  @@unique([siteId, slug])
+  @@unique([siteId, productId])
+  @@index([siteId, status])
+  @@map("site_products")
+}
+
+model Merchant {
+  id        String          @id @default(nanoid())
+  name      String
+  slug      String          @unique
+  website   String?
+  status    AffiliateStatus @default(ACTIVE)
+  links     AffiliateLink[]
+  createdAt DateTime        @default(now()) @map("created_at")
+  updatedAt DateTime        @updatedAt @map("updated_at")
+
+  @@map("merchants")
+}
+
+model AffiliateLink {
+  id             String           @id @default(nanoid())
+  siteId         String           @map("site_id")
+  siteProductId  String?          @map("site_product_id")
+  merchantId     String           @map("merchant_id")
+  destinationUrl String           @map("destination_url")
+  trackingUrl    String?          @map("tracking_url")
+  status         AffiliateStatus  @default(INACTIVE)
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  site           Site             @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  siteProduct    SiteProduct?     @relation(fields: [siteProductId], references: [id], onDelete: SetNull)
+  merchant       Merchant         @relation(fields: [merchantId], references: [id], onDelete: Restrict)
+  clicks         AffiliateClick[]
+
+  @@index([siteId, status])
+  @@map("affiliate_links")
+}
+
+model AffiliateClick {
+  id              String        @id @default(nanoid())
+  affiliateLinkId String        @map("affiliate_link_id")
+  siteId          String        @map("site_id")
+  clickedAt       DateTime      @default(now()) @map("clicked_at")
+  referrer        String?
+  userAgentHash   String?       @map("user_agent_hash")
+  link            AffiliateLink @relation(fields: [affiliateLinkId], references: [id], onDelete: Cascade)
+  site            Site          @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@index([affiliateLinkId, clickedAt])
+  @@map("affiliate_clicks")
+}
+
+model BuyingGuide {
+  id          String            @id @default(nanoid())
+  siteId      String            @map("site_id")
+  title       String
+  slug        String
+  description String?
+  body        Json?
+  status      GuideStatus       @default(DRAFT)
+  publishedAt DateTime?         @map("published_at")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  site        Site              @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  items       BuyingGuideItem[]
+
+  @@unique([siteId, slug])
+  @@map("buying_guides")
+}
+
+model BuyingGuideItem {
+  id            String      @id @default(nanoid())
+  buyingGuideId String      @map("buying_guide_id")
+  siteProductId String      @map("site_product_id")
+  position      Int         @default(0)
+  note          String?
+  guide         BuyingGuide @relation(fields: [buyingGuideId], references: [id], onDelete: Cascade)
+  siteProduct   SiteProduct @relation(fields: [siteProductId], references: [id], onDelete: Cascade)
+
+  @@unique([buyingGuideId, siteProductId])
+  @@map("buying_guide_items")
+}
+
+model Comparison {
+  id          String           @id @default(nanoid())
+  siteId      String           @map("site_id")
+  title       String
+  slug        String
+  description String?
+  status      GuideStatus      @default(DRAFT)
+  publishedAt DateTime?        @map("published_at")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  site        Site             @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  items       ComparisonItem[]
+
+  @@unique([siteId, slug])
+  @@map("comparisons")
+}
+
+model ComparisonItem {
+  id            String      @id @default(nanoid())
+  comparisonId  String      @map("comparison_id")
+  siteProductId String      @map("site_product_id")
+  position      Int         @default(0)
+  note          String?
+  comparison    Comparison  @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  siteProduct   SiteProduct @relation(fields: [siteProductId], references: [id], onDelete: Cascade)
+
+  @@unique([comparisonId, siteProductId])
+  @@map("comparison_items")
+}
+
+model Verification {
+  id         String             @id @default(nanoid())
+  entityType String             @map("entity_type")
+  entityId   String             @map("entity_id")
+  identifier String
+  method     String
+  tokenHash  String             @map("token_hash")
+  status     VerificationStatus @default(PENDING)
+  expiresAt  DateTime           @map("expires_at")
+  verifiedAt DateTime?          @map("verified_at")
+  attempts   Int                @default(0)
+  createdAt  DateTime           @default(now()) @map("created_at")
+
+  @@index([entityType, entityId, status])
+  @@index([identifier, method, status])
+  @@map("verifications")
+}
+
+model NewsletterSubscriber {
+  id                   String           @id @default(nanoid())
+  siteId               String           @map("site_id")
+  email                String
+  normalizedEmail      String           @map("normalized_email")
+  status               NewsletterStatus @default(PENDING)
+  source               String?
+  subscribedAt         DateTime?        @map("subscribed_at")
+  unsubscribedAt       DateTime?        @map("unsubscribed_at")
+  verifiedAt           DateTime?        @map("verified_at")
+  unsubscribeTokenHash String?          @map("unsubscribe_token_hash")
+  createdAt            DateTime         @default(now()) @map("created_at")
+  updatedAt            DateTime         @updatedAt @map("updated_at")
+  site                 Site             @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([siteId, normalizedEmail])
+  @@index([siteId, status])
+  @@map("newsletter_subscribers")
+}
+
+model EmailSender {
+  id             String          @id @default(nanoid())
+  siteId         String          @map("site_id")
+  name           String
+  emailAddress   String          @map("email_address")
+  replyTo        String?         @map("reply_to")
+  providerConfig Json?           @map("provider_config")
+  status         AffiliateStatus @default(ACTIVE)
+  site           Site            @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  messages       EmailMessage[]
+
+  @@unique([siteId, emailAddress])
+  @@map("email_senders")
+}
+
+model EmailTemplate {
+  id        String          @id @default(nanoid())
+  siteId    String          @map("site_id")
+  name      String
+  slug      String
+  subject   String
+  htmlBody  String          @map("html_body")
+  textBody  String?         @map("text_body")
+  variables Json?
+  status    AffiliateStatus @default(ACTIVE)
+  site      Site            @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  messages  EmailMessage[]
+
+  @@unique([siteId, slug])
+  @@map("email_templates")
+}
+
+model EmailMessage {
+  id         String         @id @default(nanoid())
+  siteId     String         @map("site_id")
+  senderId   String?        @map("sender_id")
+  templateId String?        @map("template_id")
+  recipient  String
+  subject    String
+  htmlBody   String         @map("html_body")
+  status     EmailStatus    @default(QUEUED)
+  error      String?
+  sentAt     DateTime?      @map("sent_at")
+  createdAt  DateTime       @default(now()) @map("created_at")
+  site       Site           @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  sender     EmailSender?   @relation(fields: [senderId], references: [id], onDelete: SetNull)
+  template   EmailTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+
+  @@index([siteId, createdAt])
+  @@map("email_messages")
+}
+
+model SiteDomain {
+  id         String    @id @default(nanoid())
+  siteId     String    @map("site_id")
+  hostname   String    @unique
+  isPrimary  Boolean   @default(false) @map("is_primary")
+  verifiedAt DateTime? @map("verified_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  site       Site      @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@index([siteId])
+  @@map("site_domains")
+}
+
+model SiteSecret {
+  id        String           @id @default(nanoid())
+  siteId    String           @map("site_id")
+  keyHash   String           @map("key_hash")
+  status    SiteSecretStatus @default(ACTIVE)
+  createdAt DateTime         @default(now()) @map("created_at")
+  revokedAt DateTime?        @map("revoked_at")
+  site      Site             @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@index([siteId, status])
+  @@map("site_secrets")
+}
+
+model UserSiteAccess {
+  id        String    @id @default(nanoid())
+  userId    String    @map("user_id")
+  siteId    String    @map("site_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  site      Site      @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, siteId])
+  @@index([siteId])
+  @@map("user_site_access")
 }
 
 model Role {

@@ -86,6 +86,21 @@ class EnvironmentVariables {
   @IsString()
   SESSION_COOKIE_NAME: string = 'nexora_admin_sid';
 
+  @IsString()
+  ADMIN_PASSWORD_RESET_URL: string = 'http://localhost:3000/auth/reset-password';
+
+  @IsInt()
+  @Min(60)
+  ADMIN_PASSWORD_RESET_TTL: number = 900;
+
+  @IsInt()
+  @Min(1)
+  ADMIN_PASSWORD_RESET_MAX_REQUESTS: number = 3;
+
+  @IsInt()
+  @Min(60)
+  ADMIN_PASSWORD_RESET_REQUEST_TTL: number = 900;
+
   @IsInt()
   @Min(1)
   @Max(20)

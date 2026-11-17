@@ -11,8 +11,23 @@ import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';
 import { MailModule } from './mail/mail.module.js';
 import { AdminModule } from './modules/admin/admin.module.js';
+import { AffiliateModule } from './modules/affiliate/affiliate.module.js';
+import { AnalyticsModule } from './modules/analytics/analytics.module.js';
 import { AuditModule } from './modules/audit/audit.module.js';
+import { AuthorsModule } from './modules/authors/authors.module.js';
+import { CmsModule } from './modules/cms/cms.module.js';
+import { EmailManagementModule } from './modules/email-management/email-management.module.js';
+import { GuidesModule } from './modules/guides/guides.module.js';
+import { MediaModule } from './modules/media/media.module.js';
+import { NewsletterModule } from './modules/newsletter/newsletter.module.js';
+import { PageBuilderModule } from './modules/page-builder/page-builder.module.js';
+import { ProductsModule } from './modules/products/products.module.js';
+import { PublishingModule } from './modules/publishing/publishing.module.js';
 import { RbacModule } from './modules/rbac/rbac.module.js';
+import { ReviewsModule } from './modules/reviews/reviews.module.js';
+import { SitesModule } from './modules/sites/sites.module.js';
+import { TagsRedirectsModule } from './modules/tags-redirects/tags-redirects.module.js';
+import { VerificationModule } from './modules/verification/verification.module.js';
 import { RedisModule } from './redis/redis.module.js';
 import { RedisService } from './redis/redis.service.js';
 
@@ -73,6 +88,21 @@ import { RedisService } from './redis/redis.service.js';
     RbacModule,
     AdminModule,
     AuditModule,
+    SitesModule,
+    CmsModule,
+    ProductsModule,
+    ReviewsModule,
+    MediaModule,
+    AuthorsModule,
+    PageBuilderModule,
+    AffiliateModule,
+    GuidesModule,
+    VerificationModule,
+    NewsletterModule,
+    EmailManagementModule,
+    PublishingModule,
+    TagsRedirectsModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [

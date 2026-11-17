@@ -257,6 +257,7 @@ export type AdminUserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   sessionVersion?: Prisma.IntFilter<"AdminUser"> | number
   roles?: Prisma.AdminRoleListRelationFilter
+  siteAccess?: Prisma.UserSiteAccessListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
 }
 
@@ -272,6 +273,7 @@ export type AdminUserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   sessionVersion?: Prisma.SortOrder
   roles?: Prisma.AdminRoleOrderByRelationAggregateInput
+  siteAccess?: Prisma.UserSiteAccessOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
 }
 
@@ -290,6 +292,7 @@ export type AdminUserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   sessionVersion?: Prisma.IntFilter<"AdminUser"> | number
   roles?: Prisma.AdminRoleListRelationFilter
+  siteAccess?: Prisma.UserSiteAccessListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
 }, "id" | "email">
 
@@ -339,6 +342,7 @@ export type AdminUserCreateInput = {
   updatedAt?: Date | string
   sessionVersion?: number
   roles?: Prisma.AdminRoleCreateNestedManyWithoutAdminInput
+  siteAccess?: Prisma.UserSiteAccessCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
@@ -354,6 +358,7 @@ export type AdminUserUncheckedCreateInput = {
   updatedAt?: Date | string
   sessionVersion?: number
   roles?: Prisma.AdminRoleUncheckedCreateNestedManyWithoutAdminInput
+  siteAccess?: Prisma.UserSiteAccessUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
@@ -369,6 +374,7 @@ export type AdminUserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   roles?: Prisma.AdminRoleUpdateManyWithoutAdminNestedInput
+  siteAccess?: Prisma.UserSiteAccessUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
@@ -384,6 +390,7 @@ export type AdminUserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   roles?: Prisma.AdminRoleUncheckedUpdateManyWithoutAdminNestedInput
+  siteAccess?: Prisma.UserSiteAccessUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
@@ -499,6 +506,20 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type AdminUserCreateNestedOneWithoutSiteAccessInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutSiteAccessInput, Prisma.AdminUserUncheckedCreateWithoutSiteAccessInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutSiteAccessInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutSiteAccessNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutSiteAccessInput, Prisma.AdminUserUncheckedCreateWithoutSiteAccessInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutSiteAccessInput
+  upsert?: Prisma.AdminUserUpsertWithoutSiteAccessInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutSiteAccessInput, Prisma.AdminUserUpdateWithoutSiteAccessInput>, Prisma.AdminUserUncheckedUpdateWithoutSiteAccessInput>
+}
+
 export type AdminUserCreateNestedOneWithoutRolesInput = {
   create?: Prisma.XOR<Prisma.AdminUserCreateWithoutRolesInput, Prisma.AdminUserUncheckedCreateWithoutRolesInput>
   connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutRolesInput
@@ -529,6 +550,82 @@ export type AdminUserUpdateOneWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.AdminUserUpdateWithoutAuditLogsInput>, Prisma.AdminUserUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type AdminUserCreateWithoutSiteAccessInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  status?: $Enums.AdminStatus
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessionVersion?: number
+  roles?: Prisma.AdminRoleCreateNestedManyWithoutAdminInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+}
+
+export type AdminUserUncheckedCreateWithoutSiteAccessInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  status?: $Enums.AdminStatus
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessionVersion?: number
+  roles?: Prisma.AdminRoleUncheckedCreateNestedManyWithoutAdminInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type AdminUserCreateOrConnectWithoutSiteAccessInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutSiteAccessInput, Prisma.AdminUserUncheckedCreateWithoutSiteAccessInput>
+}
+
+export type AdminUserUpsertWithoutSiteAccessInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutSiteAccessInput, Prisma.AdminUserUncheckedUpdateWithoutSiteAccessInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutSiteAccessInput, Prisma.AdminUserUncheckedCreateWithoutSiteAccessInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutSiteAccessInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutSiteAccessInput, Prisma.AdminUserUncheckedUpdateWithoutSiteAccessInput>
+}
+
+export type AdminUserUpdateWithoutSiteAccessInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumAdminStatusFieldUpdateOperationsInput | $Enums.AdminStatus
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  roles?: Prisma.AdminRoleUpdateManyWithoutAdminNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutSiteAccessInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumAdminStatusFieldUpdateOperationsInput | $Enums.AdminStatus
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  roles?: Prisma.AdminRoleUncheckedUpdateManyWithoutAdminNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
 export type AdminUserCreateWithoutRolesInput = {
   id?: string
   name: string
@@ -540,6 +637,7 @@ export type AdminUserCreateWithoutRolesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessionVersion?: number
+  siteAccess?: Prisma.UserSiteAccessCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
@@ -554,6 +652,7 @@ export type AdminUserUncheckedCreateWithoutRolesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessionVersion?: number
+  siteAccess?: Prisma.UserSiteAccessUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
@@ -584,6 +683,7 @@ export type AdminUserUpdateWithoutRolesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  siteAccess?: Prisma.UserSiteAccessUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
@@ -598,6 +698,7 @@ export type AdminUserUncheckedUpdateWithoutRolesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  siteAccess?: Prisma.UserSiteAccessUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
@@ -613,6 +714,7 @@ export type AdminUserCreateWithoutAuditLogsInput = {
   updatedAt?: Date | string
   sessionVersion?: number
   roles?: Prisma.AdminRoleCreateNestedManyWithoutAdminInput
+  siteAccess?: Prisma.UserSiteAccessCreateNestedManyWithoutUserInput
 }
 
 export type AdminUserUncheckedCreateWithoutAuditLogsInput = {
@@ -627,6 +729,7 @@ export type AdminUserUncheckedCreateWithoutAuditLogsInput = {
   updatedAt?: Date | string
   sessionVersion?: number
   roles?: Prisma.AdminRoleUncheckedCreateNestedManyWithoutAdminInput
+  siteAccess?: Prisma.UserSiteAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type AdminUserCreateOrConnectWithoutAuditLogsInput = {
@@ -657,6 +760,7 @@ export type AdminUserUpdateWithoutAuditLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   roles?: Prisma.AdminRoleUpdateManyWithoutAdminNestedInput
+  siteAccess?: Prisma.UserSiteAccessUpdateManyWithoutUserNestedInput
 }
 
 export type AdminUserUncheckedUpdateWithoutAuditLogsInput = {
@@ -671,6 +775,7 @@ export type AdminUserUncheckedUpdateWithoutAuditLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   roles?: Prisma.AdminRoleUncheckedUpdateManyWithoutAdminNestedInput
+  siteAccess?: Prisma.UserSiteAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -680,11 +785,13 @@ export type AdminUserUncheckedUpdateWithoutAuditLogsInput = {
 
 export type AdminUserCountOutputType = {
   roles: number
+  siteAccess: number
   auditLogs: number
 }
 
 export type AdminUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   roles?: boolean | AdminUserCountOutputTypeCountRolesArgs
+  siteAccess?: boolean | AdminUserCountOutputTypeCountSiteAccessArgs
   auditLogs?: boolean | AdminUserCountOutputTypeCountAuditLogsArgs
 }
 
@@ -708,6 +815,13 @@ export type AdminUserCountOutputTypeCountRolesArgs<ExtArgs extends runtime.Types
 /**
  * AdminUserCountOutputType without action
  */
+export type AdminUserCountOutputTypeCountSiteAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserSiteAccessWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
 export type AdminUserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AuditLogWhereInput
 }
@@ -725,6 +839,7 @@ export type AdminUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   updatedAt?: boolean
   sessionVersion?: boolean
   roles?: boolean | Prisma.AdminUser$rolesArgs<ExtArgs>
+  siteAccess?: boolean | Prisma.AdminUser$siteAccessArgs<ExtArgs>
   auditLogs?: boolean | Prisma.AdminUser$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.AdminUserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["adminUser"]>
@@ -771,6 +886,7 @@ export type AdminUserSelectScalar = {
 export type AdminUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "status" | "emailVerifiedAt" | "lastLoginAt" | "createdAt" | "updatedAt" | "sessionVersion", ExtArgs["result"]["adminUser"]>
 export type AdminUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   roles?: boolean | Prisma.AdminUser$rolesArgs<ExtArgs>
+  siteAccess?: boolean | Prisma.AdminUser$siteAccessArgs<ExtArgs>
   auditLogs?: boolean | Prisma.AdminUser$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.AdminUserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -781,6 +897,7 @@ export type $AdminUserPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   name: "AdminUser"
   objects: {
     roles: Prisma.$AdminRolePayload<ExtArgs>[]
+    siteAccess: Prisma.$UserSiteAccessPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1189,6 +1306,7 @@ readonly fields: AdminUserFieldRefs;
 export interface Prisma__AdminUserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   roles<T extends Prisma.AdminUser$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  siteAccess<T extends Prisma.AdminUser$siteAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$siteAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSiteAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.AdminUser$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1643,6 +1761,30 @@ export type AdminUser$rolesArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.AdminRoleScalarFieldEnum | Prisma.AdminRoleScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.siteAccess
+ */
+export type AdminUser$siteAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserSiteAccess
+   */
+  select?: Prisma.UserSiteAccessSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserSiteAccess
+   */
+  omit?: Prisma.UserSiteAccessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserSiteAccessInclude<ExtArgs> | null
+  where?: Prisma.UserSiteAccessWhereInput
+  orderBy?: Prisma.UserSiteAccessOrderByWithRelationInput | Prisma.UserSiteAccessOrderByWithRelationInput[]
+  cursor?: Prisma.UserSiteAccessWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserSiteAccessScalarFieldEnum | Prisma.UserSiteAccessScalarFieldEnum[]
 }
 
 /**

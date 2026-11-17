@@ -53,6 +53,43 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   SystemCheck: 'SystemCheck',
   AdminUser: 'AdminUser',
+  Site: 'Site',
+  Content: 'Content',
+  Author: 'Author',
+  ContentAuthor: 'ContentAuthor',
+  MediaAsset: 'MediaAsset',
+  PageTemplate: 'PageTemplate',
+  PageTemplateRevision: 'PageTemplateRevision',
+  Category: 'Category',
+  SiteContent: 'SiteContent',
+  Tag: 'Tag',
+  SiteContentTag: 'SiteContentTag',
+  Redirect: 'Redirect',
+  AnalyticsEvent: 'AnalyticsEvent',
+  SiteContentCategory: 'SiteContentCategory',
+  Brand: 'Brand',
+  Product: 'Product',
+  ProductVariant: 'ProductVariant',
+  ProductImage: 'ProductImage',
+  ReviewScoreCriterion: 'ReviewScoreCriterion',
+  Review: 'Review',
+  ReviewCriterionScore: 'ReviewCriterionScore',
+  SiteProduct: 'SiteProduct',
+  Merchant: 'Merchant',
+  AffiliateLink: 'AffiliateLink',
+  AffiliateClick: 'AffiliateClick',
+  BuyingGuide: 'BuyingGuide',
+  BuyingGuideItem: 'BuyingGuideItem',
+  Comparison: 'Comparison',
+  ComparisonItem: 'ComparisonItem',
+  Verification: 'Verification',
+  NewsletterSubscriber: 'NewsletterSubscriber',
+  EmailSender: 'EmailSender',
+  EmailTemplate: 'EmailTemplate',
+  EmailMessage: 'EmailMessage',
+  SiteDomain: 'SiteDomain',
+  SiteSecret: 'SiteSecret',
+  UserSiteAccess: 'UserSiteAccess',
   Role: 'Role',
   Permission: 'Permission',
   AdminRole: 'AdminRole',
@@ -99,6 +136,524 @@ export const AdminUserScalarFieldEnum = {
 } as const
 
 export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
+
+
+export const SiteScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  status: 'status',
+  logoMediaId: 'logoMediaId',
+  faviconMediaId: 'faviconMediaId',
+  settings: 'settings',
+  seoSettings: 'seoSettings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteScalarFieldEnum = (typeof SiteScalarFieldEnum)[keyof typeof SiteScalarFieldEnum]
+
+
+export const ContentScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  title: 'title',
+  slug: 'slug',
+  excerpt: 'excerpt',
+  body: 'body',
+  featuredMediaId: 'featuredMediaId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContentScalarFieldEnum = (typeof ContentScalarFieldEnum)[keyof typeof ContentScalarFieldEnum]
+
+
+export const AuthorScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  name: 'name',
+  slug: 'slug',
+  avatarMediaId: 'avatarMediaId',
+  bio: 'bio',
+  shortBio: 'shortBio',
+  designation: 'designation',
+  website: 'website',
+  socialLinks: 'socialLinks',
+  email: 'email',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AuthorScalarFieldEnum = (typeof AuthorScalarFieldEnum)[keyof typeof AuthorScalarFieldEnum]
+
+
+export const ContentAuthorScalarFieldEnum = {
+  id: 'id',
+  contentId: 'contentId',
+  authorId: 'authorId',
+  position: 'position'
+} as const
+
+export type ContentAuthorScalarFieldEnum = (typeof ContentAuthorScalarFieldEnum)[keyof typeof ContentAuthorScalarFieldEnum]
+
+
+export const MediaAssetScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  originalFilename: 'originalFilename',
+  storageKey: 'storageKey',
+  mimeType: 'mimeType',
+  extension: 'extension',
+  size: 'size',
+  width: 'width',
+  height: 'height',
+  alt: 'alt',
+  caption: 'caption',
+  metadata: 'metadata',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MediaAssetScalarFieldEnum = (typeof MediaAssetScalarFieldEnum)[keyof typeof MediaAssetScalarFieldEnum]
+
+
+export const PageTemplateScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  name: 'name',
+  type: 'type',
+  status: 'status',
+  currentRevisionId: 'currentRevisionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PageTemplateScalarFieldEnum = (typeof PageTemplateScalarFieldEnum)[keyof typeof PageTemplateScalarFieldEnum]
+
+
+export const PageTemplateRevisionScalarFieldEnum = {
+  id: 'id',
+  pageTemplateId: 'pageTemplateId',
+  revisionNumber: 'revisionNumber',
+  config: 'config',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  publishedAt: 'publishedAt'
+} as const
+
+export type PageTemplateRevisionScalarFieldEnum = (typeof PageTemplateRevisionScalarFieldEnum)[keyof typeof PageTemplateRevisionScalarFieldEnum]
+
+
+export const CategoryScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  name: 'name',
+  slug: 'slug',
+  parentId: 'parentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const SiteContentScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  contentId: 'contentId',
+  slug: 'slug',
+  titleOverride: 'titleOverride',
+  excerptOverride: 'excerptOverride',
+  seoMetadata: 'seoMetadata',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  scheduledAt: 'scheduledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteContentScalarFieldEnum = (typeof SiteContentScalarFieldEnum)[keyof typeof SiteContentScalarFieldEnum]
+
+
+export const TagScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  name: 'name',
+  slug: 'slug',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
+
+
+export const SiteContentTagScalarFieldEnum = {
+  id: 'id',
+  siteContentId: 'siteContentId',
+  tagId: 'tagId'
+} as const
+
+export type SiteContentTagScalarFieldEnum = (typeof SiteContentTagScalarFieldEnum)[keyof typeof SiteContentTagScalarFieldEnum]
+
+
+export const RedirectScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  fromPath: 'fromPath',
+  toPath: 'toPath',
+  statusCode: 'statusCode',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RedirectScalarFieldEnum = (typeof RedirectScalarFieldEnum)[keyof typeof RedirectScalarFieldEnum]
+
+
+export const AnalyticsEventScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  type: 'type',
+  path: 'path',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  referrer: 'referrer',
+  userAgentHash: 'userAgentHash',
+  occurredAt: 'occurredAt'
+} as const
+
+export type AnalyticsEventScalarFieldEnum = (typeof AnalyticsEventScalarFieldEnum)[keyof typeof AnalyticsEventScalarFieldEnum]
+
+
+export const SiteContentCategoryScalarFieldEnum = {
+  id: 'id',
+  siteContentId: 'siteContentId',
+  categoryId: 'categoryId'
+} as const
+
+export type SiteContentCategoryScalarFieldEnum = (typeof SiteContentCategoryScalarFieldEnum)[keyof typeof SiteContentCategoryScalarFieldEnum]
+
+
+export const BrandScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BrandScalarFieldEnum = (typeof BrandScalarFieldEnum)[keyof typeof BrandScalarFieldEnum]
+
+
+export const ProductScalarFieldEnum = {
+  id: 'id',
+  brandId: 'brandId',
+  name: 'name',
+  slug: 'slug',
+  modelNumber: 'modelNumber',
+  description: 'description',
+  specifications: 'specifications',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const ProductVariantScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  name: 'name',
+  sku: 'sku',
+  attributes: 'attributes',
+  status: 'status'
+} as const
+
+export type ProductVariantScalarFieldEnum = (typeof ProductVariantScalarFieldEnum)[keyof typeof ProductVariantScalarFieldEnum]
+
+
+export const ProductImageScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  mediaAssetId: 'mediaAssetId',
+  alt: 'alt',
+  caption: 'caption',
+  position: 'position',
+  isPrimary: 'isPrimary'
+} as const
+
+export type ProductImageScalarFieldEnum = (typeof ProductImageScalarFieldEnum)[keyof typeof ProductImageScalarFieldEnum]
+
+
+export const ReviewScoreCriterionScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  name: 'name',
+  description: 'description',
+  weight: 'weight',
+  position: 'position',
+  status: 'status'
+} as const
+
+export type ReviewScoreCriterionScalarFieldEnum = (typeof ReviewScoreCriterionScalarFieldEnum)[keyof typeof ReviewScoreCriterionScalarFieldEnum]
+
+
+export const ReviewScalarFieldEnum = {
+  id: 'id',
+  siteProductId: 'siteProductId',
+  authorId: 'authorId',
+  title: 'title',
+  verdict: 'verdict',
+  body: 'body',
+  overallScore: 'overallScore',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const ReviewCriterionScoreScalarFieldEnum = {
+  id: 'id',
+  reviewId: 'reviewId',
+  criterionId: 'criterionId',
+  score: 'score',
+  notes: 'notes'
+} as const
+
+export type ReviewCriterionScoreScalarFieldEnum = (typeof ReviewCriterionScoreScalarFieldEnum)[keyof typeof ReviewCriterionScoreScalarFieldEnum]
+
+
+export const SiteProductScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  productId: 'productId',
+  slug: 'slug',
+  title: 'title',
+  summary: 'summary',
+  status: 'status',
+  isFeatured: 'isFeatured',
+  seoMetadata: 'seoMetadata',
+  publishedAt: 'publishedAt'
+} as const
+
+export type SiteProductScalarFieldEnum = (typeof SiteProductScalarFieldEnum)[keyof typeof SiteProductScalarFieldEnum]
+
+
+export const MerchantScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  website: 'website',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MerchantScalarFieldEnum = (typeof MerchantScalarFieldEnum)[keyof typeof MerchantScalarFieldEnum]
+
+
+export const AffiliateLinkScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  siteProductId: 'siteProductId',
+  merchantId: 'merchantId',
+  destinationUrl: 'destinationUrl',
+  trackingUrl: 'trackingUrl',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AffiliateLinkScalarFieldEnum = (typeof AffiliateLinkScalarFieldEnum)[keyof typeof AffiliateLinkScalarFieldEnum]
+
+
+export const AffiliateClickScalarFieldEnum = {
+  id: 'id',
+  affiliateLinkId: 'affiliateLinkId',
+  siteId: 'siteId',
+  clickedAt: 'clickedAt',
+  referrer: 'referrer',
+  userAgentHash: 'userAgentHash'
+} as const
+
+export type AffiliateClickScalarFieldEnum = (typeof AffiliateClickScalarFieldEnum)[keyof typeof AffiliateClickScalarFieldEnum]
+
+
+export const BuyingGuideScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  body: 'body',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BuyingGuideScalarFieldEnum = (typeof BuyingGuideScalarFieldEnum)[keyof typeof BuyingGuideScalarFieldEnum]
+
+
+export const BuyingGuideItemScalarFieldEnum = {
+  id: 'id',
+  buyingGuideId: 'buyingGuideId',
+  siteProductId: 'siteProductId',
+  position: 'position',
+  note: 'note'
+} as const
+
+export type BuyingGuideItemScalarFieldEnum = (typeof BuyingGuideItemScalarFieldEnum)[keyof typeof BuyingGuideItemScalarFieldEnum]
+
+
+export const ComparisonScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ComparisonScalarFieldEnum = (typeof ComparisonScalarFieldEnum)[keyof typeof ComparisonScalarFieldEnum]
+
+
+export const ComparisonItemScalarFieldEnum = {
+  id: 'id',
+  comparisonId: 'comparisonId',
+  siteProductId: 'siteProductId',
+  position: 'position',
+  note: 'note'
+} as const
+
+export type ComparisonItemScalarFieldEnum = (typeof ComparisonItemScalarFieldEnum)[keyof typeof ComparisonItemScalarFieldEnum]
+
+
+export const VerificationScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  identifier: 'identifier',
+  method: 'method',
+  tokenHash: 'tokenHash',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  verifiedAt: 'verifiedAt',
+  attempts: 'attempts',
+  createdAt: 'createdAt'
+} as const
+
+export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
+export const NewsletterSubscriberScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  email: 'email',
+  normalizedEmail: 'normalizedEmail',
+  status: 'status',
+  source: 'source',
+  subscribedAt: 'subscribedAt',
+  unsubscribedAt: 'unsubscribedAt',
+  verifiedAt: 'verifiedAt',
+  unsubscribeTokenHash: 'unsubscribeTokenHash',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NewsletterSubscriberScalarFieldEnum = (typeof NewsletterSubscriberScalarFieldEnum)[keyof typeof NewsletterSubscriberScalarFieldEnum]
+
+
+export const EmailSenderScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  name: 'name',
+  emailAddress: 'emailAddress',
+  replyTo: 'replyTo',
+  providerConfig: 'providerConfig',
+  status: 'status'
+} as const
+
+export type EmailSenderScalarFieldEnum = (typeof EmailSenderScalarFieldEnum)[keyof typeof EmailSenderScalarFieldEnum]
+
+
+export const EmailTemplateScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  name: 'name',
+  slug: 'slug',
+  subject: 'subject',
+  htmlBody: 'htmlBody',
+  textBody: 'textBody',
+  variables: 'variables',
+  status: 'status'
+} as const
+
+export type EmailTemplateScalarFieldEnum = (typeof EmailTemplateScalarFieldEnum)[keyof typeof EmailTemplateScalarFieldEnum]
+
+
+export const EmailMessageScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  senderId: 'senderId',
+  templateId: 'templateId',
+  recipient: 'recipient',
+  subject: 'subject',
+  htmlBody: 'htmlBody',
+  status: 'status',
+  error: 'error',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt'
+} as const
+
+export type EmailMessageScalarFieldEnum = (typeof EmailMessageScalarFieldEnum)[keyof typeof EmailMessageScalarFieldEnum]
+
+
+export const SiteDomainScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  hostname: 'hostname',
+  isPrimary: 'isPrimary',
+  verifiedAt: 'verifiedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SiteDomainScalarFieldEnum = (typeof SiteDomainScalarFieldEnum)[keyof typeof SiteDomainScalarFieldEnum]
+
+
+export const SiteSecretScalarFieldEnum = {
+  id: 'id',
+  siteId: 'siteId',
+  keyHash: 'keyHash',
+  status: 'status',
+  createdAt: 'createdAt',
+  revokedAt: 'revokedAt'
+} as const
+
+export type SiteSecretScalarFieldEnum = (typeof SiteSecretScalarFieldEnum)[keyof typeof SiteSecretScalarFieldEnum]
+
+
+export const UserSiteAccessScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  siteId: 'siteId',
+  createdAt: 'createdAt'
+} as const
+
+export type UserSiteAccessScalarFieldEnum = (typeof UserSiteAccessScalarFieldEnum)[keyof typeof UserSiteAccessScalarFieldEnum]
 
 
 export const RoleScalarFieldEnum = {
@@ -173,6 +728,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

@@ -16,3 +16,145 @@ export const AdminStatus = {
 } as const
 
 export type AdminStatus = (typeof AdminStatus)[keyof typeof AdminStatus]
+
+
+export const SiteStatus = {
+  INACTIVE: 'INACTIVE',
+  ACTIVE: 'ACTIVE'
+} as const
+
+export type SiteStatus = (typeof SiteStatus)[keyof typeof SiteStatus]
+
+
+export const SiteSecretStatus = {
+  ACTIVE: 'ACTIVE',
+  REVOKED: 'REVOKED'
+} as const
+
+export type SiteSecretStatus = (typeof SiteSecretStatus)[keyof typeof SiteSecretStatus]
+
+
+export const ContentType = {
+  ARTICLE: 'ARTICLE',
+  REVIEW: 'REVIEW',
+  GUIDE: 'GUIDE',
+  COMPARISON: 'COMPARISON'
+} as const
+
+export type ContentType = (typeof ContentType)[keyof typeof ContentType]
+
+
+export const ContentStatus = {
+  DRAFT: 'DRAFT',
+  IN_REVIEW: 'IN_REVIEW',
+  SCHEDULED: 'SCHEDULED',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ContentStatus = (typeof ContentStatus)[keyof typeof ContentStatus]
+
+
+export const ProductStatus = {
+  INACTIVE: 'INACTIVE',
+  ACTIVE: 'ACTIVE'
+} as const
+
+export type ProductStatus = (typeof ProductStatus)[keyof typeof ProductStatus]
+
+
+export const AuthorStatus = {
+  INACTIVE: 'INACTIVE',
+  ACTIVE: 'ACTIVE'
+} as const
+
+export type AuthorStatus = (typeof AuthorStatus)[keyof typeof AuthorStatus]
+
+
+export const MediaStatus = {
+  ACTIVE: 'ACTIVE',
+  DELETED: 'DELETED'
+} as const
+
+export type MediaStatus = (typeof MediaStatus)[keyof typeof MediaStatus]
+
+
+export const PageTemplateStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type PageTemplateStatus = (typeof PageTemplateStatus)[keyof typeof PageTemplateStatus]
+
+
+export const AffiliateStatus = {
+  INACTIVE: 'INACTIVE',
+  ACTIVE: 'ACTIVE'
+} as const
+
+export type AffiliateStatus = (typeof AffiliateStatus)[keyof typeof AffiliateStatus]
+
+
+export const GuideStatus = {
+  DRAFT: 'DRAFT',
+  IN_REVIEW: 'IN_REVIEW',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type GuideStatus = (typeof GuideStatus)[keyof typeof GuideStatus]
+
+
+export const VerificationStatus = {
+  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
+  EXPIRED: 'EXPIRED',
+  FAILED: 'FAILED'
+} as const
+
+export type VerificationStatus = (typeof VerificationStatus)[keyof typeof VerificationStatus]
+
+
+export const NewsletterStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  UNSUBSCRIBED: 'UNSUBSCRIBED'
+} as const
+
+export type NewsletterStatus = (typeof NewsletterStatus)[keyof typeof NewsletterStatus]
+
+
+export const EmailStatus = {
+  QUEUED: 'QUEUED',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type EmailStatus = (typeof EmailStatus)[keyof typeof EmailStatus]
+
+
+export const RedirectStatus = {
+  INACTIVE: 'INACTIVE',
+  ACTIVE: 'ACTIVE'
+} as const
+
+export type RedirectStatus = (typeof RedirectStatus)[keyof typeof RedirectStatus]
+
+
+export const AnalyticsEventType = {
+  PAGE_VIEW: 'PAGE_VIEW',
+  AFFILIATE_CLICK: 'AFFILIATE_CLICK'
+} as const
+
+export type AnalyticsEventType = (typeof AnalyticsEventType)[keyof typeof AnalyticsEventType]
+
+
+export const ReviewStatus = {
+  DRAFT: 'DRAFT',
+  IN_REVIEW: 'IN_REVIEW',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ReviewStatus = (typeof ReviewStatus)[keyof typeof ReviewStatus]

@@ -15,6 +15,9 @@ import { Throttle, seconds } from '@nestjs/throttler';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { AuditService } from '../../audit/audit.service.js';
 import { LoginAdminDto } from '../dto/login-admin.dto.js';
+import { ForgotPasswordDto } from '../dto/forgot-password.dto.js';
+import { ResetPasswordDto } from '../dto/reset-password.dto.js';
+import { ChangePasswordDto } from '../dto/change-password.dto.js';
 import { AdminAuthGuard } from '../guards/admin-auth.guard.js';
 import { AuthService } from './auth.service.js';
 import {
@@ -95,12 +98,68 @@ export class AuthController {
     };
   }
 
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  @Throttle({
+    default: {
+      limit: 3,
+      ttl: seconds(60),
+    },
+  })
+  forgotPassword(@Body() dto: ForgotPasswordDto) {
+    return this.authService.requestPasswordReset(dto.email);
+  }
+
+  @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
+  @Throttle({
+    default: {
+      limit: 5,
+      ttl: seconds(60),
+    },
+  })
+  resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto);
+  }
+
   @Get('me')
   @UseGuards(AdminAuthGuard)
   me(@Req() request: FastifyRequest) {
     return {
       admin: request.admin,
     };
+  }
+
+  @Post('change-password')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AdminAuthGuard)
+  @Throttle({
+    default: {
+      limit: 5,
+      ttl: seconds(60),
+    },
+  })
+  async changePassword(
+    @Body() dto: ChangePasswordDto,
+    @Req() request: FastifyRequest,
+    @Res({ passthrough: true }) reply: FastifyReply,
+  ) {
+    await this.authService.changePassword(request.admin!.id, dto);
+    await destroySession(request);
+    reply.clearCookie(this.config.getOrThrow<string>('SESSION_COOKIE_NAME'), {
+      path: '/',
+    });
+
+    await this.writeAuthAudit({
+      actorAdminId: request.admin!.id,
+      action: 'ADMIN_PASSWORD_CHANGED',
+      entityType: 'admin_auth',
+      entityId: request.admin!.id,
+      ipAddress: request.ip,
+      userAgent: request.headers['user-agent'] ?? null,
+    });
+
+    return { message: 'Password changed successfully. Please login again.' };
   }
 
   @Post('logout')
