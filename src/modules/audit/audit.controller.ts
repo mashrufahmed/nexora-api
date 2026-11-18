@@ -6,9 +6,9 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { AdminAuthGuard } from '../admin/guards/admin-auth.guard.js';
 import { Permissions } from '../rbac/decorators/permissions.decorator.js';
 import { PermissionGuard } from '../rbac/guards/permission.guard.js';
-import { AdminAuthGuard } from '../admin/guards/admin-auth.guard.js';
 import { AuditService } from './audit.service.js';
 import { AuditLogQueryDto } from './dto/audit-log-query.dto.js';
 

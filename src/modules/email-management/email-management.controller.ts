@@ -1,1 +1,44 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common'; import type { FastifyRequest } from 'fastify'; import { AdminAuthGuard } from '../admin/guards/admin-auth.guard.js'; import { Permissions } from '../rbac/decorators/permissions.decorator.js'; import { PermissionGuard } from '../rbac/guards/permission.guard.js'; import { EmailManagementService } from './email-management.service.js'; import { SenderDto, SendEmailDto, TemplateDto } from './dto/email.dto.js'; @Controller('email') @UseGuards(AdminAuthGuard, PermissionGuard) export class EmailManagementController { constructor(private readonly service: EmailManagementService) {} @Post('send') @Permissions('email.send') send(@Body() d: SendEmailDto, @Req() r: FastifyRequest) { return this.service.send(d, r.admin!.id); } @Post('senders') @Permissions('email.manage') sender(@Body() d: SenderDto, @Req() r: FastifyRequest) { return this.service.sender(d, r.admin!.id); } @Post('templates') @Permissions('email.manage') template(@Body() d: TemplateDto, @Req() r: FastifyRequest) { return this.service.template(d, r.admin!.id); } @Get('history') @Permissions('email.manage') history(@Query('siteId') s: string, @Req() r: FastifyRequest) { return this.service.history(s, r.admin!.id); } }
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import type { FastifyRequest } from 'fastify';
+import { AdminAuthGuard } from '../admin/guards/admin-auth.guard.js';
+import { Permissions } from '../rbac/decorators/permissions.decorator.js';
+import { PermissionGuard } from '../rbac/guards/permission.guard.js';
+import { SendEmailDto, SenderDto, TemplateDto } from './dto/email.dto.js';
+import { EmailManagementService } from './email-management.service.js';
+@Controller('email')
+@UseGuards(AdminAuthGuard, PermissionGuard)
+export class EmailManagementController {
+  constructor(private readonly service: EmailManagementService) {}
+  @Post('send') @Permissions('email.send') send(
+    @Body() d: SendEmailDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.service.send(d, r.admin!.id);
+  }
+  @Post('senders') @Permissions('email.manage') sender(
+    @Body() d: SenderDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.service.sender(d, r.admin!.id);
+  }
+  @Post('templates') @Permissions('email.manage') template(
+    @Body() d: TemplateDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.service.template(d, r.admin!.id);
+  }
+  @Get('history') @Permissions('email.manage') history(
+    @Query('siteId') s: string,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.service.history(s, r.admin!.id);
+  }
+}

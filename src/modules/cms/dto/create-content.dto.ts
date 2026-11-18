@@ -1,4 +1,11 @@
-import { IsEnum, IsObject, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEnum,
+  IsObject,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { ContentType } from '../../../database/generated/prisma/client.js';
 
 export class CreateContentDto {

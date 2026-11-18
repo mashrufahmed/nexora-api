@@ -7,7 +7,13 @@ import {
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
-import { RedirectDto, TagDto } from './dto/tags-redirects.dto.js';
+import {
+  RedirectDto,
+  TagDto,
+  UpdateRedirectDto,
+  UpdateTagDto,
+} from './dto/tags-redirects.dto.js';
+
 @Injectable()
 export class TagsRedirectsService {
   constructor(
@@ -54,6 +60,49 @@ export class TagsRedirectsService {
       throw e;
     }
   }
+  async listTags(siteId: string, uid: string) {
+    await this.access(uid, siteId);
+    return this.prisma.tag.findMany({
+      where: { siteId },
+      orderBy: { name: 'asc' },
+    });
+  }
+  async updateTag(id: string, d: UpdateTagDto, uid: string) {
+    const t = await this.prisma.tag.findUnique({
+      where: { id },
+      select: { siteId: true },
+    });
+    if (!t) throw new NotFoundException('Tag not found');
+    await this.access(uid, t.siteId);
+    try {
+      return await this.prisma.tag.update({
+        where: { id },
+        data: {
+          ...(d.name !== undefined && { name: d.name.trim() }),
+          ...(d.slug !== undefined && { slug: d.slug.trim().toLowerCase() }),
+        },
+      });
+    } catch (e) {
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === 'P2002'
+      )
+        throw new ConflictException('Tag slug already exists');
+      throw e;
+    }
+  }
+  async deleteTag(id: string, uid: string) {
+    const t = await this.prisma.tag.findUnique({
+      where: { id },
+      select: { siteId: true },
+    });
+    if (!t) throw new NotFoundException('Tag not found');
+    await this.access(uid, t.siteId);
+    if (await this.prisma.siteContentTag.count({ where: { tagId: id } }))
+      throw new ConflictException('Tag is still assigned to content');
+    await this.prisma.tag.delete({ where: { id } });
+    return { message: 'Tag deleted successfully' };
+  }
   async assign(contentId: string, tagIds: string[], uid: string) {
     const content = await this.prisma.siteContent.findUnique({
       where: { id: contentId },
@@ -64,7 +113,7 @@ export class TagsRedirectsService {
     const count = await this.prisma.tag.count({
       where: { id: { in: tagIds }, siteId: content.siteId },
     });
-    if (count !== tagIds.length)
+    if (count !== new Set(tagIds).size || count !== tagIds.length)
       throw new NotFoundException('Tag does not belong to this site');
     await this.prisma.$transaction(async (tx) => {
       await tx.siteContentTag.deleteMany({
@@ -75,6 +124,13 @@ export class TagsRedirectsService {
       });
     });
     return { assigned: tagIds.length };
+  }
+  async listRedirects(siteId: string, uid: string) {
+    await this.access(uid, siteId);
+    return this.prisma.redirect.findMany({
+      where: { siteId },
+      orderBy: { createdAt: 'desc' },
+    });
   }
   async redirect(d: RedirectDto, uid: string) {
     await this.access(uid, d.siteId);
@@ -88,6 +144,40 @@ export class TagsRedirectsService {
         statusCode: d.statusCode,
       },
     });
+  }
+  async updateRedirect(id: string, d: UpdateRedirectDto, uid: string) {
+    const r = await this.prisma.redirect.findUnique({
+      where: { id },
+      select: { siteId: true },
+    });
+    if (!r) throw new NotFoundException('Redirect not found');
+    await this.access(uid, r.siteId);
+    if (
+      (d.fromPath && !d.fromPath.startsWith('/')) ||
+      (d.toPath && !d.toPath.startsWith('/'))
+    )
+      throw new ConflictException('Redirect paths must be internal paths');
+    return this.prisma.redirect.update({
+      where: { id },
+      data: {
+        ...(d.fromPath !== undefined && { fromPath: d.fromPath }),
+        ...(d.toPath !== undefined && { toPath: d.toPath }),
+        ...(d.statusCode !== undefined && { statusCode: d.statusCode }),
+        ...(d.active !== undefined && {
+          status: d.active ? 'ACTIVE' : 'INACTIVE',
+        }),
+      },
+    });
+  }
+  async deleteRedirect(id: string, uid: string) {
+    const r = await this.prisma.redirect.findUnique({
+      where: { id },
+      select: { siteId: true },
+    });
+    if (!r) throw new NotFoundException('Redirect not found');
+    await this.access(uid, r.siteId);
+    await this.prisma.redirect.delete({ where: { id } });
+    return { message: 'Redirect deleted successfully' };
   }
   async resolve(siteId: string, path: string) {
     return this.prisma.redirect.findFirst({

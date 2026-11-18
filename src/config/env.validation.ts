@@ -34,6 +34,27 @@ class EnvironmentVariables {
   REDIS_URL: string;
 
   @IsString()
+  S3_ENDPOINT!: string;
+
+  @IsString()
+  S3_REGION: string = 'us-east-1';
+
+  @IsString()
+  S3_ACCESS_KEY!: string;
+
+  @IsString()
+  S3_SECRET_KEY!: string;
+
+  @IsString()
+  S3_BUCKET: string = 'nexora-media';
+
+  @IsString()
+  S3_FORCE_PATH_STYLE: string = 'true';
+
+  @IsString()
+  S3_PUBLIC_BASE_URL: string = '';
+
+  @IsString()
   DATABASE_URL: string;
 
   @IsString()

@@ -1,6 +1,7 @@
 import fastifyCookie from '@fastify/cookie';
 import helmet from '@fastify/helmet';
 import fastifySession from '@fastify/session';
+import multipart from '@fastify/multipart';
 import { ForbiddenException, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -54,6 +55,7 @@ async function bootstrap() {
 
   // Cookie
   await app.register(fastifyCookie);
+  await app.register(multipart, { limits: { fileSize: 10 * 1024 * 1024, files: 1 } });
 
   // Session
   await app.register(fastifySession, {

@@ -1,11 +1,71 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { AdminAuthGuard } from '../admin/guards/admin-auth.guard.js'; import { Permissions } from '../rbac/decorators/permissions.decorator.js'; import { PermissionGuard } from '../rbac/guards/permission.guard.js'; import { AffiliateLinkDto, MerchantDto } from './dto/affiliate.dto.js'; import { AffiliateService } from './affiliate.service.js';
-@Controller() export class AffiliateController { constructor(private readonly affiliate: AffiliateService) {}
-  @Post('merchants') @UseGuards(AdminAuthGuard, PermissionGuard) @Permissions('affiliate.manage') merchant(@Body() dto: MerchantDto, @Req() req: FastifyRequest) { return this.affiliate.merchant(dto, req.admin!.id); }
-  @Post('affiliate-links') @UseGuards(AdminAuthGuard, PermissionGuard) @Permissions('affiliate.manage') create(@Body() dto: AffiliateLinkDto, @Req() req: FastifyRequest) { return this.affiliate.createLink(dto, req.admin!.id); }
-  @Get('affiliate-links') @UseGuards(AdminAuthGuard, PermissionGuard) @Permissions('affiliate.manage') list(@Query('siteId') siteId: string, @Req() req: FastifyRequest) { return this.affiliate.list(siteId, req.admin!.id); }
-  @Patch('affiliate-links/:id') @UseGuards(AdminAuthGuard, PermissionGuard) @Permissions('affiliate.manage') update(@Param('id') id: string, @Body() dto: Partial<AffiliateLinkDto>, @Req() req: FastifyRequest) { return this.affiliate.updateLink(id, dto, req.admin!.id); }
-  @Delete('affiliate-links/:id') @UseGuards(AdminAuthGuard, PermissionGuard) @Permissions('affiliate.manage') remove(@Param('id') id: string, @Req() req: FastifyRequest) { return this.affiliate.deleteLink(id, req.admin!.id); }
-  @Get('go/:id') async go(@Param('id') id: string, @Req() req: FastifyRequest, @Res() reply: FastifyReply) { const result = await this.affiliate.redirect(id, typeof req.headers.referer === 'string' ? req.headers.referer : undefined, typeof req.headers['user-agent'] === 'string' ? req.headers['user-agent'] : undefined); return reply.redirect(result.url, 302); }
+import { AdminAuthGuard } from '../admin/guards/admin-auth.guard.js';
+import { Permissions } from '../rbac/decorators/permissions.decorator.js';
+import { PermissionGuard } from '../rbac/guards/permission.guard.js';
+import { AffiliateService } from './affiliate.service.js';
+import { AffiliateLinkDto, MerchantDto } from './dto/affiliate.dto.js';
+@Controller()
+export class AffiliateController {
+  constructor(private readonly affiliate: AffiliateService) {}
+  @Post('merchants')
+  @UseGuards(AdminAuthGuard, PermissionGuard)
+  @Permissions('affiliate.manage')
+  merchant(@Body() dto: MerchantDto, @Req() req: FastifyRequest) {
+    return this.affiliate.merchant(dto, req.admin!.id);
+  }
+  @Post('affiliate-links')
+  @UseGuards(AdminAuthGuard, PermissionGuard)
+  @Permissions('affiliate.manage')
+  create(@Body() dto: AffiliateLinkDto, @Req() req: FastifyRequest) {
+    return this.affiliate.createLink(dto, req.admin!.id);
+  }
+  @Get('affiliate-links')
+  @UseGuards(AdminAuthGuard, PermissionGuard)
+  @Permissions('affiliate.manage')
+  list(@Query('siteId') siteId: string, @Req() req: FastifyRequest) {
+    return this.affiliate.list(siteId, req.admin!.id);
+  }
+  @Patch('affiliate-links/:id')
+  @UseGuards(AdminAuthGuard, PermissionGuard)
+  @Permissions('affiliate.manage')
+  update(
+    @Param('id') id: string,
+    @Body() dto: Partial<AffiliateLinkDto>,
+    @Req() req: FastifyRequest,
+  ) {
+    return this.affiliate.updateLink(id, dto, req.admin!.id);
+  }
+  @Delete('affiliate-links/:id')
+  @UseGuards(AdminAuthGuard, PermissionGuard)
+  @Permissions('affiliate.manage')
+  remove(@Param('id') id: string, @Req() req: FastifyRequest) {
+    return this.affiliate.deleteLink(id, req.admin!.id);
+  }
+  @Get('go/:id') async go(
+    @Param('id') id: string,
+    @Req() req: FastifyRequest,
+    @Res() reply: FastifyReply,
+  ) {
+    const result = await this.affiliate.redirect(
+      id,
+      typeof req.headers.referer === 'string' ? req.headers.referer : undefined,
+      typeof req.headers['user-agent'] === 'string'
+        ? req.headers['user-agent']
+        : undefined,
+    );
+    return reply.redirect(result.url, 302);
+  }
 }

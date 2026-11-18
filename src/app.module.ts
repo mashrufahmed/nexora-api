@@ -30,6 +30,10 @@ import { TagsRedirectsModule } from './modules/tags-redirects/tags-redirects.mod
 import { VerificationModule } from './modules/verification/verification.module.js';
 import { RedisModule } from './redis/redis.module.js';
 import { RedisService } from './redis/redis.service.js';
+import { StorageModule } from './storage/storage.module.js';
+import { BullModule } from '@nestjs/bullmq';
+import { QueueModule } from './queue/queue.module.js';
+import { PublicModule } from './modules/public/public.module.js';
 
 @Module({
   imports: [
@@ -84,6 +88,10 @@ import { RedisService } from './redis/redis.service.js';
     HealthModule,
     DatabaseModule,
     RedisModule,
+    StorageModule,
+    BullModule.forRoot({ connection: { url: process.env.REDIS_URL ?? 'redis://localhost:6379' } }),
+    QueueModule,
+    PublicModule,
     MailModule,
     RbacModule,
     AdminModule,

@@ -6,13 +6,15 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
-
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 @Injectable()
 export class PublishingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    @InjectQueue('scheduled-publishing') private readonly queue: Queue,
   ) {}
   private async access(uid: string, sid: string) {
     const a = await this.prisma.adminUser.findUnique({
@@ -60,6 +62,7 @@ export class PublishingService {
         data: { status: 'SCHEDULED', scheduledAt: date },
       });
     });
+    await this.queue.add('publish-due', { limit: 100 }, { delay: Math.max(0, date.getTime() - Date.now()), removeOnComplete: true, removeOnFail: 1000 });
     await this.audit.log({
       actorAdminId: uid,
       action: 'content.scheduled',

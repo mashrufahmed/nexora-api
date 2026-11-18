@@ -1,0 +1,13 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../../database/prisma.service.js';
+import { SitesService } from '../sites/sites.service.js';
+
+@Injectable()
+export class PublicService {
+  constructor(private readonly prisma: PrismaService, private readonly sites: SitesService) {}
+  async site(host: string) { return this.sites.resolveHostname(host.split(':')[0]); }
+  async content(host: string, slug?: string) { const site = await this.site(host); const result = await this.prisma.siteContent.findMany({ where: { siteId: site.id, status: 'PUBLISHED', ...(slug && { slug }) }, include: { content: { include: { authors: { include: { author: true } } } }, categories: { include: { category: true } }, tags: { include: { tag: true } } }, orderBy: { publishedAt: 'desc' } }); if (slug && !result[0]) throw new NotFoundException('Published content not found'); return slug ? result[0] : result; }
+  async products(host: string, slug?: string) { const site = await this.site(host); const result = await this.prisma.siteProduct.findMany({ where: { siteId: site.id, status: 'ACTIVE', ...(slug && { slug }) }, include: { product: { include: { brand: true, images: true } }, reviews: { where: { status: 'PUBLISHED' }, include: { scores: true } }, affiliateLinks: { where: { status: 'ACTIVE' } } }, orderBy: { publishedAt: 'desc' } }); if (slug && !result[0]) throw new NotFoundException('Published product not found'); return slug ? result[0] : result; }
+  async guides(host: string, slug?: string, comparison = false) { const site = await this.site(host); const result = comparison ? await this.prisma.comparison.findMany({ where: { siteId: site.id, status: 'PUBLISHED', ...(slug && { slug }) }, include: { items: { include: { siteProduct: true } } }, orderBy: { publishedAt: 'desc' } }) : await this.prisma.buyingGuide.findMany({ where: { siteId: site.id, status: 'PUBLISHED', ...(slug && { slug }) }, include: { items: { include: { siteProduct: true } } }, orderBy: { publishedAt: 'desc' } }); if (slug && !result[0]) throw new NotFoundException('Published guide or comparison not found'); return slug ? result[0] : result; }
+  async authors(host: string, slug?: string) { const site = await this.site(host); const result = await this.prisma.author.findMany({ where: { siteId: site.id, status: 'ACTIVE', ...(slug && { slug }) }, include: { contentLinks: { include: { content: true } } } }); if (slug && !result[0]) throw new NotFoundException('Author not found'); return slug ? result[0] : result; }
+}

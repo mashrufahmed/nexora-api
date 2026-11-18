@@ -1,1 +1,68 @@
-import { ForbiddenException, Injectable } from '@nestjs/common'; import { createHash } from 'node:crypto'; import { PrismaService } from '../../database/prisma.service.js'; import { AnalyticsEventDto } from './dto/analytics.dto.js'; @Injectable() export class AnalyticsService { constructor(private readonly prisma: PrismaService) {} private async access(uid: string, sid: string) { const a = await this.prisma.adminUser.findUnique({ where: { id: uid }, select: { roles: { select: { role: { select: { name: true } } } } } }); if (a?.roles.some(({ role }) => role.name === 'Super Admin')) return; if (!(await this.prisma.userSiteAccess.findUnique({ where: { userId_siteId: { userId: uid, siteId: sid } }, select: { id: true } }))) throw new ForbiddenException('You do not have access to this site'); } async record(d: AnalyticsEventDto) { return this.prisma.analyticsEvent.create({ data: { siteId: d.siteId, type: d.type, path: d.path, entityType: d.entityType, entityId: d.entityId, referrer: d.referrer, userAgentHash: d.userAgent ? createHash('sha256').update(d.userAgent).digest('hex') : undefined } }); } async summary(siteId: string, uid: string) { await this.access(uid, siteId); const [pageViews, affiliateEvents, clicks] = await Promise.all([this.prisma.analyticsEvent.count({ where: { siteId, type: 'PAGE_VIEW' } }), this.prisma.analyticsEvent.count({ where: { siteId, type: 'AFFILIATE_CLICK' } }), this.prisma.affiliateClick.count({ where: { siteId } })]); return { pageViews, affiliateClicks: affiliateEvents + clicks }; } }
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { createHash } from 'node:crypto';
+import { PrismaService } from '../../database/prisma.service.js';
+import { AnalyticsEventDto } from './dto/analytics.dto.js';
+@Injectable()
+export class AnalyticsService {
+  constructor(private readonly prisma: PrismaService) {}
+  private async access(uid: string, sid: string) {
+    const a = await this.prisma.adminUser.findUnique({
+      where: { id: uid },
+      select: { roles: { select: { role: { select: { name: true } } } } },
+    });
+    if (a?.roles.some(({ role }) => role.name === 'Super Admin')) return;
+    if (
+      !(await this.prisma.userSiteAccess.findUnique({
+        where: { userId_siteId: { userId: uid, siteId: sid } },
+        select: { id: true },
+      }))
+    )
+      throw new ForbiddenException('You do not have access to this site');
+  }
+  async record(d: AnalyticsEventDto) {
+    return this.prisma.analyticsEvent.create({
+      data: {
+        siteId: d.siteId,
+        type: d.type,
+        path: d.path,
+        entityType: d.entityType,
+        entityId: d.entityId,
+        referrer: d.referrer,
+        userAgentHash: d.userAgent
+          ? createHash('sha256').update(d.userAgent).digest('hex')
+          : undefined,
+      },
+    });
+  }
+  async summary(siteId: string, uid: string) {
+    await this.access(uid, siteId);
+    const [pageViews, affiliateEvents, clicks] = await Promise.all([
+      this.prisma.analyticsEvent.count({
+        where: { siteId, type: 'PAGE_VIEW' },
+      }),
+      this.prisma.analyticsEvent.count({
+        where: { siteId, type: 'AFFILIATE_CLICK' },
+      }),
+      this.prisma.affiliateClick.count({ where: { siteId } }),
+    ]);
+    return { pageViews, affiliateClicks: affiliateEvents + clicks };
+  }
+  async report(siteId: string, uid: string, from?: string, to?: string) {
+    await this.access(uid, siteId);
+    const start = from ? new Date(from) : new Date(0);
+    const end = to ? new Date(to) : new Date();
+    const [events, clicks] = await Promise.all([
+      this.prisma.analyticsEvent.groupBy({
+        by: ['type', 'path'],
+        where: { siteId, occurredAt: { gte: start, lte: end } },
+        _count: { _all: true },
+      }),
+      this.prisma.affiliateClick.groupBy({
+        by: ['affiliateLinkId'],
+        where: { siteId, clickedAt: { gte: start, lte: end } },
+        _count: { _all: true },
+      }),
+    ]);
+    return { from: start, to: end, events, affiliateClicks: clicks };
+  }
+}
