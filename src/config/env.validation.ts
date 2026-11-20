@@ -61,6 +61,9 @@ class EnvironmentVariables {
   @MinLength(32)
   ADMIN_BOOTSTRAP_TOKEN!: string;
 
+  @IsString()
+  BOOTSTRAP_ADMIN_EMAIL: string = 'admin@example.com';
+
   // Mail
   @IsString()
   MAIL_HOST!: string;

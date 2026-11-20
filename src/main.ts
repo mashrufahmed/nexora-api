@@ -11,13 +11,13 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import RedisStore from 'fastify-session-redis-store';
 import { Logger as PinoLogger } from 'nestjs-pino';
 
 import { AppModule } from './app.module.js';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter.js';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor.js';
 import { RedisService } from './redis/redis.service.js';
+import { CompatibleRedisSessionStore } from './redis/redis-session.store.js';
 
 async function bootstrap() {
   const adapter = new FastifyAdapter({
@@ -63,7 +63,7 @@ async function bootstrap() {
 
   // Session
   await app.register(fastifySession, {
-    store: new RedisStore({
+    store: new CompatibleRedisSessionStore({
       client: redis.getClient(),
       prefix: 'nexora:admin:session:',
     }),

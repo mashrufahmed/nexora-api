@@ -1,4 +1,5 @@
 import { Global, Module } from '@nestjs/common';
+import { AuditModule } from '../audit/audit.module.js';
 import { AssignmentsController } from './assignments/assignments.controller.js';
 import { AssignmentsService } from './assignments/assignments.service.js';
 import { PermissionGuard } from './guards/permission.guard.js';
@@ -10,6 +11,7 @@ import { SuperAdminProtectionService } from './security/super-admin-protection.s
 
 @Global()
 @Module({
+  imports: [AuditModule],
   controllers: [RolesController, PermissionsController, AssignmentsController],
   providers: [
     RolesService,

@@ -22,7 +22,6 @@ import { AdminAuthGuard } from '../guards/admin-auth.guard.js';
 import { AuthService } from './auth.service.js';
 import {
   destroySession,
-  regenerateSession,
   saveSession,
 } from './session-lifecycle.js';
 
@@ -56,18 +55,17 @@ export class AuthController {
     const admin = await this.authService.validateAdmin(dto.email, dto.password);
 
     try {
-      // Prevent session fixation.
-      await regenerateSession(request);
-
+      // Persist authenticated state on the current server-side session.
+      // The login page may already have an anonymous session from /me, and
+      // regenerating that Redis-backed session can fail on its generation.
       request.session.adminId = admin.id;
       request.session.adminEmail = admin.email;
       request.session.sessionVersion = admin.sessionVersion;
+      await saveSession(request);
 
       // Update login timestamp before saving session.
       await this.authService.updateLastLogin(admin.id);
 
-      // Persist session.
-      await saveSession(request);
       await this.writeAuthAudit({
         actorAdminId: admin.id,
         action: 'ADMIN_LOGIN_SUCCESS',
@@ -77,6 +75,10 @@ export class AuthController {
         userAgent: request.headers['user-agent'] ?? null,
       });
     } catch (error) {
+      this.logger.error(
+        'Admin login session setup failed',
+        error instanceof Error ? error.stack : String(error),
+      );
       try {
         await request.session.destroy();
       } catch {

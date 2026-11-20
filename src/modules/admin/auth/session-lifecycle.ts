@@ -1,11 +1,16 @@
 import type { FastifyRequest } from 'fastify';
 
-export function regenerateSession(request: FastifyRequest): Promise<void> {
+export function regenerateSession(
+  request: FastifyRequest,
+  keys?: string[],
+): Promise<void> {
   return new Promise((resolve, reject) => {
-    request.session.regenerate((error: Error | null) => {
+    const callback = (error: Error | null) => {
       if (error) return reject(error);
       resolve();
-    });
+    };
+    if (keys) request.session.regenerate(keys, callback);
+    else request.session.regenerate(callback);
   });
 }
 
