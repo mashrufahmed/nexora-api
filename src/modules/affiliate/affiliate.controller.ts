@@ -16,7 +16,7 @@ import { AdminAuthGuard } from '../admin/guards/admin-auth.guard.js';
 import { Permissions } from '../rbac/decorators/permissions.decorator.js';
 import { PermissionGuard } from '../rbac/guards/permission.guard.js';
 import { AffiliateService } from './affiliate.service.js';
-import { AffiliateLinkDto, MerchantDto } from './dto/affiliate.dto.js';
+import { AffiliateLinkDto, MerchantDto, UpdateMerchantDto } from './dto/affiliate.dto.js';
 @Controller()
 export class AffiliateController {
   constructor(private readonly affiliate: AffiliateService) {}
@@ -26,6 +26,12 @@ export class AffiliateController {
   merchant(@Body() dto: MerchantDto, @Req() req: FastifyRequest) {
     return this.affiliate.merchant(dto, req.admin!.id);
   }
+  @Get('merchants') @UseGuards(AdminAuthGuard, PermissionGuard) @Permissions('affiliate.manage')
+  merchants() { return this.affiliate.listMerchants(); }
+  @Patch('merchants/:id') @UseGuards(AdminAuthGuard, PermissionGuard) @Permissions('affiliate.manage')
+  updateMerchant(@Param('id') id: string, @Body() dto: UpdateMerchantDto, @Req() req: FastifyRequest) { return this.affiliate.updateMerchant(id, dto, req.admin!.id); }
+  @Delete('merchants/:id') @UseGuards(AdminAuthGuard, PermissionGuard) @Permissions('affiliate.manage')
+  deleteMerchant(@Param('id') id: string, @Req() req: FastifyRequest) { return this.affiliate.deleteMerchant(id, req.admin!.id); }
   @Post('affiliate-links')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('affiliate.manage')

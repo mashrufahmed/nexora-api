@@ -1,24 +1,12 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { createHash } from 'node:crypto';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AnalyticsEventDto } from './dto/analytics.dto.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 @Injectable()
 export class AnalyticsService {
-  constructor(private readonly prisma: PrismaService) {}
-  private async access(uid: string, sid: string) {
-    const a = await this.prisma.adminUser.findUnique({
-      where: { id: uid },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (a?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    if (
-      !(await this.prisma.userSiteAccess.findUnique({
-        where: { userId_siteId: { userId: uid, siteId: sid } },
-        select: { id: true },
-      }))
-    )
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  constructor(private readonly prisma: PrismaService, private readonly siteAccess: SiteAccessService) {}
+  private access(uid: string, sid: string) { return this.siteAccess.assertSiteAccess(uid, sid); }
   async record(d: AnalyticsEventDto) {
     return this.prisma.analyticsEvent.create({
       data: {

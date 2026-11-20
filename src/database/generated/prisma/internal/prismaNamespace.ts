@@ -421,6 +421,7 @@ export const ModelName = {
   Review: 'Review',
   ReviewCriterionScore: 'ReviewCriterionScore',
   SiteProduct: 'SiteProduct',
+  ProductCategory: 'ProductCategory',
   Merchant: 'Merchant',
   AffiliateLink: 'AffiliateLink',
   AffiliateClick: 'AffiliateClick',
@@ -456,7 +457,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "systemCheck" | "adminUser" | "site" | "content" | "author" | "contentAuthor" | "mediaAsset" | "pageTemplate" | "pageTemplateRevision" | "category" | "siteContent" | "tag" | "siteContentTag" | "redirect" | "analyticsEvent" | "siteContentCategory" | "brand" | "product" | "productVariant" | "productImage" | "reviewScoreCriterion" | "review" | "reviewCriterionScore" | "siteProduct" | "merchant" | "affiliateLink" | "affiliateClick" | "buyingGuide" | "buyingGuideItem" | "comparison" | "comparisonItem" | "verification" | "newsletterSubscriber" | "emailSender" | "emailTemplate" | "emailMessage" | "siteDomain" | "siteSecret" | "userSiteAccess" | "role" | "permission" | "adminRole" | "rolePermission" | "auditLog"
+    modelProps: "systemCheck" | "adminUser" | "site" | "content" | "author" | "contentAuthor" | "mediaAsset" | "pageTemplate" | "pageTemplateRevision" | "category" | "siteContent" | "tag" | "siteContentTag" | "redirect" | "analyticsEvent" | "siteContentCategory" | "brand" | "product" | "productVariant" | "productImage" | "reviewScoreCriterion" | "review" | "reviewCriterionScore" | "siteProduct" | "productCategory" | "merchant" | "affiliateLink" | "affiliateClick" | "buyingGuide" | "buyingGuideItem" | "comparison" | "comparisonItem" | "verification" | "newsletterSubscriber" | "emailSender" | "emailTemplate" | "emailMessage" | "siteDomain" | "siteSecret" | "userSiteAccess" | "role" | "permission" | "adminRole" | "rolePermission" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2233,6 +2234,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SiteProductCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SiteProductCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProductCategory: {
+      payload: Prisma.$ProductCategoryPayload<ExtArgs>
+      fields: Prisma.ProductCategoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProductCategoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProductCategoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+        }
+        findFirst: {
+          args: Prisma.ProductCategoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProductCategoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+        }
+        findMany: {
+          args: Prisma.ProductCategoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload>[]
+        }
+        create: {
+          args: Prisma.ProductCategoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+        }
+        createMany: {
+          args: Prisma.ProductCategoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProductCategoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload>[]
+        }
+        delete: {
+          args: Prisma.ProductCategoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+        }
+        update: {
+          args: Prisma.ProductCategoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProductCategoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProductCategoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProductCategoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProductCategoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+        }
+        aggregate: {
+          args: Prisma.ProductCategoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProductCategory>
+        }
+        groupBy: {
+          args: Prisma.ProductCategoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProductCategoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProductCategoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProductCategoryCountAggregateOutputType> | number
         }
       }
     }
@@ -4091,6 +4166,16 @@ export const SiteProductScalarFieldEnum = {
 export type SiteProductScalarFieldEnum = (typeof SiteProductScalarFieldEnum)[keyof typeof SiteProductScalarFieldEnum]
 
 
+export const ProductCategoryScalarFieldEnum = {
+  id: 'id',
+  siteProductId: 'siteProductId',
+  categoryId: 'categoryId',
+  position: 'position'
+} as const
+
+export type ProductCategoryScalarFieldEnum = (typeof ProductCategoryScalarFieldEnum)[keyof typeof ProductCategoryScalarFieldEnum]
+
+
 export const MerchantScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -4913,6 +4998,7 @@ export type GlobalOmitConfig = {
   review?: Prisma.ReviewOmit
   reviewCriterionScore?: Prisma.ReviewCriterionScoreOmit
   siteProduct?: Prisma.SiteProductOmit
+  productCategory?: Prisma.ProductCategoryOmit
   merchant?: Prisma.MerchantOmit
   affiliateLink?: Prisma.AffiliateLinkOmit
   affiliateClick?: Prisma.AffiliateClickOmit

@@ -19,3 +19,10 @@ export class AffiliateLinkDto {
   @IsOptional() @IsUrl({ require_protocol: true }) trackingUrl?: string;
   @IsEnum(['INACTIVE', 'ACTIVE']) status!: 'INACTIVE' | 'ACTIVE';
 }
+
+export class UpdateMerchantDto {
+  @IsOptional() @IsString() @MinLength(2) @MaxLength(120) name?: string;
+  @IsOptional() @IsString() @MinLength(2) @MaxLength(120) slug?: string;
+  @IsOptional() @IsUrl({ require_protocol: true }) website?: string;
+  @IsOptional() @IsEnum(['INACTIVE', 'ACTIVE']) status?: 'INACTIVE' | 'ACTIVE';
+}

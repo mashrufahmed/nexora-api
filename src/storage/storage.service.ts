@@ -32,6 +32,12 @@ export class StorageService {
     await this.client.send(new DeleteObjectCommand({ Bucket: this.bucket, Key: key }));
   }
 
+  async get(key: string): Promise<Buffer> {
+    const response = await this.client.send(new GetObjectCommand({ Bucket: this.bucket, Key: key }));
+    if (!response.Body) throw new Error(`Storage object not found: ${key}`);
+    return Buffer.from(await response.Body.transformToByteArray());
+  }
+
   async signedUrl(key: string, expiresIn = 900) {
     return getSignedUrl(this.client, new GetObjectCommand({ Bucket: this.bucket, Key: key }), { expiresIn });
   }

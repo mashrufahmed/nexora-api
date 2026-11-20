@@ -1,13 +1,13 @@
 import {
   BadRequestException,
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 import { CreateCriterionDto } from './dto/create-criterion.dto.js';
 import { CreateReviewDto } from './dto/create-review.dto.js';
 import { UpdateReviewDto } from './dto/update-review.dto.js';
@@ -17,6 +17,7 @@ export class ReviewsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly siteAccess: SiteAccessService,
   ) {}
 
   private jsonValue(
@@ -27,19 +28,7 @@ export class ReviewsService {
       : (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue);
   }
 
-  private async assertSiteAccess(adminId: string, siteId: string) {
-    const admin = await this.prisma.adminUser.findUnique({
-      where: { id: adminId },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (admin?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    const access = await this.prisma.userSiteAccess.findUnique({
-      where: { userId_siteId: { userId: adminId, siteId } },
-      select: { id: true },
-    });
-    if (!access)
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  private assertSiteAccess(adminId: string, siteId: string) { return this.siteAccess.assertSiteAccess(adminId, siteId); }
 
   async createCriterion(
     siteId: string,
@@ -48,7 +37,7 @@ export class ReviewsService {
   ) {
     await this.assertSiteAccess(adminId, siteId);
     try {
-      return await this.prisma.reviewScoreCriterion.create({
+      const criterion = await this.prisma.reviewScoreCriterion.create({
         data: {
           siteId,
           name: dto.name.trim(),
@@ -57,6 +46,8 @@ export class ReviewsService {
           position: dto.position ?? 0,
         },
       });
+      await this.audit.log({ actorAdminId: adminId, action: 'review.criterion.created', entityType: 'review_criterion', entityId: criterion.id });
+      return criterion;
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -85,7 +76,7 @@ export class ReviewsService {
     if (!criterion) throw new NotFoundException('Review criterion not found');
     await this.assertSiteAccess(adminId, criterion.siteId);
     try {
-      return await this.prisma.reviewScoreCriterion.update({
+      const updated = await this.prisma.reviewScoreCriterion.update({
         where: { id },
         data: {
           name: dto.name.trim(),
@@ -94,6 +85,8 @@ export class ReviewsService {
           position: dto.position ?? 0,
         },
       });
+      await this.audit.log({ actorAdminId: adminId, action: 'review.criterion.updated', entityType: 'review_criterion', entityId: id });
+      return updated;
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -121,6 +114,7 @@ export class ReviewsService {
         'Cannot delete a criterion used by reviews',
       );
     await this.prisma.reviewScoreCriterion.delete({ where: { id } });
+    await this.audit.log({ actorAdminId: adminId, action: 'review.criterion.deleted', entityType: 'review_criterion', entityId: id });
     return { message: 'Review criterion deleted successfully' };
   }
 
@@ -172,6 +166,7 @@ export class ReviewsService {
 
   async createReview(dto: CreateReviewDto, adminId: string) {
     const calculated = await this.scoreReview(dto.scores, dto.siteProductId);
+    await this.assertSiteAccess(adminId, calculated.product.siteId);
     const review = await this.prisma.$transaction(async (tx) =>
       tx.review.create({
         data: {
@@ -338,9 +333,11 @@ export class ReviewsService {
     await this.assertSiteAccess(adminId, review.siteProduct.siteId);
     if (review.status !== 'PUBLISHED')
       throw new BadRequestException('Only published reviews can be archived');
-    return this.prisma.review.update({
+    const archived = await this.prisma.review.update({
       where: { id },
       data: { status: 'ARCHIVED' },
     });
+    await this.audit.log({ actorAdminId: adminId, action: 'review.archived', entityType: 'review', entityId: id });
+    return archived;
   }
 }

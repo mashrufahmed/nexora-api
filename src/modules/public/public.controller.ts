@@ -1,7 +1,9 @@
-import { Controller, Get, Headers, Param } from '@nestjs/common';
+import { Controller, Get, Headers, Param, UseGuards } from '@nestjs/common';
+import { SiteAuthGuard } from '../site-auth/site-auth.guard.js';
 import { PublicService } from './public.service.js';
 
 @Controller('public')
+@UseGuards(SiteAuthGuard)
 export class PublicController {
   constructor(private readonly service: PublicService) {}
   private host(host?: string) { return host ?? ''; }

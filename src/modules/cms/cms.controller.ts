@@ -32,14 +32,14 @@ export class CmsController {
 
   @Get('content')
   @Permissions('content.create')
-  list() {
-    return this.cms.listContent();
+  list(@Req() request: FastifyRequest) {
+    return this.cms.listContent(request.admin!.id);
   }
 
   @Get('content/:id')
   @Permissions('content.create')
-  get(@Param('id') id: string) {
-    return this.cms.getContent(id);
+  get(@Param('id') id: string, @Req() request: FastifyRequest) {
+    return this.cms.getContent(id, request.admin!.id);
   }
 
   @Patch('content/:id')
@@ -78,6 +78,12 @@ export class CmsController {
     @Req() request: FastifyRequest,
   ) {
     return this.cms.createCategory(siteId, dto, request.admin!.id);
+  }
+
+  @Get('sites/:siteId/categories')
+  @Permissions('category.manage')
+  categories(@Param('siteId') siteId: string, @Req() request: FastifyRequest) {
+    return this.cms.listCategories(siteId, request.admin!.id);
   }
 
   @Post('content/:id/publish')

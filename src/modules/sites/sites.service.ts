@@ -1,8 +1,8 @@
 import {
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import * as argon2 from 'argon2';
 import { randomBytes } from 'node:crypto';
@@ -10,6 +10,7 @@ import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { RedisService } from '../../redis/redis.service.js';
 import { AuditService } from '../audit/audit.service.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 import { CreateDomainDto } from './dto/create-domain.dto.js';
 import { CreateSiteDto } from './dto/create-site.dto.js';
 import { UpdateSiteDto } from './dto/update-site.dto.js';
@@ -20,6 +21,7 @@ export class SitesService {
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly redis: RedisService,
+    private readonly siteAccess: SiteAccessService,
   ) {}
 
   private jsonValue(
@@ -30,21 +32,7 @@ export class SitesService {
       : (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue);
   }
 
-  private async assertAccess(adminId: string, siteId: string): Promise<void> {
-    const admin = await this.prisma.adminUser.findUnique({
-      where: { id: adminId },
-      select: {
-        roles: { select: { role: { select: { name: true } } } },
-      },
-    });
-    if (admin?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    const access = await this.prisma.userSiteAccess.findUnique({
-      where: { userId_siteId: { userId: adminId, siteId } },
-      select: { id: true },
-    });
-    if (!access)
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  private assertAccess(adminId: string, siteId: string) { return this.siteAccess.assertSiteAccess(adminId, siteId); }
 
   async create(dto: CreateSiteDto, adminId: string) {
     try {
@@ -81,11 +69,9 @@ export class SitesService {
   }
 
   async findAll(adminId: string) {
-    const isSuperAdmin = await this.isSuperAdmin(adminId);
+    const where = await this.siteAccess.accessibleSiteWhere(adminId);
     return this.prisma.site.findMany({
-      where: isSuperAdmin
-        ? undefined
-        : { userAccess: { some: { userId: adminId } } },
+      where,
       include: { domains: true },
       orderBy: { createdAt: 'desc' },
     });
@@ -243,13 +229,16 @@ export class SitesService {
     return site;
   }
 
-  private async isSuperAdmin(adminId: string): Promise<boolean> {
-    const admin = await this.prisma.adminUser.findUnique({
-      where: { id: adminId },
-      select: { roles: { select: { role: { select: { name: true } } } } },
+  async authenticatePublicSite(hostname: string, siteKey: string) {
+    const site = await this.resolveHostname(hostname);
+    const secrets = await this.prisma.siteSecret.findMany({
+      where: { siteId: site.id, status: 'ACTIVE' },
+      select: { keyHash: true },
     });
-    return (
-      admin?.roles.some(({ role }) => role.name === 'Super Admin') ?? false
-    );
+    for (const secret of secrets) {
+      if (await argon2.verify(secret.keyHash, siteKey)) return site;
+    }
+    throw new UnauthorizedException('Invalid site key');
   }
+
 }

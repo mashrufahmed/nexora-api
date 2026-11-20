@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { createHash, randomBytes } from 'node:crypto';
 import { PrismaService } from '../../database/prisma.service.js';
 
@@ -11,8 +11,9 @@ export class VerificationService {
     identifier: string,
     method = 'email',
     ttlSeconds = 900,
+    token?: string,
   ) {
-    const raw = randomBytes(32).toString('hex');
+    const raw = token ?? randomBytes(32).toString('hex');
     await this.prisma.verification.updateMany({
       where: { entityType, entityId, status: 'PENDING' },
       data: { status: 'EXPIRED' },
@@ -32,10 +33,14 @@ export class VerificationService {
   async verify(entityType: string, entityId: string, raw: string) {
     const hash = createHash('sha256').update(raw).digest('hex');
     const record = await this.prisma.verification.findFirst({
-      where: { entityType, entityId, tokenHash: hash, status: 'PENDING' },
+      where: { entityType, entityId, status: 'PENDING' },
     });
     if (!record)
       throw new BadRequestException('Verification token expired or invalid');
+    if (record.attempts >= 5) {
+      await this.prisma.verification.update({ where: { id: record.id }, data: { status: 'FAILED' } });
+      throw new HttpException('Verification attempts exceeded', HttpStatus.TOO_MANY_REQUESTS);
+    }
     if (record.expiresAt <= new Date()) {
       await this.prisma.verification.update({
         where: { id: record.id },
@@ -43,19 +48,23 @@ export class VerificationService {
       });
       throw new BadRequestException('Verification token expired or invalid');
     }
-    if (record.attempts >= 5) {
-      await this.prisma.verification.update({
-        where: { id: record.id },
-        data: { status: 'FAILED' },
-      });
-      throw new BadRequestException('Verification attempts exceeded');
+    const attempt = await this.prisma.verification.updateMany({
+      where: { id: record.id, status: 'PENDING', attempts: { lt: 5 } },
+      data: { attempts: { increment: 1 } },
+    });
+    if (!attempt.count)
+      throw new HttpException('Verification attempts exceeded', HttpStatus.TOO_MANY_REQUESTS);
+    if (record.tokenHash !== hash) {
+      const attempts = record.attempts + 1;
+      if (attempts >= 5)
+        await this.prisma.verification.update({ where: { id: record.id }, data: { status: 'FAILED' } });
+      throw new BadRequestException('Verification token expired or invalid');
     }
     const updated = await this.prisma.verification.updateMany({
-      where: { id: record.id, status: 'PENDING', tokenHash: hash },
+      where: { id: record.id, status: 'PENDING' },
       data: {
         status: 'VERIFIED',
         verifiedAt: new Date(),
-        attempts: { increment: 1 },
       },
     });
     if (!updated.count)

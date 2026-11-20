@@ -1,12 +1,12 @@
 import {
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 import { AssignAuthorsDto } from './dto/assign-author.dto.js';
 import { CreateAuthorDto } from './dto/create-author.dto.js';
 import { UpdateAuthorDto } from './dto/update-author.dto.js';
@@ -16,6 +16,7 @@ export class AuthorsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly siteAccess: SiteAccessService,
   ) {}
   private json(
     value: Record<string, unknown> | undefined,
@@ -24,20 +25,7 @@ export class AuthorsService {
       ? undefined
       : (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue);
   }
-  private async access(adminId: string, siteId?: string) {
-    if (!siteId) return;
-    const admin = await this.prisma.adminUser.findUnique({
-      where: { id: adminId },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (admin?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    const access = await this.prisma.userSiteAccess.findUnique({
-      where: { userId_siteId: { userId: adminId, siteId } },
-      select: { id: true },
-    });
-    if (!access)
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  private access(adminId: string, siteId?: string) { return siteId ? this.siteAccess.assertSiteAccess(adminId, siteId) : Promise.resolve(); }
   async create(dto: CreateAuthorDto, adminId: string) {
     await this.access(adminId, dto.siteId);
     try {
@@ -74,7 +62,9 @@ export class AuthorsService {
   async list(adminId: string, siteId?: string) {
     await this.access(adminId, siteId);
     return this.prisma.author.findMany({
-      where: siteId === undefined ? undefined : { siteId },
+      where: siteId === undefined
+        ? { site: await this.siteAccess.accessibleSiteWhere(adminId) }
+        : { siteId },
       orderBy: { name: 'asc' },
     });
   }

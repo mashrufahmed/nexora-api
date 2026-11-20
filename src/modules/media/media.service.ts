@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -10,7 +9,10 @@ import { extname } from 'node:path';
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 import { StorageService } from '../../storage/storage.service.js';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 import { UpdateMediaDto } from './dto/update-media.dto.js';
 import { UploadMediaDto } from './dto/upload-media.dto.js';
 
@@ -20,6 +22,8 @@ export class MediaService {
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly storage: StorageService,
+    private readonly siteAccess: SiteAccessService,
+    @InjectQueue('media-thumbnails') private readonly thumbnailQueue: Queue,
   ) {}
   private json(
     value: Record<string, unknown> | undefined,
@@ -28,20 +32,7 @@ export class MediaService {
       ? undefined
       : (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue);
   }
-  private async access(adminId: string, siteId?: string) {
-    if (!siteId) return;
-    const admin = await this.prisma.adminUser.findUnique({
-      where: { id: adminId },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (admin?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    const allowed = await this.prisma.userSiteAccess.findUnique({
-      where: { userId_siteId: { userId: adminId, siteId } },
-      select: { id: true },
-    });
-    if (!allowed)
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  private access(adminId: string, siteId?: string) { return siteId ? this.siteAccess.assertSiteAccess(adminId, siteId) : Promise.resolve(); }
   private signature(buffer: Buffer): string | undefined {
     if (
       buffer
@@ -115,14 +106,23 @@ export class MediaService {
       entityType: 'media_asset',
       entityId: asset.id,
     });
+    await this.thumbnailQueue.add('generate', { mediaAssetId: asset.id, storageKey: asset.storageKey, mimeType: asset.mimeType }, {
+      attempts: 3,
+      backoff: { type: 'exponential', delay: 5_000 },
+      removeOnComplete: 100,
+      removeOnFail: 100,
+    });
     return { ...asset, url: this.storage.url(asset.storageKey) ?? await this.storage.signedUrl(asset.storageKey) };
   }
   async list(adminId: string, siteId?: string, search?: string) {
     await this.access(adminId, siteId);
+    const siteWhere = siteId
+      ? { siteId }
+      : await this.siteAccess.accessibleSiteWhere(adminId);
     return this.prisma.mediaAsset.findMany({
       where: {
         status: 'ACTIVE',
-        ...(siteId !== undefined && { siteId }),
+        ...(siteId !== undefined ? { siteId } : { site: siteWhere }),
         ...(search && {
           originalFilename: { contains: search, mode: 'insensitive' },
         }),

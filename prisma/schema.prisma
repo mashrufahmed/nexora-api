@@ -285,6 +285,7 @@ model Category {
   parent    Category?             @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
   children  Category[]            @relation("CategoryTree")
   contents  SiteContentCategory[]
+  productCategories ProductCategory[]
 
   @@unique([siteId, slug])
   @@index([siteId, parentId])
@@ -517,11 +518,25 @@ model SiteProduct {
   guideItems      BuyingGuideItem[]
   comparisonItems ComparisonItem[]
   affiliateLinks  AffiliateLink[]
+  categories      ProductCategory[]
 
   @@unique([siteId, slug])
   @@unique([siteId, productId])
   @@index([siteId, status])
   @@map("site_products")
+}
+
+model ProductCategory {
+  id           String      @id @default(nanoid())
+  siteProductId String     @map("site_product_id")
+  categoryId   String      @map("category_id")
+  position     Int         @default(0)
+  siteProduct  SiteProduct @relation(fields: [siteProductId], references: [id], onDelete: Cascade)
+  category     Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([siteProductId, categoryId])
+  @@index([categoryId])
+  @@map("product_categories")
 }
 
 model Merchant {

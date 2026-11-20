@@ -26,6 +26,7 @@ import { PublishingModule } from './modules/publishing/publishing.module.js';
 import { RbacModule } from './modules/rbac/rbac.module.js';
 import { ReviewsModule } from './modules/reviews/reviews.module.js';
 import { SitesModule } from './modules/sites/sites.module.js';
+import { SiteAccessModule } from './modules/site-access/site-access.module.js';
 import { TagsRedirectsModule } from './modules/tags-redirects/tags-redirects.module.js';
 import { VerificationModule } from './modules/verification/verification.module.js';
 import { RedisModule } from './redis/redis.module.js';
@@ -97,6 +98,7 @@ import { PublicModule } from './modules/public/public.module.js';
     AdminModule,
     AuditModule,
     SitesModule,
+    SiteAccessModule,
     CmsModule,
     ProductsModule,
     ReviewsModule,

@@ -1,12 +1,12 @@
 import {
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 import {
   RedirectDto,
   TagDto,
@@ -19,21 +19,9 @@ export class TagsRedirectsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly siteAccess: SiteAccessService,
   ) {}
-  private async access(uid: string, sid: string) {
-    const a = await this.prisma.adminUser.findUnique({
-      where: { id: uid },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (a?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    if (
-      !(await this.prisma.userSiteAccess.findUnique({
-        where: { userId_siteId: { userId: uid, siteId: sid } },
-        select: { id: true },
-      }))
-    )
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  private access(uid: string, sid: string) { return this.siteAccess.assertSiteAccess(uid, sid); }
   async tag(d: TagDto, uid: string) {
     await this.access(uid, d.siteId);
     try {
@@ -81,7 +69,7 @@ export class TagsRedirectsService {
           ...(d.name !== undefined && { name: d.name.trim() }),
           ...(d.slug !== undefined && { slug: d.slug.trim().toLowerCase() }),
         },
-      });
+      }).then(async (result) => { await this.audit.log({ actorAdminId: uid, action: 'tag.updated', entityType: 'tag', entityId: id }); return result; });
     } catch (e) {
       if (
         e instanceof Prisma.PrismaClientKnownRequestError &&
@@ -101,6 +89,7 @@ export class TagsRedirectsService {
     if (await this.prisma.siteContentTag.count({ where: { tagId: id } }))
       throw new ConflictException('Tag is still assigned to content');
     await this.prisma.tag.delete({ where: { id } });
+    await this.audit.log({ actorAdminId: uid, action: 'tag.deleted', entityType: 'tag', entityId: id });
     return { message: 'Tag deleted successfully' };
   }
   async assign(contentId: string, tagIds: string[], uid: string) {
@@ -123,6 +112,7 @@ export class TagsRedirectsService {
         data: tagIds.map((tagId) => ({ siteContentId: contentId, tagId })),
       });
     });
+    await this.audit.log({ actorAdminId: uid, action: 'content.tags_updated', entityType: 'site_content', entityId: contentId, metadata: { tagCount: tagIds.length } });
     return { assigned: tagIds.length };
   }
   async listRedirects(siteId: string, uid: string) {
@@ -136,14 +126,14 @@ export class TagsRedirectsService {
     await this.access(uid, d.siteId);
     if (!d.fromPath.startsWith('/') || !d.toPath.startsWith('/'))
       throw new ConflictException('Redirect paths must be internal paths');
-    return this.prisma.redirect.create({
+    try { const result = await this.prisma.redirect.create({
       data: {
         siteId: d.siteId,
         fromPath: d.fromPath,
         toPath: d.toPath,
         statusCode: d.statusCode,
       },
-    });
+    }); await this.audit.log({ actorAdminId: uid, action: 'redirect.created', entityType: 'redirect', entityId: result.id }); return result; } catch (e) { if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') throw new ConflictException('Redirect source path already exists for this site'); throw e; }
   }
   async updateRedirect(id: string, d: UpdateRedirectDto, uid: string) {
     const r = await this.prisma.redirect.findUnique({
@@ -157,7 +147,7 @@ export class TagsRedirectsService {
       (d.toPath && !d.toPath.startsWith('/'))
     )
       throw new ConflictException('Redirect paths must be internal paths');
-    return this.prisma.redirect.update({
+    const result = await this.prisma.redirect.update({
       where: { id },
       data: {
         ...(d.fromPath !== undefined && { fromPath: d.fromPath }),
@@ -167,7 +157,7 @@ export class TagsRedirectsService {
           status: d.active ? 'ACTIVE' : 'INACTIVE',
         }),
       },
-    });
+    }); await this.audit.log({ actorAdminId: uid, action: 'redirect.updated', entityType: 'redirect', entityId: id }); return result;
   }
   async deleteRedirect(id: string, uid: string) {
     const r = await this.prisma.redirect.findUnique({
@@ -177,6 +167,7 @@ export class TagsRedirectsService {
     if (!r) throw new NotFoundException('Redirect not found');
     await this.access(uid, r.siteId);
     await this.prisma.redirect.delete({ where: { id } });
+    await this.audit.log({ actorAdminId: uid, action: 'redirect.deleted', entityType: 'redirect', entityId: id });
     return { message: 'Redirect deleted successfully' };
   }
   async resolve(siteId: string, path: string) {

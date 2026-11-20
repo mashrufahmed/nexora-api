@@ -33,6 +33,14 @@ export class AdminAuthGuard implements CanActivate {
         emailVerifiedAt: true,
         lastLoginAt: true,
         sessionVersion: true,
+        roles: {
+          select: {
+            role: { select: { id: true, name: true } },
+          },
+        },
+        siteAccess: {
+          select: { siteId: true },
+        },
       },
     });
 
@@ -50,7 +58,19 @@ export class AdminAuthGuard implements CanActivate {
       throw new UnauthorizedException('Session expired. Please login again.');
     }
 
-    request.admin = admin;
+    const permissions = await this.prisma.rolePermission.findMany({
+      where: {
+        role: { admins: { some: { adminId: admin.id } } },
+      },
+      select: { permission: { select: { code: true } } },
+    });
+
+    request.admin = {
+      ...admin,
+      roles: admin.roles.map(({ role }) => role),
+      permissions: [...new Set(permissions.map(({ permission }) => permission.code))],
+      siteAccess: admin.siteAccess.map(({ siteId }) => siteId),
+    };
 
     return true;
   }

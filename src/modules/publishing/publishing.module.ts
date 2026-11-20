@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuditModule } from '../audit/audit.module.js';
+import { SiteAccessModule } from '../site-access/site-access.module.js';
 import { PublishingController } from './publishing.controller.js';
 import { PublishingService } from './publishing.service.js';
 import { QueueModule } from '../../queue/queue.module.js';
@@ -13,7 +14,7 @@ class ScheduledPublishingProcessor extends WorkerHost {
 }
 
 @Module({
-  imports: [AuditModule, QueueModule],
+  imports: [AuditModule, QueueModule, SiteAccessModule],
   controllers: [PublishingController],
   providers: [PublishingService, ScheduledPublishingProcessor],
 })

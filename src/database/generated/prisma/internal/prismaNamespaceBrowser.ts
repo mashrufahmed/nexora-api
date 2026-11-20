@@ -75,6 +75,7 @@ export const ModelName = {
   Review: 'Review',
   ReviewCriterionScore: 'ReviewCriterionScore',
   SiteProduct: 'SiteProduct',
+  ProductCategory: 'ProductCategory',
   Merchant: 'Merchant',
   AffiliateLink: 'AffiliateLink',
   AffiliateClick: 'AffiliateClick',
@@ -447,6 +448,16 @@ export const SiteProductScalarFieldEnum = {
 } as const
 
 export type SiteProductScalarFieldEnum = (typeof SiteProductScalarFieldEnum)[keyof typeof SiteProductScalarFieldEnum]
+
+
+export const ProductCategoryScalarFieldEnum = {
+  id: 'id',
+  siteProductId: 'siteProductId',
+  categoryId: 'categoryId',
+  position: 'position'
+} as const
+
+export type ProductCategoryScalarFieldEnum = (typeof ProductCategoryScalarFieldEnum)[keyof typeof ProductCategoryScalarFieldEnum]
 
 
 export const MerchantScalarFieldEnum = {

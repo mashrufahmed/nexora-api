@@ -1,25 +1,27 @@
 import {
   BadRequestException,
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 import { CreateBrandDto } from './dto/create-brand.dto.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { CreateVariantDto } from './dto/create-variant.dto.js';
 import { PublishProductDto } from './dto/publish-product.dto.js';
 import { UpdateImageDto } from './dto/update-image.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
+import { UpdateBrandDto } from './dto/update-brand.dto.js';
 
 @Injectable()
 export class ProductsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly siteAccess: SiteAccessService,
   ) {}
 
   private jsonValue(
@@ -30,19 +32,7 @@ export class ProductsService {
       : (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue);
   }
 
-  private async assertSiteAccess(adminId: string, siteId: string) {
-    const admin = await this.prisma.adminUser.findUnique({
-      where: { id: adminId },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (admin?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    const access = await this.prisma.userSiteAccess.findUnique({
-      where: { userId_siteId: { userId: adminId, siteId } },
-      select: { id: true },
-    });
-    if (!access)
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  private assertSiteAccess(adminId: string, siteId: string) { return this.siteAccess.assertSiteAccess(adminId, siteId); }
 
   async createBrand(dto: CreateBrandDto, adminId: string) {
     try {
@@ -68,6 +58,26 @@ export class ProductsService {
         throw new ConflictException('Brand slug already exists');
       throw error;
     }
+  }
+
+  async listBrands() { return this.prisma.brand.findMany({ include: { _count: { select: { products: true } } }, orderBy: { name: 'asc' } }); }
+
+  async updateBrand(id: string, dto: UpdateBrandDto, adminId: string) {
+    try {
+      const brand = await this.prisma.brand.update({ where: { id }, data: { ...(dto.name !== undefined && { name: dto.name.trim() }), ...(dto.slug !== undefined && { slug: dto.slug.trim().toLowerCase() }), ...(dto.description !== undefined && { description: dto.description.trim() }) } });
+      await this.audit.log({ actorAdminId: adminId, action: 'brand.updated', entityType: 'brand', entityId: id });
+      return brand;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') throw new NotFoundException('Brand not found');
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') throw new ConflictException('Brand slug already exists');
+      throw error;
+    }
+  }
+
+  async removeBrand(id: string, adminId: string) {
+    try { await this.prisma.brand.delete({ where: { id } }); } catch (error) { if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') throw new NotFoundException('Brand not found'); throw error; }
+    await this.audit.log({ actorAdminId: adminId, action: 'brand.deleted', entityType: 'brand', entityId: id });
+    return { message: 'Brand deleted successfully' };
   }
 
   async createProduct(dto: CreateProductDto, adminId: string) {
@@ -107,21 +117,23 @@ export class ProductsService {
     }
   }
 
-  async listProducts() {
+  async listProducts(adminId: string) {
+    const siteWhere = await this.siteAccess.accessibleSiteWhere(adminId);
     return this.prisma.product.findMany({
-      include: { brand: true, siteProducts: true },
+      include: { brand: true, siteProducts: { where: { site: siteWhere } } },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  async getProduct(id: string) {
+  async getProduct(id: string, adminId: string) {
+    const siteWhere = await this.siteAccess.accessibleSiteWhere(adminId);
     const product = await this.prisma.product.findUnique({
       where: { id },
       include: {
         brand: true,
         variants: true,
         images: { orderBy: { position: 'asc' } },
-        siteProducts: true,
+        siteProducts: { where: { site: siteWhere } },
       },
     });
     if (!product) throw new NotFoundException('Product not found');
@@ -200,12 +212,10 @@ export class ProductsService {
   }
 
   async addVariant(productId: string, dto: CreateVariantDto, adminId: string) {
-    if (
-      !(await this.prisma.product.findUnique({
+    if (!(await this.prisma.product.findUnique({
         where: { id: productId },
         select: { id: true },
-      }))
-    )
+      })))
       throw new NotFoundException('Product not found');
     try {
       const variant = await this.prisma.productVariant.create({
@@ -246,6 +256,10 @@ export class ProductsService {
       }))
     )
       throw new NotFoundException('Product not found');
+    const media = await this.prisma.mediaAsset.findUnique({ where: { id: mediaAssetId }, select: { siteId: true, status: true, mimeType: true } });
+    if (!media || media.status === 'DELETED') throw new NotFoundException('Media asset not found');
+    if (media.siteId !== null) throw new BadRequestException('Product images must use global media assets');
+    if (!media.mimeType.startsWith('image/')) throw new BadRequestException('Product image must be an image asset');
     const image = await this.prisma.$transaction(async (tx) => {
       if (dto.isPrimary)
         await tx.productImage.updateMany({
@@ -366,25 +380,33 @@ export class ProductsService {
 
   async publishProduct(
     productId: string,
+    siteId: string,
     dto: PublishProductDto,
     adminId: string,
   ) {
-    await this.assertSiteAccess(adminId, dto.siteId);
+    await this.assertSiteAccess(adminId, siteId);
     const product = await this.prisma.product.findUnique({
       where: { id: productId },
       select: { id: true, slug: true },
     });
     if (!product) throw new NotFoundException('Product not found');
+    const categoryIds = dto.categoryIds ?? [];
+    if (new Set(categoryIds).size !== categoryIds.length) throw new BadRequestException('Product categories must be unique');
+    if (categoryIds.length) {
+      const categories = await this.prisma.category.findMany({ where: { id: { in: categoryIds }, siteId }, select: { id: true } });
+      if (categories.length !== new Set(categoryIds).size) throw new BadRequestException('All product categories must belong to the selected site');
+    }
     try {
       const publication = await this.prisma.siteProduct.create({
         data: {
-          siteId: dto.siteId,
+          siteId,
           productId,
           slug: dto.slug?.trim().toLowerCase() || product.slug,
           title: dto.title?.trim(),
           summary: dto.summary?.trim(),
           status: 'ACTIVE',
           publishedAt: new Date(),
+          ...(categoryIds.length && { categories: { create: categoryIds.map((categoryId, position) => ({ categoryId, position })) } }),
         },
       });
       await this.audit.log({

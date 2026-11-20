@@ -1,13 +1,13 @@
 import {
   BadRequestException,
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 import { CreateCategoryDto } from './dto/create-category.dto.js';
 import { CreateContentDto } from './dto/create-content.dto.js';
 import { PublishContentDto } from './dto/publish-content.dto.js';
@@ -18,6 +18,7 @@ export class CmsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly siteAccess: SiteAccessService,
   ) {}
 
   private jsonValue(
@@ -28,19 +29,7 @@ export class CmsService {
       : (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue);
   }
 
-  private async assertSiteAccess(adminId: string, siteId: string) {
-    const admin = await this.prisma.adminUser.findUnique({
-      where: { id: adminId },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (admin?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    const access = await this.prisma.userSiteAccess.findUnique({
-      where: { userId_siteId: { userId: adminId, siteId } },
-      select: { id: true },
-    });
-    if (!access)
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  private assertSiteAccess(adminId: string, siteId: string) { return this.siteAccess.assertSiteAccess(adminId, siteId); }
 
   async createContent(dto: CreateContentDto, adminId: string) {
     try {
@@ -70,14 +59,34 @@ export class CmsService {
     }
   }
 
-  async listContent() {
+  private async assertContentAccess(id: string, adminId: string) {
+    const content = await this.prisma.content.findUnique({
+      where: { id },
+      select: { siteContents: { select: { siteId: true } } },
+    });
+    if (!content) throw new NotFoundException('Content not found');
+    for (const siteContent of content.siteContents) {
+      await this.assertSiteAccess(adminId, siteContent.siteId);
+    }
+    return content;
+  }
+
+  async listContent(adminId: string) {
+    const siteWhere = await this.siteAccess.accessibleSiteWhere(adminId);
     return this.prisma.content.findMany({
+      where: {
+        OR: [
+          { siteContents: { none: {} } },
+          { siteContents: { some: { site: siteWhere } } },
+        ],
+      },
       include: { siteContents: true },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  async getContent(id: string) {
+  async getContent(id: string, adminId: string) {
+    await this.assertContentAccess(id, adminId);
     const content = await this.prisma.content.findUnique({
       where: { id },
       include: {
@@ -90,6 +99,7 @@ export class CmsService {
   }
 
   async updateContent(id: string, dto: UpdateContentDto, adminId: string) {
+    await this.assertContentAccess(id, adminId);
     try {
       const content = await this.prisma.content.update({
         where: { id },
@@ -125,6 +135,7 @@ export class CmsService {
   }
 
   async deleteContent(id: string, adminId: string) {
+    await this.assertContentAccess(id, adminId);
     const content = await this.prisma.content.findUnique({
       where: { id },
       select: { id: true, status: true },
@@ -214,6 +225,15 @@ export class CmsService {
         );
       throw error;
     }
+  }
+
+  async listCategories(siteId: string, adminId: string) {
+    await this.assertSiteAccess(adminId, siteId);
+    return this.prisma.category.findMany({
+      where: { siteId },
+      include: { children: true },
+      orderBy: [{ parentId: 'asc' }, { name: 'asc' }],
+    });
   }
 
   async publish(id: string, dto: PublishContentDto, adminId: string) {

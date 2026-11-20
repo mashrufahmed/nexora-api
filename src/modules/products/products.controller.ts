@@ -18,6 +18,7 @@ import { CreateProductDto } from './dto/create-product.dto.js';
 import { CreateVariantDto } from './dto/create-variant.dto.js';
 import { PublishProductDto } from './dto/publish-product.dto.js';
 import { UpdateImageDto } from './dto/update-image.dto.js';
+import { UpdateBrandDto } from './dto/update-brand.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
 import { UpdateSiteProductDto } from './dto/update-site-product.dto.js';
 import { ProductsService } from './products.service.js';
@@ -33,6 +34,15 @@ export class ProductsController {
     return this.products.createBrand(dto, request.admin!.id);
   }
 
+  @Get('brands') @Permissions('product.create')
+  listBrands() { return this.products.listBrands(); }
+
+  @Patch('brands/:id') @Permissions('product.update')
+  updateBrand(@Param('id') id: string, @Body() dto: UpdateBrandDto, @Req() request: FastifyRequest) { return this.products.updateBrand(id, dto, request.admin!.id); }
+
+  @Delete('brands/:id') @Permissions('product.delete')
+  removeBrand(@Param('id') id: string, @Req() request: FastifyRequest) { return this.products.removeBrand(id, request.admin!.id); }
+
   @Post('products')
   @Permissions('product.create')
   createProduct(@Body() dto: CreateProductDto, @Req() request: FastifyRequest) {
@@ -41,14 +51,14 @@ export class ProductsController {
 
   @Get('products')
   @Permissions('product.create')
-  listProducts() {
-    return this.products.listProducts();
+  listProducts(@Req() request: FastifyRequest) {
+    return this.products.listProducts(request.admin!.id);
   }
 
   @Get('products/:id')
   @Permissions('product.create')
-  getProduct(@Param('id') id: string) {
-    return this.products.getProduct(id);
+  getProduct(@Param('id') id: string, @Req() request: FastifyRequest) {
+    return this.products.getProduct(id, request.admin!.id);
   }
 
   @Patch('products/:id')
@@ -122,10 +132,6 @@ export class ProductsController {
     @Body() dto: Omit<PublishProductDto, 'siteId'>,
     @Req() request: FastifyRequest,
   ) {
-    return this.products.publishProduct(
-      productId,
-      { ...dto, siteId },
-      request.admin!.id,
-    );
+    return this.products.publishProduct(productId, siteId, dto, request.admin!.id);
   }
 }

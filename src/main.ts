@@ -1,10 +1,12 @@
 import fastifyCookie from '@fastify/cookie';
+import csrfProtection from '@fastify/csrf-protection';
 import helmet from '@fastify/helmet';
 import multipart from '@fastify/multipart';
 import fastifySession from '@fastify/session';
 import { ForbiddenException, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -82,6 +84,14 @@ async function bootstrap() {
     rolling: true,
   });
 
+  await app.register(csrfProtection, {
+    sessionPlugin: '@fastify/session',
+    getToken: (request) => {
+      const token = request.headers['x-csrf-token'];
+      return Array.isArray(token) ? token[0] : token;
+    },
+  });
+
   // CORS
   const corsOrigins = config
     .getOrThrow<string>('CORS_ORIGINS')
@@ -95,7 +105,12 @@ async function bootstrap() {
     origin: corsOrigins,
     credentials: true,
     methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Request-ID',
+      'X-CSRF-Token',
+    ],
   });
 
   // Global Origin + Fetch Metadata CSRF Protection
@@ -122,8 +137,44 @@ async function bootstrap() {
     }
   });
 
+  fastify.addHook('onRequest', (request, reply, done) => {
+    const method = request.method.toUpperCase();
+    if (['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+      done();
+      return;
+    }
+
+    const publicAuthRoutes = [
+      '/admin/auth/login',
+      '/admin/auth/forgot-password',
+      '/admin/auth/reset-password',
+      '/admin/email/verify',
+      '/admin/email/resend',
+    ];
+    if (publicAuthRoutes.some((route) => request.url.includes(route))) {
+      done();
+      return;
+    }
+
+    fastify.csrfProtection(request, reply, done);
+  });
+
   // Global Prefix
   app.setGlobalPrefix(config.getOrThrow<string>('API_PREFIX'));
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Nexora API')
+    .setDescription(
+      'Multi-site CMS, product review, and affiliate publishing API',
+    )
+    .setVersion('1.0')
+    .addCookieAuth(
+      config.get<string>('SESSION_COOKIE_NAME', 'nexora_admin_sid'),
+    )
+    .addApiKey({ type: 'apiKey', name: 'X-Site-Key', in: 'header' }, 'site-key')
+    .build();
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('docs', app, swaggerDocument);
 
   // Global Validation
   app.useGlobalPipes(

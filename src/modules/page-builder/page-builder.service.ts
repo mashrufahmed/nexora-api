@@ -1,13 +1,13 @@
 import {
   BadRequestException,
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 import { CreateTemplateDto } from './dto/create-template.dto.js';
 import { UpdateTemplateDto } from './dto/update-template.dto.js';
 
@@ -16,6 +16,7 @@ export class PageBuilderService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly siteAccess: SiteAccessService,
   ) {}
   private json(value: Record<string, unknown>): Prisma.InputJsonValue {
     return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
@@ -33,19 +34,7 @@ export class PageBuilderService {
         throw new BadRequestException('Each page block must contain a type');
     }
   }
-  private async access(adminId: string, siteId: string) {
-    const admin = await this.prisma.adminUser.findUnique({
-      where: { id: adminId },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (admin?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    const access = await this.prisma.userSiteAccess.findUnique({
-      where: { userId_siteId: { userId: adminId, siteId } },
-      select: { id: true },
-    });
-    if (!access)
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  private access(adminId: string, siteId: string) { return this.siteAccess.assertSiteAccess(adminId, siteId); }
   async create(dto: CreateTemplateDto, adminId: string) {
     await this.access(adminId, dto.siteId);
     this.validate(dto.config);

@@ -7,6 +7,11 @@ declare module 'fastify' {
     sessionVersion?: number;
   }
   interface FastifyRequest {
+    site?: {
+      id: string;
+      slug: string;
+      status: string;
+    };
     admin?: {
       id: string;
       name: string;
@@ -14,6 +19,9 @@ declare module 'fastify' {
       status: AdminStatus;
       emailVerifiedAt: Date | null;
       lastLoginAt: Date | null;
+      roles: Array<{ id: string; name: string }>;
+      permissions: string[];
+      siteAccess: string[];
     };
   }
 }

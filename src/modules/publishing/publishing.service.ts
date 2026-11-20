@@ -1,13 +1,12 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
+import { SiteAccessService } from '../site-access/site-access.service.js';
 
 @Injectable()
 export class PublishingService {
@@ -15,21 +14,9 @@ export class PublishingService {
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     @InjectQueue('scheduled-publishing') private readonly queue: Queue,
+    private readonly siteAccess: SiteAccessService,
   ) {}
-  private async access(uid: string, sid: string) {
-    const a = await this.prisma.adminUser.findUnique({
-      where: { id: uid },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (a?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    if (
-      !(await this.prisma.userSiteAccess.findUnique({
-        where: { userId_siteId: { userId: uid, siteId: sid } },
-        select: { id: true },
-      }))
-    )
-      throw new ForbiddenException('You do not have access to this site');
-  }
+  private access(uid: string, sid: string) { return this.siteAccess.assertSiteAccess(uid, sid); }
   async scheduleContent(
     id: string,
     siteId: string,
@@ -40,21 +27,16 @@ export class PublishingService {
     const date = new Date(scheduledAt);
     if (date <= new Date())
       throw new BadRequestException('Scheduled time must be in the future');
-    const content = await this.prisma.content.findUnique({
-      where: { id },
-      select: { status: true },
-    });
-    if (!content) throw new NotFoundException('Content not found');
-    if (!['IN_REVIEW', 'DRAFT'].includes(content.status))
-      throw new BadRequestException(
-        'Only draft or review content can be scheduled',
-      );
     const siteContent = await this.prisma.siteContent.findUnique({
       where: { siteId_contentId: { siteId, contentId: id } },
-      select: { id: true },
+      select: { id: true, status: true, scheduledAt: true },
     });
     if (!siteContent)
       throw new BadRequestException('Content is not published for this site');
+    if (!['IN_REVIEW', 'DRAFT'].includes(siteContent.status))
+      throw new BadRequestException('Only draft or review content can be scheduled');
+    if (siteContent.scheduledAt)
+      throw new BadRequestException('Content is already scheduled for this site');
     const result = await this.prisma.$transaction(async (tx) => {
       await tx.content.update({ where: { id }, data: { status: 'SCHEDULED' } });
       return tx.siteContent.update({
@@ -90,6 +72,12 @@ export class PublishingService {
         await tx.content.update({
           where: { id: item.contentId },
           data: { status: 'PUBLISHED' },
+        });
+        await this.audit.log({
+          action: 'content.published_scheduled',
+          entityType: 'site_content',
+          entityId: item.id,
+          metadata: { contentId: item.contentId },
         });
       });
     return { published: due.length };

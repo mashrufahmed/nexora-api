@@ -35,6 +35,11 @@ export class AuthController {
     private readonly auditService: AuditService,
   ) {}
 
+  @Get('csrf')
+  csrf(@Res({ passthrough: true }) reply: FastifyReply) {
+    return { token: reply.generateCsrf() };
+  }
+
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @Throttle({

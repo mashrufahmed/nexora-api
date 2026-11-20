@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -11,7 +10,8 @@ import { createHash } from 'node:crypto';
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
-import { AffiliateLinkDto, MerchantDto } from './dto/affiliate.dto.js';
+import { SiteAccessService } from '../site-access/site-access.service.js';
+import { AffiliateLinkDto, MerchantDto, UpdateMerchantDto } from './dto/affiliate.dto.js';
 @Injectable()
 export class AffiliateService {
   private readonly clickQueue: Queue;
@@ -19,20 +19,16 @@ export class AffiliateService {
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     @InjectQueue('affiliate-clicks') clickQueue: Queue,
+    private readonly siteAccess: SiteAccessService,
   ) { this.clickQueue = clickQueue; }
-  private async access(adminId: string, siteId: string) {
-    const a = await this.prisma.adminUser.findUnique({
-      where: { id: adminId },
-      select: { roles: { select: { role: { select: { name: true } } } } },
-    });
-    if (a?.roles.some(({ role }) => role.name === 'Super Admin')) return;
-    if (
-      !(await this.prisma.userSiteAccess.findUnique({
-        where: { userId_siteId: { userId: adminId, siteId } },
-        select: { id: true },
-      }))
-    )
-      throw new ForbiddenException('You do not have access to this site');
+  private access(adminId: string, siteId: string) { return this.siteAccess.assertSiteAccess(adminId, siteId); }
+  private safeUrl(value: string, label: string) {
+    let parsed: URL;
+    try { parsed = new URL(value); } catch { throw new BadRequestException(`${label} must be a valid URL`); }
+    if (!['http:', 'https:'].includes(parsed.protocol) || parsed.username || parsed.password) throw new BadRequestException(`${label} must be a public HTTP(S) URL`);
+    const host = parsed.hostname.toLowerCase();
+    if (host === 'localhost' || host === '::1' || /^(127\.|10\.|192\.168\.|169\.254\.)/.test(host) || /^172\.(1[6-9]|2\d|3[0-1])\./.test(host)) throw new BadRequestException(`${label} host is not allowed`);
+    return parsed.toString();
   }
   async merchant(dto: MerchantDto, adminId: string) {
     try {
@@ -59,6 +55,15 @@ export class AffiliateService {
       throw e;
     }
   }
+  async listMerchants() { return this.prisma.merchant.findMany({ orderBy: { name: 'asc' } }); }
+  async updateMerchant(id: string, dto: UpdateMerchantDto, adminId: string) {
+    try { const merchant = await this.prisma.merchant.update({ where: { id }, data: { ...(dto.name !== undefined && { name: dto.name.trim() }), ...(dto.slug !== undefined && { slug: dto.slug.trim().toLowerCase() }), ...(dto.website !== undefined && { website: dto.website }), ...(dto.status !== undefined && { status: dto.status }) } }); await this.audit.log({ actorAdminId: adminId, action: 'merchant.updated', entityType: 'merchant', entityId: id }); return merchant; }
+    catch (error) { if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') throw new NotFoundException('Merchant not found'); if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') throw new ConflictException('Merchant slug already exists'); throw error; }
+  }
+  async deleteMerchant(id: string, adminId: string) {
+    try { await this.prisma.merchant.delete({ where: { id } }); } catch (error) { if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') throw new NotFoundException('Merchant not found'); if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2003') throw new ConflictException('Merchant cannot be deleted while affiliate links exist'); throw error; }
+    await this.audit.log({ actorAdminId: adminId, action: 'merchant.deleted', entityType: 'merchant', entityId: id }); return { message: 'Merchant deleted successfully' };
+  }
   async createLink(dto: AffiliateLinkDto, adminId: string) {
     await this.access(adminId, dto.siteId);
     if (
@@ -83,8 +88,8 @@ export class AffiliateService {
         siteId: dto.siteId,
         siteProductId: dto.siteProductId,
         merchantId: dto.merchantId,
-        destinationUrl: dto.destinationUrl,
-        trackingUrl: dto.trackingUrl,
+        destinationUrl: this.safeUrl(dto.destinationUrl, 'Destination URL'),
+        trackingUrl: dto.trackingUrl ? this.safeUrl(dto.trackingUrl, 'Tracking URL') : undefined,
         status: dto.status,
       },
     });
@@ -125,6 +130,7 @@ export class AffiliateService {
       throw new BadRequestException(
         'Site product does not belong to this site',
       );
+    if (dto.merchantId && !(await this.prisma.merchant.findUnique({ where: { id: dto.merchantId }, select: { id: true } }))) throw new BadRequestException('Merchant not found');
     const link = await this.prisma.affiliateLink.update({
       where: { id },
       data: {
@@ -133,9 +139,9 @@ export class AffiliateService {
         }),
         ...(dto.merchantId !== undefined && { merchantId: dto.merchantId }),
         ...(dto.destinationUrl !== undefined && {
-          destinationUrl: dto.destinationUrl,
+          destinationUrl: this.safeUrl(dto.destinationUrl, 'Destination URL'),
         }),
-        ...(dto.trackingUrl !== undefined && { trackingUrl: dto.trackingUrl }),
+        ...(dto.trackingUrl !== undefined && { trackingUrl: dto.trackingUrl ? this.safeUrl(dto.trackingUrl, 'Tracking URL') : null }),
         ...(dto.status !== undefined && { status: dto.status }),
       },
     });
@@ -179,7 +185,7 @@ export class AffiliateService {
           ? createHash('sha256').update(userAgent).digest('hex')
           : undefined,
       },
-      { removeOnComplete: true, removeOnFail: 1000 },
+      { removeOnComplete: true, removeOnFail: 1000, attempts: 3, backoff: { type: 'exponential', delay: 1000 } },
     );
     return { url: link.destinationUrl };
   }

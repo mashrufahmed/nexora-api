@@ -138,6 +138,11 @@ export type ReviewCriterionScore = Prisma.ReviewCriterionScoreModel
  */
 export type SiteProduct = Prisma.SiteProductModel
 /**
+ * Model ProductCategory
+ * 
+ */
+export type ProductCategory = Prisma.ProductCategoryModel
+/**
  * Model Merchant
  * 
  */

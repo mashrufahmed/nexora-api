@@ -100,21 +100,6 @@ export const PERMISSIONS = [
     module: 'articles',
   },
   {
-    name: 'Read Admins',
-    code: 'rbac.admins.read',
-    module: 'rbac.admins',
-  },
-  {
-    name: 'Update Admins',
-    code: 'rbac.admins.update',
-    module: 'rbac.admins',
-  },
-  {
-    name: 'Assign Admin Roles',
-    code: 'rbac.admins.assign_roles',
-    module: 'rbac.admins',
-  },
-  {
     name: 'Read Audit Logs',
     code: 'audit.logs.read',
     module: 'audit',
@@ -142,6 +127,7 @@ export const PERMISSIONS = [
   },
   { name: 'Create Content', code: 'content.create', module: 'content' },
   { name: 'Update Content', code: 'content.update', module: 'content' },
+  { name: 'Delete Content', code: 'content.delete', module: 'content' },
   { name: 'Submit Content', code: 'content.submit', module: 'content' },
   { name: 'Publish Content', code: 'content.publish', module: 'content' },
   { name: 'Archive Content', code: 'content.archive', module: 'content' },
@@ -152,6 +138,7 @@ export const PERMISSIONS = [
   { name: 'Publish Products', code: 'product.publish', module: 'products' },
   { name: 'Create Reviews', code: 'review.create', module: 'reviews' },
   { name: 'Update Reviews', code: 'review.update', module: 'reviews' },
+  { name: 'Delete Reviews', code: 'review.delete', module: 'reviews' },
   { name: 'Submit Reviews', code: 'review.submit', module: 'reviews' },
   { name: 'Publish Reviews', code: 'review.publish', module: 'reviews' },
   { name: 'Upload Media', code: 'media.upload', module: 'media' },

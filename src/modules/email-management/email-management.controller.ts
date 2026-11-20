@@ -41,4 +41,6 @@ export class EmailManagementController {
   ) {
     return this.service.history(s, r.admin!.id);
   }
+  @Get('senders') @Permissions('email.manage') senders(@Query('siteId') s: string, @Req() r: FastifyRequest) { return this.service.senders(s, r.admin!.id); }
+  @Get('templates') @Permissions('email.manage') templates(@Query('siteId') s: string, @Req() r: FastifyRequest) { return this.service.templates(s, r.admin!.id); }
 }
