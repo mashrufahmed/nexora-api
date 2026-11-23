@@ -20,7 +20,10 @@ import {
   UpdateRedirectDto,
   UpdateTagDto,
 } from './dto/tags-redirects.dto.js';
+import { SiteIdQueryDto } from '../site-access/dto/site-id-query.dto.js';
+import { RedirectResolveQueryDto } from './dto/redirect-resolve-query.dto.js';
 import { TagsRedirectsService } from './tags-redirects.service.js';
+import { IdParamDto } from '../../common/dto/resource-params.dto.js';
 @Controller()
 export class TagsRedirectsController {
   constructor(private readonly service: TagsRedirectsService) {}
@@ -33,34 +36,34 @@ export class TagsRedirectsController {
   @Get('tags')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('tag.manage')
-  listTags(@Query('siteId') s: string, @Req() r: FastifyRequest) {
-    return this.service.listTags(s, r.admin!.id);
+  listTags(@Query() query: SiteIdQueryDto, @Req() r: FastifyRequest) {
+    return this.service.listTags(query.siteId, r.admin!.id);
   }
   @Patch('tags/:id')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('tag.manage')
   updateTag(
-    @Param('id') id: string,
+    @Param() params: IdParamDto,
     @Body() d: UpdateTagDto,
     @Req() r: FastifyRequest,
   ) {
-    return this.service.updateTag(id, d, r.admin!.id);
+    return this.service.updateTag(params.id, d, r.admin!.id);
   }
   @Delete('tags/:id')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('tag.manage')
-  deleteTag(@Param('id') id: string, @Req() r: FastifyRequest) {
-    return this.service.deleteTag(id, r.admin!.id);
+  deleteTag(@Param() params: IdParamDto, @Req() r: FastifyRequest) {
+    return this.service.deleteTag(params.id, r.admin!.id);
   }
   @Post('site-content/:id/tags')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('tag.manage')
   assign(
-    @Param('id') id: string,
+    @Param() params: IdParamDto,
     @Body('tagIds') ids: string[],
     @Req() r: FastifyRequest,
   ) {
-    return this.service.assign(id, ids, r.admin!.id);
+    return this.service.assign(params.id, ids, r.admin!.id);
   }
   @Post('redirects')
   @UseGuards(AdminAuthGuard, PermissionGuard)
@@ -71,29 +74,26 @@ export class TagsRedirectsController {
   @Get('redirects')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('redirect.manage')
-  listRedirects(@Query('siteId') s: string, @Req() r: FastifyRequest) {
-    return this.service.listRedirects(s, r.admin!.id);
+  listRedirects(@Query() query: SiteIdQueryDto, @Req() r: FastifyRequest) {
+    return this.service.listRedirects(query.siteId, r.admin!.id);
   }
   @Patch('redirects/:id')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('redirect.manage')
   updateRedirect(
-    @Param('id') id: string,
+    @Param() params: IdParamDto,
     @Body() d: UpdateRedirectDto,
     @Req() r: FastifyRequest,
   ) {
-    return this.service.updateRedirect(id, d, r.admin!.id);
+    return this.service.updateRedirect(params.id, d, r.admin!.id);
   }
   @Delete('redirects/:id')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('redirect.manage')
-  deleteRedirect(@Param('id') id: string, @Req() r: FastifyRequest) {
-    return this.service.deleteRedirect(id, r.admin!.id);
+  deleteRedirect(@Param() params: IdParamDto, @Req() r: FastifyRequest) {
+    return this.service.deleteRedirect(params.id, r.admin!.id);
   }
-  @Get('redirects/resolve') resolve(
-    @Query('siteId') siteId: string,
-    @Query('path') path: string,
-  ) {
-    return this.service.resolve(siteId, path);
+  @Get('redirects/resolve') resolve(@Query() query: RedirectResolveQueryDto) {
+    return this.service.resolve(query.siteId, query.path);
   }
 }

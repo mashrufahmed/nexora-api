@@ -16,6 +16,11 @@ import { Permissions } from '../rbac/decorators/permissions.decorator.js';
 import { PermissionGuard } from '../rbac/guards/permission.guard.js';
 import { GuideDto, GuideItemsDto } from './dto/guide.dto.js';
 import { GuidesService } from './guides.service.js';
+import { SiteIdQueryDto } from '../site-access/dto/site-id-query.dto.js';
+import {
+  IdParamDto,
+  StatusParamDto,
+} from '../../common/dto/resource-params.dto.js';
 @Controller()
 @UseGuards(AdminAuthGuard, PermissionGuard)
 export class GuidesController {
@@ -27,21 +32,41 @@ export class GuidesController {
     return this.guides.create(d, r.admin!.id);
   }
   @Get('buying-guides') @Permissions('guide.manage') listGuide(
-    @Query('siteId') s: string,
+    @Query() query: SiteIdQueryDto,
     @Req() r: FastifyRequest,
   ) {
-    return this.guides.list(s, r.admin!.id);
+    return this.guides.list(query.siteId, r.admin!.id);
   }
-  @Get('buying-guides/:id') @Permissions('guide.manage') getGuide(@Param('id') id: string, @Req() r: FastifyRequest) { return this.guides.get(id, r.admin!.id); }
-  @Patch('buying-guides/:id') @Permissions('guide.manage') updateGuide(@Param('id') id: string, @Body() d: GuideDto, @Req() r: FastifyRequest) { return this.guides.update(id, d, r.admin!.id); }
-  @Delete('buying-guides/:id') @Permissions('guide.manage') deleteGuide(@Param('id') id: string, @Req() r: FastifyRequest) { return this.guides.remove(id, r.admin!.id); }
-  @Post('buying-guides/:id/:status') @Permissions('guide.manage') transitionGuide(@Param('id') id: string, @Param('status') status: 'IN_REVIEW' | 'PUBLISHED' | 'ARCHIVED', @Req() r: FastifyRequest) { return this.guides.transition(id, status, r.admin!.id); }
+  @Get('buying-guides/:id') @Permissions('guide.manage') getGuide(
+    @Param() params: IdParamDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.guides.get(params.id, r.admin!.id);
+  }
+  @Patch('buying-guides/:id') @Permissions('guide.manage') updateGuide(
+    @Param() params: IdParamDto,
+    @Body() d: GuideDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.guides.update(params.id, d, r.admin!.id);
+  }
+  @Delete('buying-guides/:id') @Permissions('guide.manage') deleteGuide(
+    @Param() params: IdParamDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.guides.remove(params.id, r.admin!.id);
+  }
+  @Post('buying-guides/:id/:status')
+  @Permissions('guide.manage')
+  transitionGuide(@Param() params: StatusParamDto, @Req() r: FastifyRequest) {
+    return this.guides.transition(params.id, params.status, r.admin!.id);
+  }
   @Post('buying-guides/:id/items') @Permissions('guide.manage') addGuide(
-    @Param('id') id: string,
+    @Param() params: IdParamDto,
     @Body() d: GuideItemsDto,
     @Req() r: FastifyRequest,
   ) {
-    return this.guides.addItems(id, d, r.admin!.id);
+    return this.guides.addItems(params.id, d, r.admin!.id);
   }
   @Post('comparisons') @Permissions('comparison.manage') createComparison(
     @Body() d: GuideDto,
@@ -50,22 +75,45 @@ export class GuidesController {
     return this.guides.create(d, r.admin!.id, true);
   }
   @Get('comparisons') @Permissions('comparison.manage') listComparison(
-    @Query('siteId') s: string,
+    @Query() query: SiteIdQueryDto,
     @Req() r: FastifyRequest,
   ) {
-    return this.guides.list(s, r.admin!.id, true);
+    return this.guides.list(query.siteId, r.admin!.id, true);
   }
-  @Get('comparisons/:id') @Permissions('comparison.manage') getComparison(@Param('id') id: string, @Req() r: FastifyRequest) { return this.guides.get(id, r.admin!.id, true); }
-  @Patch('comparisons/:id') @Permissions('comparison.manage') updateComparison(@Param('id') id: string, @Body() d: GuideDto, @Req() r: FastifyRequest) { return this.guides.update(id, d, r.admin!.id, true); }
-  @Delete('comparisons/:id') @Permissions('comparison.manage') deleteComparison(@Param('id') id: string, @Req() r: FastifyRequest) { return this.guides.remove(id, r.admin!.id, true); }
-  @Post('comparisons/:id/:status') @Permissions('comparison.manage') transitionComparison(@Param('id') id: string, @Param('status') status: 'IN_REVIEW' | 'PUBLISHED' | 'ARCHIVED', @Req() r: FastifyRequest) { return this.guides.transition(id, status, r.admin!.id, true); }
+  @Get('comparisons/:id') @Permissions('comparison.manage') getComparison(
+    @Param() params: IdParamDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.guides.get(params.id, r.admin!.id, true);
+  }
+  @Patch('comparisons/:id') @Permissions('comparison.manage') updateComparison(
+    @Param() params: IdParamDto,
+    @Body() d: GuideDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.guides.update(params.id, d, r.admin!.id, true);
+  }
+  @Delete('comparisons/:id') @Permissions('comparison.manage') deleteComparison(
+    @Param() params: IdParamDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.guides.remove(params.id, r.admin!.id, true);
+  }
+  @Post('comparisons/:id/:status')
+  @Permissions('comparison.manage')
+  transitionComparison(
+    @Param() params: StatusParamDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.guides.transition(params.id, params.status, r.admin!.id, true);
+  }
   @Post('comparisons/:id/items')
   @Permissions('comparison.manage')
   addComparison(
-    @Param('id') id: string,
+    @Param() params: IdParamDto,
     @Body() d: GuideItemsDto,
     @Req() r: FastifyRequest,
   ) {
-    return this.guides.addItems(id, d, r.admin!.id, true);
+    return this.guides.addItems(params.id, d, r.admin!.id, true);
   }
 }

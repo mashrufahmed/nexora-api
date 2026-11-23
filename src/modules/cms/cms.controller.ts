@@ -24,6 +24,10 @@ import { PublishContentDto } from './dto/publish-content.dto.js';
 import { UpdateContentDto } from './dto/update-content.dto.js';
 import { ContentListQueryDto } from './dto/content-list-query.dto.js';
 import { RequestChangesDto } from './dto/request-changes.dto.js';
+import {
+  IdParamDto,
+  RevisionParamDto,
+} from '../../common/dto/resource-params.dto.js';
 
 @Controller()
 @UseGuards(AdminAuthGuard, PermissionGuard)
@@ -44,21 +48,35 @@ export class CmsController {
 
   @Get('content/:id')
   @Permissions('content.read')
-  get(@Param('id') id: string, @Req() request: FastifyRequest) {
-    return this.cms.getContent(id, request.admin!.id);
+  get(@Param() params: IdParamDto, @Req() request: FastifyRequest) {
+    return this.cms.getContent(params.id, request.admin!.id);
   }
 
   @Get('content/:id/revisions')
   @Permissions('content.read')
-  revisions(@Param('id') id: string, @Req() request: FastifyRequest) { return this.cms.listRevisions(id, request.admin!.id); }
+  revisions(@Param() params: IdParamDto, @Req() request: FastifyRequest) {
+    return this.cms.listRevisions(params.id, request.admin!.id);
+  }
 
   @Get('content/:id/revisions/:revisionId')
   @Permissions('content.read')
-  revision(@Param('id') id: string, @Param('revisionId') revisionId: string, @Req() request: FastifyRequest) { return this.cms.getRevision(id, revisionId, request.admin!.id); }
+  revision(@Param() params: RevisionParamDto, @Req() request: FastifyRequest) {
+    return this.cms.getRevision(
+      params.id,
+      params.revisionId,
+      request.admin!.id,
+    );
+  }
 
   @Post('content/:id/revisions/:revisionId/restore')
   @Permissions('content.update')
-  restore(@Param('id') id: string, @Param('revisionId') revisionId: string, @Req() request: FastifyRequest) { return this.cms.restoreRevision(id, revisionId, request.admin!.id); }
+  restore(@Param() params: RevisionParamDto, @Req() request: FastifyRequest) {
+    return this.cms.restoreRevision(
+      params.id,
+      params.revisionId,
+      request.admin!.id,
+    );
+  }
 
   @Patch('content/:id')
   @Permissions('content.update')
@@ -95,7 +113,11 @@ export class CmsController {
 
   @Post('content/:id/request-changes')
   @Permissions('content.review')
-  requestChanges(@Param('id') id: string, @Body() dto: RequestChangesDto, @Req() request: FastifyRequest) {
+  requestChanges(
+    @Param('id') id: string,
+    @Body() dto: RequestChangesDto,
+    @Req() request: FastifyRequest,
+  ) {
     return this.cms.transition(id, 'DRAFT', request.admin!.id, dto.reviewNote);
   }
 

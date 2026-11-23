@@ -14,6 +14,7 @@ import { Permissions } from '../../rbac/decorators/permissions.decorator.js';
 import { PermissionGuard } from '../../rbac/guards/permission.guard.js';
 import { AdminAuthGuard } from '../guards/admin-auth.guard.js';
 import { AdminManagementService } from './admin-management.service.js';
+import { IdParamDto } from '../../../common/dto/resource-params.dto.js';
 import { ActivateAdminDto } from './dto/activate-admin.dto.js';
 import { AdminListQueryDto } from './dto/admin-list-query.dto.js';
 import { UpdateAdminProfileDto } from './dto/update-admin-profile.dto.js';
@@ -34,20 +35,23 @@ export class AdminManagementController {
 
   @Get(':id')
   @Permissions('rbac.admins.read')
-  findOne(@Param('id') id: string) {
-    return this.adminManagementService.findOne(id);
+  findOne(@Param() params: IdParamDto) {
+    return this.adminManagementService.findOne(params.id);
   }
 
   @Patch(':id/profile')
   @Permissions('rbac.admins.update')
-  updateProfile(@Param('id') id: string, @Body() dto: UpdateAdminProfileDto) {
-    return this.adminManagementService.updateProfile(id, dto);
+  updateProfile(
+    @Param() params: IdParamDto,
+    @Body() dto: UpdateAdminProfileDto,
+  ) {
+    return this.adminManagementService.updateProfile(params.id, dto);
   }
 
   @Post(':id/activate')
   @Permissions('rbac.admins.update', 'rbac.admins.assign_roles')
-  activate(@Param('id') id: string, @Body() dto: ActivateAdminDto) {
-    return this.adminManagementService.activate(id, dto);
+  activate(@Param() params: IdParamDto, @Body() dto: ActivateAdminDto) {
+    return this.adminManagementService.activate(params.id, dto);
   }
 
   @Patch(':id/status')

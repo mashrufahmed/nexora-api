@@ -15,23 +15,28 @@ import { PermissionGuard } from '../rbac/guards/permission.guard.js';
 import { SubscribeDto, VerifySubscriberDto } from './dto/newsletter.dto.js';
 import { NewsletterListQueryDto } from './dto/newsletter-list-query.dto.js';
 import { NewsletterService } from './newsletter.service.js';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Throttle, seconds } from '@nestjs/throttler';
+import { IdParamDto } from '../../common/dto/resource-params.dto.js';
+@ApiTags('newsletter')
 @Controller('newsletter')
 export class NewsletterController {
   constructor(private readonly service: NewsletterService) {}
-  @Post('subscribe') subscribe(@Body() d: SubscribeDto) {
+  @Post('subscribe')
+  @Throttle({ default: { limit: 3, ttl: seconds(300) } })
+  @ApiOperation({ summary: 'Subscribe an email address to a site newsletter' })
+  subscribe(@Body() d: SubscribeDto) {
     return this.service.subscribe(d);
   }
-  @Post(':id/verify') verify(
-    @Param('id') id: string,
-    @Body() d: VerifySubscriberDto,
-  ) {
-    return this.service.verify(id, d.token);
+  @Post(':id/verify')
+  @Throttle({ default: { limit: 5, ttl: seconds(300) } })
+  verify(@Param() params: IdParamDto, @Body() d: VerifySubscriberDto) {
+    return this.service.verify(params.id, d.token);
   }
-  @Post(':id/unsubscribe') unsubscribe(
-    @Param('id') id: string,
-    @Body() d: VerifySubscriberDto,
-  ) {
-    return this.service.unsubscribe(id, d.token);
+  @Post(':id/unsubscribe')
+  @Throttle({ default: { limit: 5, ttl: seconds(300) } })
+  unsubscribe(@Param() params: IdParamDto, @Body() d: VerifySubscriberDto) {
+    return this.service.unsubscribe(params.id, d.token);
   }
   @Get()
   @UseGuards(AdminAuthGuard, PermissionGuard)

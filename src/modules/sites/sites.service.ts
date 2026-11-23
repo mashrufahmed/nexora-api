@@ -414,6 +414,26 @@ export class SitesService {
     return { id: created.id, secret, createdAt: created.createdAt };
   }
 
+  async rotateSecret(siteId: string, adminId: string) {
+    await this.assertAccess(adminId, siteId);
+    const secret = randomBytes(32).toString('base64url');
+    const keyHash = await argon2.hash(secret, { type: argon2.argon2id });
+    const created = await this.prisma.$transaction(async (tx) => {
+      await tx.siteSecret.updateMany({
+        where: { siteId, status: 'ACTIVE' },
+        data: { status: 'REVOKED', revokedAt: new Date() },
+      });
+      return tx.siteSecret.create({ data: { siteId, keyHash } });
+    });
+    await this.audit.log({
+      actorAdminId: adminId,
+      action: 'site.secret.rotated',
+      entityType: 'site_secret',
+      entityId: created.id,
+    });
+    return { id: created.id, secret, createdAt: created.createdAt };
+  }
+
   async revokeSecret(siteId: string, secretId: string, adminId: string) {
     await this.assertAccess(adminId, siteId);
     const secret = await this.prisma.siteSecret.findFirst({

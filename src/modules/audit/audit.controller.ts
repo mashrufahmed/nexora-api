@@ -11,6 +11,7 @@ import { Permissions } from '../rbac/decorators/permissions.decorator.js';
 import { PermissionGuard } from '../rbac/guards/permission.guard.js';
 import { AuditService } from './audit.service.js';
 import { AuditLogQueryDto } from './dto/audit-log-query.dto.js';
+import { IdParamDto } from '../../common/dto/resource-params.dto.js';
 
 @Controller('audit')
 @UseGuards(AdminAuthGuard, PermissionGuard)
@@ -25,8 +26,8 @@ export class AuditController {
 
   @Get(':id')
   @Permissions('audit.logs.read')
-  async findOne(@Param('id') id: string) {
-    const log = await this.auditService.findOne(id);
+  async findOne(@Param() params: IdParamDto) {
+    const log = await this.auditService.findOne(params.id);
 
     if (!log) {
       throw new NotFoundException('Audit log not found');

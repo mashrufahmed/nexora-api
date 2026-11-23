@@ -22,4 +22,10 @@ describe('MediaService upload limits', () => {
   it('uses the 10 MB binary limit constant', () => {
     expect(MAX_MEDIA_BYTES).toBe(10 * 1024 * 1024);
   });
+
+  it('rejects malformed base64 instead of silently decoding it', async () => {
+    const instance = service({});
+    await expect(instance.upload({ originalFilename: 'x.png', mimeType: 'image/png', data: 'iVBORw0KGgo$' }, 'admin-1'))
+      .rejects.toBeInstanceOf(BadRequestException);
+  });
 });

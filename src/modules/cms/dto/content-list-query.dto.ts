@@ -1,4 +1,4 @@
-import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsDateString, IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 import { ContentStatus, ContentType } from '../../../database/generated/prisma/client.js';
 
 export class ContentListQueryDto {
@@ -8,4 +8,6 @@ export class ContentListQueryDto {
   @IsOptional() @IsEnum(ContentType) type?: ContentType;
   @IsOptional() @IsEnum(ContentStatus) status?: ContentStatus;
   @IsOptional() @IsString() siteId?: string;
+  @IsOptional() @IsDateString() dateFrom?: string;
+  @IsOptional() @IsDateString() dateTo?: string;
 }

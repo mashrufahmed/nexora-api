@@ -77,7 +77,13 @@ export class MediaService {
     const encodedLength = dto.data.replace(/\s/g, '').length;
     if (!encodedLength || encodedLength > MAX_BASE64_LENGTH)
       throw new BadRequestException('Media must be between 1 byte and 10 MB');
-    const buffer = Buffer.from(dto.data, 'base64');
+    const encoded = dto.data.replace(/\s/g, '');
+    // Buffer.from(..., 'base64') silently ignores malformed characters. Reject
+    // those inputs before decoding so the validated signature covers the whole
+    // request payload rather than a truncated/ambiguous byte sequence.
+    if (!/^[A-Za-z0-9+/]*={0,2}$/.test(encoded) || encoded.length % 4 === 1)
+      throw new BadRequestException('Media data must be valid base64');
+    const buffer = Buffer.from(encoded, 'base64');
     if (!buffer.length || buffer.length > MAX_MEDIA_BYTES)
       throw new BadRequestException('Media must be between 1 byte and 10 MB');
     if (this.signature(buffer) !== dto.mimeType)

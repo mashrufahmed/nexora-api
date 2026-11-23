@@ -26,13 +26,27 @@ export class NewsletterService {
     private readonly siteAccess: SiteAccessService,
     @Optional() private readonly redis?: RedisService,
   ) {}
-  private access(uid: string, sid: string) { return this.siteAccess.assertSiteAccess(uid, sid); }
+  private access(uid: string, sid: string) {
+    return this.siteAccess.assertSiteAccess(uid, sid);
+  }
   async subscribe(dto: SubscribeDto) {
     const email = dto.email.trim().toLowerCase();
     const limited = this.redis
-      ? await this.redis.getClient().set(`newsletter:subscribe:${dto.siteId}:${email}`, '1', 'EX', 60, 'NX')
+      ? await this.redis
+          .getClient()
+          .set(
+            `newsletter:subscribe:${dto.siteId}:${email}`,
+            '1',
+            'EX',
+            60,
+            'NX',
+          )
       : 'OK';
-    if (!limited) throw new HttpException('Please wait before requesting another subscription confirmation', HttpStatus.TOO_MANY_REQUESTS);
+    if (!limited)
+      throw new HttpException(
+        'Please wait before requesting another subscription confirmation',
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
     const unsubscribeToken = randomBytes(32).toString('hex');
     let subscriber;
     try {
@@ -82,13 +96,15 @@ export class NewsletterService {
         html: `<p>Confirm your subscription with this token:</p><p>${token}</p>`,
       });
     } catch (error) {
-      if (this.redis) await this.redis.getClient().del(`newsletter:subscribe:${dto.siteId}:${email}`);
+      if (this.redis)
+        await this.redis
+          .getClient()
+          .del(`newsletter:subscribe:${dto.siteId}:${email}`);
       throw error;
     }
     return {
-      subscriberId: subscriber.id,
-      verificationToken: token,
-      unsubscribeToken,
+      message:
+        'If the address can be subscribed, a confirmation message has been sent.',
     };
   }
   async verify(id: string, token: string) {
@@ -119,17 +135,33 @@ export class NewsletterService {
     });
   }
   async list(query: NewsletterListQueryDto | string, uid: string) {
-    const normalized = typeof query === 'string' ? { siteId: query, page: 1, limit: 50 } : query;
+    const normalized =
+      typeof query === 'string' ? { siteId: query, page: 1, limit: 50 } : query;
     await this.access(uid, normalized.siteId);
     const where = {
       siteId: normalized.siteId,
-      ...(normalized.status && { status: normalized.status as 'PENDING' | 'ACTIVE' | 'UNSUBSCRIBED' }),
-      ...(normalized.search && { email: { contains: normalized.search, mode: 'insensitive' as const } }),
+      ...(normalized.status && {
+        status: normalized.status as 'PENDING' | 'ACTIVE' | 'UNSUBSCRIBED',
+      }),
+      ...(normalized.search && {
+        email: { contains: normalized.search, mode: 'insensitive' as const },
+      }),
     };
     const [items, total] = await Promise.all([
-      this.prisma.newsletterSubscriber.findMany({ where, orderBy: { createdAt: 'desc' }, skip: (normalized.page - 1) * normalized.limit, take: normalized.limit }),
+      this.prisma.newsletterSubscriber.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip: (normalized.page - 1) * normalized.limit,
+        take: normalized.limit,
+      }),
       this.prisma.newsletterSubscriber.count({ where }),
     ]);
-    return { items, page: normalized.page, limit: normalized.limit, total, totalPages: Math.ceil(total / normalized.limit) };
+    return {
+      items,
+      page: normalized.page,
+      limit: normalized.limit,
+      total,
+      totalPages: Math.ceil(total / normalized.limit),
+    };
   }
 }

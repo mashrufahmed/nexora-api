@@ -7,5 +7,6 @@ import { PublicService } from './public.service.js';
   imports: [SitesModule],
   controllers: [PublicController],
   providers: [PublicService, PublicAuthGuard],
+  exports: [PublicAuthGuard],
 })
 export class PublicModule {}

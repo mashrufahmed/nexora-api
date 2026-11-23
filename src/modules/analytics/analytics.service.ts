@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { createHash } from 'node:crypto';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AnalyticsEventDto } from './dto/analytics.dto.js';
@@ -39,6 +39,7 @@ export class AnalyticsService {
     await this.access(uid, siteId);
     const start = from ? new Date(from) : new Date(0);
     const end = to ? new Date(to) : new Date();
+    if (start > end) throw new BadRequestException('Analytics start must precede end');
     const [events, clicks] = await Promise.all([
       this.prisma.analyticsEvent.groupBy({
         by: ['type', 'path'],

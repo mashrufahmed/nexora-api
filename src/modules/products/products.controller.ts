@@ -34,14 +34,27 @@ export class ProductsController {
     return this.products.createBrand(dto, request.admin!.id);
   }
 
-  @Get('brands') @Permissions('product.create')
-  listBrands() { return this.products.listBrands(); }
+  @Get('brands')
+  @Permissions('product.create')
+  listBrands() {
+    return this.products.listBrands();
+  }
 
-  @Patch('brands/:id') @Permissions('product.update')
-  updateBrand(@Param('id') id: string, @Body() dto: UpdateBrandDto, @Req() request: FastifyRequest) { return this.products.updateBrand(id, dto, request.admin!.id); }
+  @Patch('brands/:id')
+  @Permissions('product.update')
+  updateBrand(
+    @Param('id') id: string,
+    @Body() dto: UpdateBrandDto,
+    @Req() request: FastifyRequest,
+  ) {
+    return this.products.updateBrand(id, dto, request.admin!.id);
+  }
 
-  @Delete('brands/:id') @Permissions('product.delete')
-  removeBrand(@Param('id') id: string, @Req() request: FastifyRequest) { return this.products.removeBrand(id, request.admin!.id); }
+  @Delete('brands/:id')
+  @Permissions('product.delete')
+  removeBrand(@Param('id') id: string, @Req() request: FastifyRequest) {
+    return this.products.removeBrand(id, request.admin!.id);
+  }
 
   @Post('products')
   @Permissions('product.create')
@@ -129,9 +142,14 @@ export class ProductsController {
   publish(
     @Param('siteId') siteId: string,
     @Param('productId') productId: string,
-    @Body() dto: Omit<PublishProductDto, 'siteId'>,
+    @Body() dto: PublishProductDto,
     @Req() request: FastifyRequest,
   ) {
-    return this.products.publishProduct(productId, siteId, dto, request.admin!.id);
+    return this.products.publishProduct(
+      productId,
+      siteId,
+      dto,
+      request.admin!.id,
+    );
   }
 }

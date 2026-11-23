@@ -13,6 +13,7 @@ import { Permissions } from '../rbac/decorators/permissions.decorator.js';
 import { PermissionGuard } from '../rbac/guards/permission.guard.js';
 import { SendEmailDto, SenderDto, TemplateDto } from './dto/email.dto.js';
 import { EmailManagementService } from './email-management.service.js';
+import { SiteIdQueryDto } from '../site-access/dto/site-id-query.dto.js';
 @Controller('email')
 @UseGuards(AdminAuthGuard, PermissionGuard)
 export class EmailManagementController {
@@ -36,11 +37,21 @@ export class EmailManagementController {
     return this.service.template(d, r.admin!.id);
   }
   @Get('history') @Permissions('email.manage') history(
-    @Query('siteId') s: string,
+    @Query() query: SiteIdQueryDto,
     @Req() r: FastifyRequest,
   ) {
-    return this.service.history(s, r.admin!.id);
+    return this.service.history(query.siteId, r.admin!.id);
   }
-  @Get('senders') @Permissions('email.manage') senders(@Query('siteId') s: string, @Req() r: FastifyRequest) { return this.service.senders(s, r.admin!.id); }
-  @Get('templates') @Permissions('email.manage') templates(@Query('siteId') s: string, @Req() r: FastifyRequest) { return this.service.templates(s, r.admin!.id); }
+  @Get('senders') @Permissions('email.manage') senders(
+    @Query() query: SiteIdQueryDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.service.senders(query.siteId, r.admin!.id);
+  }
+  @Get('templates') @Permissions('email.manage') templates(
+    @Query() query: SiteIdQueryDto,
+    @Req() r: FastifyRequest,
+  ) {
+    return this.service.templates(query.siteId, r.admin!.id);
+  }
 }

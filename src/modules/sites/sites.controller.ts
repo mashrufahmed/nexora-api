@@ -18,6 +18,11 @@ import { CreateDomainDto } from './dto/create-domain.dto.js';
 import { CreateSiteDto } from './dto/create-site.dto.js';
 import { UpdateSiteDto } from './dto/update-site.dto.js';
 import { SitesService } from './sites.service.js';
+import {
+  DomainParamDto,
+  IdParamDto,
+  SecretParamDto,
+} from '../../common/dto/resource-params.dto.js';
 
 @Controller('sites')
 export class SitesController {
@@ -41,51 +46,67 @@ export class SitesController {
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('site.manage')
   addDomain(
-    @Param('id') id: string,
+    @Param() params: IdParamDto,
     @Body() dto: CreateDomainDto,
     @Req() request: FastifyRequest,
   ) {
-    return this.sites.addDomain(id, dto, request.admin!.id);
+    return this.sites.addDomain(params.id, dto, request.admin!.id);
   }
 
   @Post(':id/secrets')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('site.manage')
-  createSecret(@Param('id') id: string, @Req() request: FastifyRequest) {
-    return this.sites.createSecret(id, request.admin!.id);
+  createSecret(@Param() params: IdParamDto, @Req() request: FastifyRequest) {
+    return this.sites.createSecret(params.id, request.admin!.id);
+  }
+
+  @Post(':id/secrets/rotate')
+  @UseGuards(AdminAuthGuard, PermissionGuard)
+  @Permissions('site.manage')
+  rotateSecret(@Param() params: IdParamDto, @Req() request: FastifyRequest) {
+    return this.sites.rotateSecret(params.id, request.admin!.id);
   }
 
   @Delete(':id/domains/:domainId')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('site.manage')
   removeDomain(
-    @Param('id') id: string,
-    @Param('domainId') domainId: string,
+    @Param() params: DomainParamDto,
     @Req() request: FastifyRequest,
   ) {
-    return this.sites.removeDomain(id, domainId, request.admin!.id);
+    return this.sites.removeDomain(
+      params.id,
+      params.domainId,
+      request.admin!.id,
+    );
   }
 
   @Patch(':id/domains/:domainId/primary')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('site.manage')
   primaryDomain(
-    @Param('id') id: string,
-    @Param('domainId') domainId: string,
+    @Param() params: DomainParamDto,
     @Req() request: FastifyRequest,
   ) {
-    return this.sites.setPrimaryDomain(id, domainId, request.admin!.id);
+    return this.sites.setPrimaryDomain(
+      params.id,
+      params.domainId,
+      request.admin!.id,
+    );
   }
 
   @Delete(':id/secrets/:secretId')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('site.manage')
   revokeSecret(
-    @Param('id') id: string,
-    @Param('secretId') secretId: string,
+    @Param() params: SecretParamDto,
     @Req() request: FastifyRequest,
   ) {
-    return this.sites.revokeSecret(id, secretId, request.admin!.id);
+    return this.sites.revokeSecret(
+      params.id,
+      params.secretId,
+      request.admin!.id,
+    );
   }
 
   @Get('resolve/hostname')
@@ -98,25 +119,25 @@ export class SitesController {
   @Get(':id')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('site.manage')
-  findOne(@Param('id') id: string, @Req() request: FastifyRequest) {
-    return this.sites.findOne(id, request.admin!.id);
+  findOne(@Param() params: IdParamDto, @Req() request: FastifyRequest) {
+    return this.sites.findOne(params.id, request.admin!.id);
   }
 
   @Patch(':id')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('site.update')
   update(
-    @Param('id') id: string,
+    @Param() params: IdParamDto,
     @Body() dto: UpdateSiteDto,
     @Req() request: FastifyRequest,
   ) {
-    return this.sites.update(id, dto, request.admin!.id);
+    return this.sites.update(params.id, dto, request.admin!.id);
   }
 
   @Delete(':id')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('site.delete')
-  remove(@Param('id') id: string, @Req() request: FastifyRequest) {
-    return this.sites.remove(id, request.admin!.id);
+  remove(@Param() params: IdParamDto, @Req() request: FastifyRequest) {
+    return this.sites.remove(params.id, request.admin!.id);
   }
 }

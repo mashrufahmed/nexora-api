@@ -1,11 +1,11 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 export class AnalyticsEventDto {
-  @IsString() siteId!: string;
+  @IsString() @MaxLength(100) siteId!: string;
   @IsEnum(['PAGE_VIEW', 'AFFILIATE_CLICK']) type!:
     'PAGE_VIEW' | 'AFFILIATE_CLICK';
-  @IsOptional() @IsString() path?: string;
-  @IsOptional() @IsString() entityType?: string;
-  @IsOptional() @IsString() entityId?: string;
-  @IsOptional() @IsString() referrer?: string;
-  @IsOptional() @IsString() userAgent?: string;
+  @IsOptional() @IsString() @MaxLength(2000) path?: string;
+  @IsOptional() @IsString() @MaxLength(100) entityType?: string;
+  @IsOptional() @IsString() @MaxLength(100) entityId?: string;
+  @IsOptional() @IsString() @MaxLength(2000) referrer?: string;
+  @IsOptional() @IsString() @MaxLength(500) userAgent?: string;
 }

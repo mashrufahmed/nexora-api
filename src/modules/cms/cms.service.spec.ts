@@ -7,6 +7,9 @@ function service(content: Record<string, unknown>) {
       findUnique: vi.fn().mockResolvedValue(content),
       update: vi.fn().mockResolvedValue({ id: 'content-1' }),
     },
+    mediaAsset: {
+      findMany: vi.fn().mockResolvedValue([]),
+    },
   };
   const audit = { log: vi.fn().mockResolvedValue(undefined) };
   const siteAccess = {
@@ -82,5 +85,35 @@ describe('CmsService content ownership', () => {
         'content.update.any',
       ]),
     ).resolves.toEqual({ id: 'content-1' });
+  });
+
+  it('rejects site-owned media from an unrelated publication site', async () => {
+    const ctx = service({
+      createdById: 'author-1',
+      status: 'DRAFT',
+      siteContents: [{ siteId: 'site-a' }],
+    });
+    ctx.prisma.mediaAsset.findMany.mockResolvedValue([
+      { id: 'media-1', siteId: 'site-b' },
+    ]);
+
+    await expect(
+      ctx.instance.updateContent(
+        'content-1',
+        {
+          sections: [
+            {
+              id: '00000000-0000-4000-8000-000000000001',
+              heading: 'Section',
+              anchor: 'section',
+              mediaAssetId: 'media-1',
+              body: { type: 'doc', content: [] },
+            },
+          ],
+        },
+        'author-1',
+        ['content.update'],
+      ),
+    ).rejects.toThrow('unavailable media');
   });
 });
