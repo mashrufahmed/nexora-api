@@ -17,13 +17,6 @@ export class UpdateSiteDto {
   name?: string;
 
   @IsOptional()
-  @IsString()
-  @MinLength(2)
-  @MaxLength(100)
-  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-  slug?: string;
-
-  @IsOptional()
   @IsEnum(SiteStatus)
   status?: SiteStatus;
 
@@ -34,4 +27,16 @@ export class UpdateSiteDto {
   @IsOptional()
   @IsObject()
   seoSettings?: Record<string, unknown>;
+
+  @IsOptional()
+  @IsString()
+  logoMediaId?: string | null;
+
+  @IsOptional()
+  @IsString()
+  darkLogoMediaId?: string | null;
+
+  @IsOptional()
+  @IsString()
+  faviconMediaId?: string | null;
 }

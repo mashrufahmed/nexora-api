@@ -19,4 +19,19 @@ export const AUDIT_ACTIONS = {
   ADMIN_LOGIN_SUCCESS: 'admin.login.success',
   ADMIN_LOGIN_FAILED: 'admin.login.failed',
   ADMIN_LOGOUT: 'admin.logout',
+
+  CONTENT_CREATED: 'content.created',
+  CONTENT_UPDATED: 'content.updated',
+  CONTENT_DELETED: 'content.deleted',
+  CONTENT_STATUS_CHANGED: 'content.status_changed',
+  CONTENT_PUBLISHED: 'content.published',
+  CONTENT_PUBLISHED_SCHEDULED: 'content.published_scheduled',
+  CATEGORY_CREATED: 'category.created',
+
+  SITE_CREATED: 'site.created',
+  SITE_UPDATED: 'site.updated',
+  SITE_DELETED: 'site.deleted',
+  SITE_DOMAIN_CREATED: 'site.domain.created',
+  SITE_SECRET_CREATED: 'site.secret.created',
+  SITE_SECRET_REVOKED: 'site.secret.revoked',
 } as const;

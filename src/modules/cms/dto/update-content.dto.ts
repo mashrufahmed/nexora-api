@@ -1,5 +1,5 @@
 import {
-  IsObject,
+  IsArray,
   IsOptional,
   IsString,
   MaxLength,
@@ -22,9 +22,9 @@ export class UpdateContentDto {
   @IsOptional()
   @IsString()
   @MaxLength(500)
-  excerpt?: string;
+  description?: string;
 
   @IsOptional()
-  @IsObject()
-  body?: Record<string, unknown>;
+  @IsArray()
+  sections?: unknown[];
 }

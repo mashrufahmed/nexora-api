@@ -13,6 +13,7 @@ import { Permissions } from '../rbac/decorators/permissions.decorator.js';
 import { PermissionGuard } from '../rbac/guards/permission.guard.js';
 import { AnalyticsService } from './analytics.service.js';
 import { AnalyticsEventDto } from './dto/analytics.dto.js';
+import { AnalyticsQueryDto } from './dto/analytics-query.dto.js';
 @Controller('analytics')
 export class AnalyticsController {
   constructor(private readonly analytics: AnalyticsService) {}
@@ -22,18 +23,16 @@ export class AnalyticsController {
   @Get('summary')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('analytics.read')
-  summary(@Query('siteId') s: string, @Req() r: FastifyRequest) {
-    return this.analytics.summary(s, r.admin!.id);
+  summary(@Query() query: AnalyticsQueryDto, @Req() r: FastifyRequest) {
+    return this.analytics.summary(query.siteId, r.admin!.id);
   }
   @Get('report')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('analytics.read')
   report(
-    @Query('siteId') s: string,
-    @Query('from') from: string | undefined,
-    @Query('to') to: string | undefined,
+    @Query() query: AnalyticsQueryDto,
     @Req() r: FastifyRequest,
   ) {
-    return this.analytics.report(s, r.admin!.id, from, to);
+    return this.analytics.report(query.siteId, r.admin!.id, query.from, query.to);
   }
 }

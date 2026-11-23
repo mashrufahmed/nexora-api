@@ -36,9 +36,8 @@ export type SiteSecretStatus = (typeof SiteSecretStatus)[keyof typeof SiteSecret
 
 export const ContentType = {
   ARTICLE: 'ARTICLE',
-  REVIEW: 'REVIEW',
-  GUIDE: 'GUIDE',
-  COMPARISON: 'COMPARISON'
+  NEWS: 'NEWS',
+  PAGE: 'PAGE'
 } as const
 
 export type ContentType = (typeof ContentType)[keyof typeof ContentType]
@@ -47,12 +46,19 @@ export type ContentType = (typeof ContentType)[keyof typeof ContentType]
 export const ContentStatus = {
   DRAFT: 'DRAFT',
   IN_REVIEW: 'IN_REVIEW',
+  APPROVED: 'APPROVED'
+} as const
+
+export type ContentStatus = (typeof ContentStatus)[keyof typeof ContentStatus]
+
+
+export const PublicationStatus = {
   SCHEDULED: 'SCHEDULED',
   PUBLISHED: 'PUBLISHED',
   ARCHIVED: 'ARCHIVED'
 } as const
 
-export type ContentStatus = (typeof ContentStatus)[keyof typeof ContentStatus]
+export type PublicationStatus = (typeof PublicationStatus)[keyof typeof PublicationStatus]
 
 
 export const ProductStatus = {
@@ -77,15 +83,6 @@ export const MediaStatus = {
 } as const
 
 export type MediaStatus = (typeof MediaStatus)[keyof typeof MediaStatus]
-
-
-export const PageTemplateStatus = {
-  DRAFT: 'DRAFT',
-  PUBLISHED: 'PUBLISHED',
-  ARCHIVED: 'ARCHIVED'
-} as const
-
-export type PageTemplateStatus = (typeof PageTemplateStatus)[keyof typeof PageTemplateStatus]
 
 
 export const AffiliateStatus = {

@@ -10,6 +10,7 @@ import { SiteAccessService } from '../site-access/site-access.service.js';
 import { AssignAuthorsDto } from './dto/assign-author.dto.js';
 import { CreateAuthorDto } from './dto/create-author.dto.js';
 import { UpdateAuthorDto } from './dto/update-author.dto.js';
+import { AuthorListQueryDto } from './dto/author-list-query.dto.js';
 
 @Injectable()
 export class AuthorsService {
@@ -59,14 +60,16 @@ export class AuthorsService {
       throw error;
     }
   }
-  async list(adminId: string, siteId?: string) {
-    await this.access(adminId, siteId);
-    return this.prisma.author.findMany({
-      where: siteId === undefined
-        ? { site: await this.siteAccess.accessibleSiteWhere(adminId) }
-        : { siteId },
-      orderBy: { name: 'asc' },
-    });
+  async list(adminId: string, query: AuthorListQueryDto = new AuthorListQueryDto()) {
+    await this.access(adminId, query.siteId);
+    const where = query.siteId === undefined
+      ? { site: await this.siteAccess.accessibleSiteWhere(adminId), ...(query.search && { OR: [{ name: { contains: query.search, mode: 'insensitive' as const } }, { slug: { contains: query.search, mode: 'insensitive' as const } }] }) }
+      : { siteId: query.siteId, ...(query.search && { OR: [{ name: { contains: query.search, mode: 'insensitive' as const } }, { slug: { contains: query.search, mode: 'insensitive' as const } }] }) };
+    const [items, total] = await Promise.all([
+      this.prisma.author.findMany({ where, orderBy: { name: 'asc' }, skip: (query.page - 1) * query.limit, take: query.limit }),
+      this.prisma.author.count({ where }),
+    ]);
+    return { items, page: query.page, limit: query.limit, total, totalPages: Math.ceil(total / query.limit) };
   }
   async update(id: string, dto: UpdateAuthorDto, adminId: string) {
     const current = await this.prisma.author.findUnique({

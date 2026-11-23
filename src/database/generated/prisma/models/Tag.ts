@@ -192,6 +192,7 @@ export type TagWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Tag"> | Date | string
   site?: Prisma.XOR<Prisma.SiteScalarRelationFilter, Prisma.SiteWhereInput>
   contents?: Prisma.SiteContentTagListRelationFilter
+  affiliateLinks?: Prisma.AffiliateLinkListRelationFilter
 }
 
 export type TagOrderByWithRelationInput = {
@@ -203,6 +204,7 @@ export type TagOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   site?: Prisma.SiteOrderByWithRelationInput
   contents?: Prisma.SiteContentTagOrderByRelationAggregateInput
+  affiliateLinks?: Prisma.AffiliateLinkOrderByRelationAggregateInput
 }
 
 export type TagWhereUniqueInput = Prisma.AtLeast<{
@@ -218,6 +220,7 @@ export type TagWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Tag"> | Date | string
   site?: Prisma.XOR<Prisma.SiteScalarRelationFilter, Prisma.SiteWhereInput>
   contents?: Prisma.SiteContentTagListRelationFilter
+  affiliateLinks?: Prisma.AffiliateLinkListRelationFilter
 }, "id" | "siteId_slug">
 
 export type TagOrderByWithAggregationInput = {
@@ -252,6 +255,7 @@ export type TagCreateInput = {
   updatedAt?: Date | string
   site: Prisma.SiteCreateNestedOneWithoutTagsInput
   contents?: Prisma.SiteContentTagCreateNestedManyWithoutTagInput
+  affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutTagInput
 }
 
 export type TagUncheckedCreateInput = {
@@ -262,6 +266,7 @@ export type TagUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contents?: Prisma.SiteContentTagUncheckedCreateNestedManyWithoutTagInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutTagInput
 }
 
 export type TagUpdateInput = {
@@ -272,6 +277,7 @@ export type TagUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   site?: Prisma.SiteUpdateOneRequiredWithoutTagsNestedInput
   contents?: Prisma.SiteContentTagUpdateManyWithoutTagNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutTagNestedInput
 }
 
 export type TagUncheckedUpdateInput = {
@@ -282,6 +288,7 @@ export type TagUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contents?: Prisma.SiteContentTagUncheckedUpdateManyWithoutTagNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutTagNestedInput
 }
 
 export type TagCreateManyInput = {
@@ -357,6 +364,11 @@ export type TagScalarRelationFilter = {
   isNot?: Prisma.TagWhereInput
 }
 
+export type TagNullableScalarRelationFilter = {
+  is?: Prisma.TagWhereInput | null
+  isNot?: Prisma.TagWhereInput | null
+}
+
 export type TagCreateNestedManyWithoutSiteInput = {
   create?: Prisma.XOR<Prisma.TagCreateWithoutSiteInput, Prisma.TagUncheckedCreateWithoutSiteInput> | Prisma.TagCreateWithoutSiteInput[] | Prisma.TagUncheckedCreateWithoutSiteInput[]
   connectOrCreate?: Prisma.TagCreateOrConnectWithoutSiteInput | Prisma.TagCreateOrConnectWithoutSiteInput[]
@@ -413,6 +425,22 @@ export type TagUpdateOneRequiredWithoutContentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TagUpdateToOneWithWhereWithoutContentsInput, Prisma.TagUpdateWithoutContentsInput>, Prisma.TagUncheckedUpdateWithoutContentsInput>
 }
 
+export type TagCreateNestedOneWithoutAffiliateLinksInput = {
+  create?: Prisma.XOR<Prisma.TagCreateWithoutAffiliateLinksInput, Prisma.TagUncheckedCreateWithoutAffiliateLinksInput>
+  connectOrCreate?: Prisma.TagCreateOrConnectWithoutAffiliateLinksInput
+  connect?: Prisma.TagWhereUniqueInput
+}
+
+export type TagUpdateOneWithoutAffiliateLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.TagCreateWithoutAffiliateLinksInput, Prisma.TagUncheckedCreateWithoutAffiliateLinksInput>
+  connectOrCreate?: Prisma.TagCreateOrConnectWithoutAffiliateLinksInput
+  upsert?: Prisma.TagUpsertWithoutAffiliateLinksInput
+  disconnect?: Prisma.TagWhereInput | boolean
+  delete?: Prisma.TagWhereInput | boolean
+  connect?: Prisma.TagWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TagUpdateToOneWithWhereWithoutAffiliateLinksInput, Prisma.TagUpdateWithoutAffiliateLinksInput>, Prisma.TagUncheckedUpdateWithoutAffiliateLinksInput>
+}
+
 export type TagCreateWithoutSiteInput = {
   id?: string
   name: string
@@ -420,6 +448,7 @@ export type TagCreateWithoutSiteInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contents?: Prisma.SiteContentTagCreateNestedManyWithoutTagInput
+  affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutTagInput
 }
 
 export type TagUncheckedCreateWithoutSiteInput = {
@@ -429,6 +458,7 @@ export type TagUncheckedCreateWithoutSiteInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contents?: Prisma.SiteContentTagUncheckedCreateNestedManyWithoutTagInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutTagInput
 }
 
 export type TagCreateOrConnectWithoutSiteInput = {
@@ -476,6 +506,7 @@ export type TagCreateWithoutContentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   site: Prisma.SiteCreateNestedOneWithoutTagsInput
+  affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutTagInput
 }
 
 export type TagUncheckedCreateWithoutContentsInput = {
@@ -485,6 +516,7 @@ export type TagUncheckedCreateWithoutContentsInput = {
   slug: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutTagInput
 }
 
 export type TagCreateOrConnectWithoutContentsInput = {
@@ -510,6 +542,7 @@ export type TagUpdateWithoutContentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   site?: Prisma.SiteUpdateOneRequiredWithoutTagsNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutTagNestedInput
 }
 
 export type TagUncheckedUpdateWithoutContentsInput = {
@@ -519,6 +552,63 @@ export type TagUncheckedUpdateWithoutContentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutTagNestedInput
+}
+
+export type TagCreateWithoutAffiliateLinksInput = {
+  id?: string
+  name: string
+  slug: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  site: Prisma.SiteCreateNestedOneWithoutTagsInput
+  contents?: Prisma.SiteContentTagCreateNestedManyWithoutTagInput
+}
+
+export type TagUncheckedCreateWithoutAffiliateLinksInput = {
+  id?: string
+  siteId: string
+  name: string
+  slug: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contents?: Prisma.SiteContentTagUncheckedCreateNestedManyWithoutTagInput
+}
+
+export type TagCreateOrConnectWithoutAffiliateLinksInput = {
+  where: Prisma.TagWhereUniqueInput
+  create: Prisma.XOR<Prisma.TagCreateWithoutAffiliateLinksInput, Prisma.TagUncheckedCreateWithoutAffiliateLinksInput>
+}
+
+export type TagUpsertWithoutAffiliateLinksInput = {
+  update: Prisma.XOR<Prisma.TagUpdateWithoutAffiliateLinksInput, Prisma.TagUncheckedUpdateWithoutAffiliateLinksInput>
+  create: Prisma.XOR<Prisma.TagCreateWithoutAffiliateLinksInput, Prisma.TagUncheckedCreateWithoutAffiliateLinksInput>
+  where?: Prisma.TagWhereInput
+}
+
+export type TagUpdateToOneWithWhereWithoutAffiliateLinksInput = {
+  where?: Prisma.TagWhereInput
+  data: Prisma.XOR<Prisma.TagUpdateWithoutAffiliateLinksInput, Prisma.TagUncheckedUpdateWithoutAffiliateLinksInput>
+}
+
+export type TagUpdateWithoutAffiliateLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  site?: Prisma.SiteUpdateOneRequiredWithoutTagsNestedInput
+  contents?: Prisma.SiteContentTagUpdateManyWithoutTagNestedInput
+}
+
+export type TagUncheckedUpdateWithoutAffiliateLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  siteId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contents?: Prisma.SiteContentTagUncheckedUpdateManyWithoutTagNestedInput
 }
 
 export type TagCreateManySiteInput = {
@@ -536,6 +626,7 @@ export type TagUpdateWithoutSiteInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contents?: Prisma.SiteContentTagUpdateManyWithoutTagNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutTagNestedInput
 }
 
 export type TagUncheckedUpdateWithoutSiteInput = {
@@ -545,6 +636,7 @@ export type TagUncheckedUpdateWithoutSiteInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contents?: Prisma.SiteContentTagUncheckedUpdateManyWithoutTagNestedInput
+  affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutTagNestedInput
 }
 
 export type TagUncheckedUpdateManyWithoutSiteInput = {
@@ -562,10 +654,12 @@ export type TagUncheckedUpdateManyWithoutSiteInput = {
 
 export type TagCountOutputType = {
   contents: number
+  affiliateLinks: number
 }
 
 export type TagCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contents?: boolean | TagCountOutputTypeCountContentsArgs
+  affiliateLinks?: boolean | TagCountOutputTypeCountAffiliateLinksArgs
 }
 
 /**
@@ -585,6 +679,13 @@ export type TagCountOutputTypeCountContentsArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.SiteContentTagWhereInput
 }
 
+/**
+ * TagCountOutputType without action
+ */
+export type TagCountOutputTypeCountAffiliateLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AffiliateLinkWhereInput
+}
+
 
 export type TagSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -595,6 +696,7 @@ export type TagSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   updatedAt?: boolean
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
   contents?: boolean | Prisma.Tag$contentsArgs<ExtArgs>
+  affiliateLinks?: boolean | Prisma.Tag$affiliateLinksArgs<ExtArgs>
   _count?: boolean | Prisma.TagCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tag"]>
 
@@ -631,6 +733,7 @@ export type TagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
 export type TagInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
   contents?: boolean | Prisma.Tag$contentsArgs<ExtArgs>
+  affiliateLinks?: boolean | Prisma.Tag$affiliateLinksArgs<ExtArgs>
   _count?: boolean | Prisma.TagCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TagIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -645,6 +748,7 @@ export type $TagPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   objects: {
     site: Prisma.$SitePayload<ExtArgs>
     contents: Prisma.$SiteContentTagPayload<ExtArgs>[]
+    affiliateLinks: Prisma.$AffiliateLinkPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1049,6 +1153,7 @@ export interface Prisma__TagClient<T, Null = never, ExtArgs extends runtime.Type
   readonly [Symbol.toStringTag]: "PrismaPromise"
   site<T extends Prisma.SiteDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SiteDefaultArgs<ExtArgs>>): Prisma.Prisma__SiteClient<runtime.Types.Result.GetResult<Prisma.$SitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contents<T extends Prisma.Tag$contentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tag$contentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SiteContentTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  affiliateLinks<T extends Prisma.Tag$affiliateLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tag$affiliateLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AffiliateLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1506,6 +1611,30 @@ export type Tag$contentsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.SiteContentTagScalarFieldEnum | Prisma.SiteContentTagScalarFieldEnum[]
+}
+
+/**
+ * Tag.affiliateLinks
+ */
+export type Tag$affiliateLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AffiliateLink
+   */
+  select?: Prisma.AffiliateLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AffiliateLink
+   */
+  omit?: Prisma.AffiliateLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateLinkInclude<ExtArgs> | null
+  where?: Prisma.AffiliateLinkWhereInput
+  orderBy?: Prisma.AffiliateLinkOrderByWithRelationInput | Prisma.AffiliateLinkOrderByWithRelationInput[]
+  cursor?: Prisma.AffiliateLinkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AffiliateLinkScalarFieldEnum | Prisma.AffiliateLinkScalarFieldEnum[]
 }
 
 /**

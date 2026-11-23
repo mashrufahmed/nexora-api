@@ -38,6 +38,11 @@ export type Site = Prisma.SiteModel
  */
 export type Content = Prisma.ContentModel
 /**
+ * Model ContentRevision
+ * 
+ */
+export type ContentRevision = Prisma.ContentRevisionModel
+/**
  * Model Author
  * 
  */
@@ -52,16 +57,6 @@ export type ContentAuthor = Prisma.ContentAuthorModel
  * 
  */
 export type MediaAsset = Prisma.MediaAssetModel
-/**
- * Model PageTemplate
- * 
- */
-export type PageTemplate = Prisma.PageTemplateModel
-/**
- * Model PageTemplateRevision
- * 
- */
-export type PageTemplateRevision = Prisma.PageTemplateRevisionModel
 /**
  * Model Category
  * 

@@ -55,6 +55,9 @@ class EnvironmentVariables {
   S3_PUBLIC_BASE_URL: string = '';
 
   @IsString()
+  PUBLIC_SERVICE_KEY: string = '';
+
+  @IsString()
   DATABASE_URL: string;
 
   @IsString()

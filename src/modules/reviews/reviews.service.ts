@@ -167,11 +167,14 @@ export class ReviewsService {
   async createReview(dto: CreateReviewDto, adminId: string) {
     const calculated = await this.scoreReview(dto.scores, dto.siteProductId);
     await this.assertSiteAccess(adminId, calculated.product.siteId);
+    const authorId = dto.authorId ?? adminId;
+    const author = await this.prisma.author.findFirst({ where: { id: authorId, OR: [{ siteId: calculated.product.siteId }, { siteId: null }] }, select: { id: true } });
+    if (!author) throw new BadRequestException('Author does not belong to the product site');
     const review = await this.prisma.$transaction(async (tx) =>
       tx.review.create({
         data: {
           siteProductId: dto.siteProductId,
-          authorId: adminId,
+          authorId,
           title: dto.title.trim(),
           verdict: dto.verdict?.trim(),
           body: this.jsonValue(dto.body),
@@ -241,6 +244,8 @@ export class ReviewsService {
     });
     if (!existing) throw new NotFoundException('Review not found');
     await this.assertSiteAccess(adminId, existing.siteProduct.siteId);
+    const current = await this.prisma.review.findUnique({ where: { id }, select: { status: true } });
+    if (current?.status === 'PUBLISHED' || current?.status === 'ARCHIVED') throw new BadRequestException('Published or archived reviews cannot be edited');
     let scoreData:
       { overallScore: number; scores: CreateReviewDto['scores'] } | undefined;
     if (dto.scores) {

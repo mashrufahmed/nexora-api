@@ -1,4 +1,5 @@
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
+import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
@@ -20,21 +21,19 @@ import { EmailManagementModule } from './modules/email-management/email-manageme
 import { GuidesModule } from './modules/guides/guides.module.js';
 import { MediaModule } from './modules/media/media.module.js';
 import { NewsletterModule } from './modules/newsletter/newsletter.module.js';
-import { PageBuilderModule } from './modules/page-builder/page-builder.module.js';
 import { ProductsModule } from './modules/products/products.module.js';
+import { PublicModule } from './modules/public/public.module.js';
 import { PublishingModule } from './modules/publishing/publishing.module.js';
 import { RbacModule } from './modules/rbac/rbac.module.js';
 import { ReviewsModule } from './modules/reviews/reviews.module.js';
-import { SitesModule } from './modules/sites/sites.module.js';
 import { SiteAccessModule } from './modules/site-access/site-access.module.js';
+import { SitesModule } from './modules/sites/sites.module.js';
 import { TagsRedirectsModule } from './modules/tags-redirects/tags-redirects.module.js';
 import { VerificationModule } from './modules/verification/verification.module.js';
+import { QueueModule } from './queue/queue.module.js';
 import { RedisModule } from './redis/redis.module.js';
 import { RedisService } from './redis/redis.service.js';
 import { StorageModule } from './storage/storage.module.js';
-import { BullModule } from '@nestjs/bullmq';
-import { QueueModule } from './queue/queue.module.js';
-import { PublicModule } from './modules/public/public.module.js';
 
 @Module({
   imports: [
@@ -90,7 +89,9 @@ import { PublicModule } from './modules/public/public.module.js';
     DatabaseModule,
     RedisModule,
     StorageModule,
-    BullModule.forRoot({ connection: { url: process.env.REDIS_URL ?? 'redis://localhost:6379' } }),
+    BullModule.forRoot({
+      connection: { url: process.env.REDIS_URL ?? 'redis://localhost:6379' },
+    }),
     QueueModule,
     PublicModule,
     MailModule,
@@ -104,7 +105,6 @@ import { PublicModule } from './modules/public/public.module.js';
     ReviewsModule,
     MediaModule,
     AuthorsModule,
-    PageBuilderModule,
     AffiliateModule,
     GuidesModule,
     VerificationModule,

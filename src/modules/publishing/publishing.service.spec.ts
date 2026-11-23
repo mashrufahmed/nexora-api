@@ -17,6 +17,6 @@ describe('PublishingService', () => {
     const prisma = { siteContent: { findUnique: vi.fn(async () => ({ id: 'site-content-1', status: 'DRAFT', scheduledAt: null })) }, $transaction: vi.fn(async (callback: (value: typeof tx) => unknown) => callback(tx)) } as never;
     const service = new PublishingService(prisma, audit, { add } as never, access);
     await expect(service.scheduleContent('content-1', 'site-1', new Date(Date.now() + 60_000).toISOString(), 'admin-1')).resolves.toMatchObject({ id: 'site-content-1' });
-    expect(add).toHaveBeenCalledWith('publish-due', { limit: 100 }, expect.objectContaining({ delay: expect.any(Number) }));
+    expect(add).toHaveBeenCalledWith('publish-due', { limit: 100, siteContentId: 'site-content-1' }, expect.objectContaining({ delay: expect.any(Number), jobId: 'publish-due:site-content-1' }));
   });
 });

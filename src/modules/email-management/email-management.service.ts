@@ -72,7 +72,7 @@ export class EmailManagementService {
         htmlBody: html,
       },
     });
-    await this.emailQueue.add('send', { emailMessageId: msg.id }, { attempts: 3, backoff: { type: 'exponential', delay: 1000 }, removeOnComplete: true, removeOnFail: 1000 });
+    await this.emailQueue.add('send', { emailMessageId: msg.id }, { jobId: `email-send:${msg.id}`, attempts: 3, backoff: { type: 'exponential', delay: 1000 }, removeOnComplete: true, removeOnFail: 1000 });
     await this.audit.log({ actorAdminId: uid, action: 'email.queued', entityType: 'email_message', entityId: msg.id });
     return msg;
   }
@@ -85,5 +85,5 @@ export class EmailManagementService {
   }
   async senders(siteId: string, uid: string) { await this.access(uid, siteId); return this.prisma.emailSender.findMany({ where: { siteId }, orderBy: { name: 'asc' } }); }
   async templates(siteId: string, uid: string) { await this.access(uid, siteId); return this.prisma.emailTemplate.findMany({ where: { siteId }, orderBy: { name: 'asc' } }); }
-  async deliver(id: string) { const message = await this.prisma.emailMessage.findUnique({ where: { id } }); if (!message) throw new NotFoundException('Email message not found'); try { await this.mail.sendMail({ to: message.recipient, subject: message.subject, html: message.htmlBody }); const sent = await this.prisma.emailMessage.update({ where: { id }, data: { status: 'SENT', sentAt: new Date(), error: null } }); await this.audit.log({ action: 'email.sent', entityType: 'email_message', entityId: id }); return sent; } catch (e) { await this.prisma.emailMessage.update({ where: { id }, data: { status: 'FAILED', error: e instanceof Error ? e.message.slice(0, 500) : 'Delivery failed' } }); throw e; } }
+  async deliver(id: string) { const message = await this.prisma.emailMessage.findUnique({ where: { id } }); if (!message) throw new NotFoundException('Email message not found'); if (message.status === 'SENT') return message; try { await this.mail.sendMail({ to: message.recipient, subject: message.subject, html: message.htmlBody }); const sent = await this.prisma.emailMessage.updateMany({ where: { id, status: { not: 'SENT' } }, data: { status: 'SENT', sentAt: new Date(), error: null } }); await this.audit.log({ action: 'email.sent', entityType: 'email_message', entityId: id }); return sent; } catch (e) { await this.prisma.emailMessage.update({ where: { id }, data: { status: 'FAILED', error: e instanceof Error ? e.message.slice(0, 500) : 'Delivery failed' } }); throw e; } }
 }

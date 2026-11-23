@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { Prisma } from '../../database/generated/prisma/client.js';
 import { PrismaService } from '../../database/prisma.service.js';
 import { AuditService } from '../audit/audit.service.js';
@@ -66,6 +66,8 @@ export class AffiliateService {
   }
   async createLink(dto: AffiliateLinkDto, adminId: string) {
     await this.access(adminId, dto.siteId);
+    const destinationUrl = this.safeUrl(dto.destinationUrl, 'Destination URL');
+    const trackingUrl = dto.trackingUrl ? this.safeUrl(dto.trackingUrl, 'Tracking URL') : undefined;
     if (
       dto.siteProductId &&
       !(await this.prisma.siteProduct.findFirst({
@@ -83,13 +85,25 @@ export class AffiliateService {
       }))
     )
       throw new BadRequestException('Merchant not found');
+    let tagId = dto.tagId;
+    if (tagId) {
+      const tag = await this.prisma.tag.findFirst({ where: { id: tagId, siteId: dto.siteId }, select: { id: true } });
+      if (!tag) throw new BadRequestException('Tag does not belong to this site');
+    } else {
+      const site = await this.prisma.site.findUnique({ where: { id: dto.siteId }, select: { settings: true } });
+      const settings = site?.settings && typeof site.settings === 'object' && !Array.isArray(site.settings) ? site.settings as Record<string, unknown> : {};
+      const affiliate = settings.affiliate && typeof settings.affiliate === 'object' && !Array.isArray(settings.affiliate) ? settings.affiliate as Record<string, unknown> : {};
+      const defaultTag = typeof affiliate.defaultTag === 'string' ? affiliate.defaultTag : undefined;
+      if (defaultTag) tagId = (await this.prisma.tag.findFirst({ where: { siteId: dto.siteId, slug: defaultTag }, select: { id: true } }))?.id;
+    }
     const link = await this.prisma.affiliateLink.create({
       data: {
         siteId: dto.siteId,
         siteProductId: dto.siteProductId,
         merchantId: dto.merchantId,
-        destinationUrl: this.safeUrl(dto.destinationUrl, 'Destination URL'),
-        trackingUrl: dto.trackingUrl ? this.safeUrl(dto.trackingUrl, 'Tracking URL') : undefined,
+        destinationUrl,
+        trackingUrl,
+        tagId,
         status: dto.status,
       },
     });
@@ -131,6 +145,7 @@ export class AffiliateService {
         'Site product does not belong to this site',
       );
     if (dto.merchantId && !(await this.prisma.merchant.findUnique({ where: { id: dto.merchantId }, select: { id: true } }))) throw new BadRequestException('Merchant not found');
+    if (dto.tagId && !(await this.prisma.tag.findFirst({ where: { id: dto.tagId, siteId: current.siteId }, select: { id: true } }))) throw new BadRequestException('Tag does not belong to this site');
     const link = await this.prisma.affiliateLink.update({
       where: { id },
       data: {
@@ -138,6 +153,7 @@ export class AffiliateService {
           siteProductId: dto.siteProductId,
         }),
         ...(dto.merchantId !== undefined && { merchantId: dto.merchantId }),
+        ...(dto.tagId !== undefined && { tagId: dto.tagId }),
         ...(dto.destinationUrl !== undefined && {
           destinationUrl: this.safeUrl(dto.destinationUrl, 'Destination URL'),
         }),
@@ -175,6 +191,7 @@ export class AffiliateService {
       select: { id: true, siteId: true, destinationUrl: true },
     });
     if (!link) throw new NotFoundException('Affiliate link not found');
+    const dedupeKey = randomUUID();
     await this.clickQueue.add(
       'record',
       {
@@ -184,8 +201,9 @@ export class AffiliateService {
         userAgentHash: userAgent
           ? createHash('sha256').update(userAgent).digest('hex')
           : undefined,
+        dedupeKey,
       },
-      { removeOnComplete: true, removeOnFail: 1000, attempts: 3, backoff: { type: 'exponential', delay: 1000 } },
+      { jobId: `affiliate-click:${dedupeKey}`, removeOnComplete: true, removeOnFail: 1000, attempts: 3, backoff: { type: 'exponential', delay: 1000 } },
     );
     return { url: link.destinationUrl };
   }
@@ -194,7 +212,9 @@ export class AffiliateService {
     siteId: string;
     referrer?: string;
     userAgentHash?: string;
+    dedupeKey?: string;
   }) {
-    return this.prisma.affiliateClick.create({ data });
+    const dedupeKey = data.dedupeKey ?? randomUUID();
+    return this.prisma.affiliateClick.upsert({ where: { dedupeKey }, create: { ...data, dedupeKey }, update: {} });
   }
 }

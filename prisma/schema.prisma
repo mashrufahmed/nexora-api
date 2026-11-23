@@ -33,14 +33,17 @@ enum SiteSecretStatus {
 
 enum ContentType {
   ARTICLE
-  REVIEW
-  GUIDE
-  COMPARISON
+  NEWS
+  PAGE
 }
 
 enum ContentStatus {
   DRAFT
   IN_REVIEW
+  APPROVED
+}
+
+enum PublicationStatus {
   SCHEDULED
   PUBLISHED
   ARCHIVED
@@ -59,12 +62,6 @@ enum AuthorStatus {
 enum MediaStatus {
   ACTIVE
   DELETED
-}
-
-enum PageTemplateStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
 }
 
 enum AffiliateStatus {
@@ -120,6 +117,8 @@ model AdminUser {
   updatedAt       DateTime         @updatedAt @map("updated_at")
   roles           AdminRole[]
   siteAccess      UserSiteAccess[]
+  createdContent  Content[]        @relation("ContentCreator")
+  contentRevisions ContentRevision[]
   auditLogs       AuditLog[]       @relation("AuditActor")
   sessionVersion  Int              @default(0) @map("session_version")
 
@@ -133,6 +132,7 @@ model Site {
   slug            String                 @unique
   status          SiteStatus             @default(INACTIVE)
   logoMediaId     String?                @map("logo_media_id")
+  darkLogoMediaId String?                @map("dark_logo_media_id")
   faviconMediaId  String?                @map("favicon_media_id")
   settings        Json?
   seoSettings     Json?                  @map("seo_settings")
@@ -147,7 +147,6 @@ model Site {
   reviewCriteria  ReviewScoreCriterion[]
   mediaAssets     MediaAsset[]
   authors         Author[]
-  pageTemplates   PageTemplate[]
   affiliateLinks  AffiliateLink[]
   guides          BuyingGuide[]
   comparisons     Comparison[]
@@ -169,17 +168,42 @@ model Content {
   type            ContentType
   title           String
   slug            String
-  excerpt         String?
-  body            Json?
+  createdById     String?         @map("created_by_id")
+  description     String?
+  sections        Json?
+  reviewNote      String?         @map("review_note")
+  deletedAt       DateTime?       @map("deleted_at")
   featuredMediaId String?         @map("featured_media_id")
   status          ContentStatus   @default(DRAFT)
   createdAt       DateTime        @default(now()) @map("created_at")
   updatedAt       DateTime        @updatedAt @map("updated_at")
   authors         ContentAuthor[]
   siteContents    SiteContent[]
+  revisions       ContentRevision[]
+  createdBy       AdminUser?      @relation("ContentCreator", fields: [createdById], references: [id], onDelete: SetNull)
 
   @@index([status])
+  @@index([createdById])
+  @@index([deletedAt])
   @@map("contents")
+}
+
+model ContentRevision {
+  id             String   @id @default(nanoid())
+  contentId      String   @map("content_id")
+  revisionNumber Int      @map("revision_number")
+  title          String
+  description    String?
+  sections       Json?
+  note           String?
+  createdById    String?  @map("created_by_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  content        Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  createdBy      AdminUser? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@unique([contentId, revisionNumber])
+  @@index([contentId, createdAt])
+  @@map("content_revisions")
 }
 
 model Author {
@@ -241,50 +265,18 @@ model MediaAsset {
   @@map("media_assets")
 }
 
-model PageTemplate {
-  id                String                 @id @default(nanoid())
-  siteId            String                 @map("site_id")
-  name              String
-  type              String
-  status            PageTemplateStatus     @default(DRAFT)
-  currentRevisionId String?                @map("current_revision_id")
-  createdAt         DateTime               @default(now()) @map("created_at")
-  updatedAt         DateTime               @updatedAt @map("updated_at")
-  site              Site                   @relation(fields: [siteId], references: [id], onDelete: Cascade)
-  revisions         PageTemplateRevision[]
-
-  @@unique([siteId, name])
-  @@index([siteId, type, status])
-  @@map("page_templates")
-}
-
-model PageTemplateRevision {
-  id             String       @id @default(nanoid())
-  pageTemplateId String       @map("page_template_id")
-  revisionNumber Int          @map("revision_number")
-  config         Json
-  createdBy      String       @map("created_by")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  publishedAt    DateTime?    @map("published_at")
-  pageTemplate   PageTemplate @relation(fields: [pageTemplateId], references: [id], onDelete: Cascade)
-
-  @@unique([pageTemplateId, revisionNumber])
-  @@index([pageTemplateId, publishedAt])
-  @@map("page_template_revisions")
-}
-
 model Category {
-  id        String                @id @default(nanoid())
-  siteId    String                @map("site_id")
-  name      String
-  slug      String
-  parentId  String?               @map("parent_id")
-  createdAt DateTime              @default(now()) @map("created_at")
-  updatedAt DateTime              @updatedAt @map("updated_at")
-  site      Site                  @relation(fields: [siteId], references: [id], onDelete: Cascade)
-  parent    Category?             @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
-  children  Category[]            @relation("CategoryTree")
-  contents  SiteContentCategory[]
+  id                String                @id @default(nanoid())
+  siteId            String                @map("site_id")
+  name              String
+  slug              String
+  parentId          String?               @map("parent_id")
+  createdAt         DateTime              @default(now()) @map("created_at")
+  updatedAt         DateTime              @updatedAt @map("updated_at")
+  site              Site                  @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  parent            Category?             @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children          Category[]            @relation("CategoryTree")
+  contents          SiteContentCategory[]
   productCategories ProductCategory[]
 
   @@unique([siteId, slug])
@@ -300,7 +292,8 @@ model SiteContent {
   titleOverride   String?               @map("title_override")
   excerptOverride String?               @map("excerpt_override")
   seoMetadata     Json?                 @map("seo_metadata")
-  status          ContentStatus         @default(DRAFT)
+  status          PublicationStatus     @default(PUBLISHED)
+  isFeatured      Boolean               @default(false) @map("is_featured")
   publishedAt     DateTime?             @map("published_at")
   scheduledAt     DateTime?             @map("scheduled_at")
   createdAt       DateTime              @default(now()) @map("created_at")
@@ -325,6 +318,7 @@ model Tag {
   updatedAt DateTime         @updatedAt @map("updated_at")
   site      Site             @relation(fields: [siteId], references: [id], onDelete: Cascade)
   contents  SiteContentTag[]
+  affiliateLinks AffiliateLink[]
 
   @@unique([siteId, slug])
   @@map("tags")
@@ -527,12 +521,12 @@ model SiteProduct {
 }
 
 model ProductCategory {
-  id           String      @id @default(nanoid())
-  siteProductId String     @map("site_product_id")
-  categoryId   String      @map("category_id")
-  position     Int         @default(0)
-  siteProduct  SiteProduct @relation(fields: [siteProductId], references: [id], onDelete: Cascade)
-  category     Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  id            String      @id @default(nanoid())
+  siteProductId String      @map("site_product_id")
+  categoryId    String      @map("category_id")
+  position      Int         @default(0)
+  siteProduct   SiteProduct @relation(fields: [siteProductId], references: [id], onDelete: Cascade)
+  category      Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@unique([siteProductId, categoryId])
   @@index([categoryId])
@@ -559,15 +553,18 @@ model AffiliateLink {
   merchantId     String           @map("merchant_id")
   destinationUrl String           @map("destination_url")
   trackingUrl    String?          @map("tracking_url")
+  tagId          String?          @map("tag_id")
   status         AffiliateStatus  @default(INACTIVE)
   createdAt      DateTime         @default(now()) @map("created_at")
   updatedAt      DateTime         @updatedAt @map("updated_at")
   site           Site             @relation(fields: [siteId], references: [id], onDelete: Cascade)
   siteProduct    SiteProduct?     @relation(fields: [siteProductId], references: [id], onDelete: SetNull)
   merchant       Merchant         @relation(fields: [merchantId], references: [id], onDelete: Restrict)
+  tag            Tag?             @relation(fields: [tagId], references: [id], onDelete: SetNull)
   clicks         AffiliateClick[]
 
   @@index([siteId, status])
+  @@index([tagId])
   @@map("affiliate_links")
 }
 
@@ -578,6 +575,7 @@ model AffiliateClick {
   clickedAt       DateTime      @default(now()) @map("clicked_at")
   referrer        String?
   userAgentHash   String?       @map("user_agent_hash")
+  dedupeKey       String        @unique @map("dedupe_key")
   link            AffiliateLink @relation(fields: [affiliateLinkId], references: [id], onDelete: Cascade)
   site            Site          @relation(fields: [siteId], references: [id], onDelete: Cascade)
 

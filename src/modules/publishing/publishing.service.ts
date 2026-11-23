@@ -33,18 +33,17 @@ export class PublishingService {
     });
     if (!siteContent)
       throw new BadRequestException('Content is not published for this site');
-    if (!['IN_REVIEW', 'DRAFT'].includes(siteContent.status))
-      throw new BadRequestException('Only draft or review content can be scheduled');
+    if (!['DRAFT', 'IN_REVIEW', 'PUBLISHED'].includes(siteContent.status))
+      throw new BadRequestException('Only draft, review, or published content can be scheduled');
     if (siteContent.scheduledAt)
       throw new BadRequestException('Content is already scheduled for this site');
     const result = await this.prisma.$transaction(async (tx) => {
-      await tx.content.update({ where: { id }, data: { status: 'SCHEDULED' } });
       return tx.siteContent.update({
         where: { id: siteContent.id },
         data: { status: 'SCHEDULED', scheduledAt: date },
       });
     });
-    await this.queue.add('publish-due', { limit: 100 }, { delay: Math.max(0, date.getTime() - Date.now()), removeOnComplete: true, removeOnFail: 1000 });
+    await this.queue.add('publish-due', { siteContentId: result.id, limit: 100 }, { jobId: `publish-due:${result.id}`, delay: Math.max(0, date.getTime() - Date.now()), removeOnComplete: true, removeOnFail: 1000 });
     await this.audit.log({
       actorAdminId: uid,
       action: 'content.scheduled',
@@ -61,18 +60,15 @@ export class PublishingService {
     });
     for (const item of due)
       await this.prisma.$transaction(async (tx) => {
-        await tx.siteContent.update({
-          where: { id: item.id },
+        const updated = await tx.siteContent.updateMany({
+          where: { id: item.id, status: 'SCHEDULED' },
           data: {
             status: 'PUBLISHED',
             publishedAt: new Date(),
             scheduledAt: null,
           },
         });
-        await tx.content.update({
-          where: { id: item.contentId },
-          data: { status: 'PUBLISHED' },
-        });
+        if (updated.count === 0) return;
         await this.audit.log({
           action: 'content.published_scheduled',
           entityType: 'site_content',

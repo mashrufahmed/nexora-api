@@ -55,11 +55,10 @@ export const ModelName = {
   AdminUser: 'AdminUser',
   Site: 'Site',
   Content: 'Content',
+  ContentRevision: 'ContentRevision',
   Author: 'Author',
   ContentAuthor: 'ContentAuthor',
   MediaAsset: 'MediaAsset',
-  PageTemplate: 'PageTemplate',
-  PageTemplateRevision: 'PageTemplateRevision',
   Category: 'Category',
   SiteContent: 'SiteContent',
   Tag: 'Tag',
@@ -145,6 +144,7 @@ export const SiteScalarFieldEnum = {
   slug: 'slug',
   status: 'status',
   logoMediaId: 'logoMediaId',
+  darkLogoMediaId: 'darkLogoMediaId',
   faviconMediaId: 'faviconMediaId',
   settings: 'settings',
   seoSettings: 'seoSettings',
@@ -160,8 +160,11 @@ export const ContentScalarFieldEnum = {
   type: 'type',
   title: 'title',
   slug: 'slug',
-  excerpt: 'excerpt',
-  body: 'body',
+  createdById: 'createdById',
+  description: 'description',
+  sections: 'sections',
+  reviewNote: 'reviewNote',
+  deletedAt: 'deletedAt',
   featuredMediaId: 'featuredMediaId',
   status: 'status',
   createdAt: 'createdAt',
@@ -169,6 +172,21 @@ export const ContentScalarFieldEnum = {
 } as const
 
 export type ContentScalarFieldEnum = (typeof ContentScalarFieldEnum)[keyof typeof ContentScalarFieldEnum]
+
+
+export const ContentRevisionScalarFieldEnum = {
+  id: 'id',
+  contentId: 'contentId',
+  revisionNumber: 'revisionNumber',
+  title: 'title',
+  description: 'description',
+  sections: 'sections',
+  note: 'note',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type ContentRevisionScalarFieldEnum = (typeof ContentRevisionScalarFieldEnum)[keyof typeof ContentRevisionScalarFieldEnum]
 
 
 export const AuthorScalarFieldEnum = {
@@ -222,33 +240,6 @@ export const MediaAssetScalarFieldEnum = {
 export type MediaAssetScalarFieldEnum = (typeof MediaAssetScalarFieldEnum)[keyof typeof MediaAssetScalarFieldEnum]
 
 
-export const PageTemplateScalarFieldEnum = {
-  id: 'id',
-  siteId: 'siteId',
-  name: 'name',
-  type: 'type',
-  status: 'status',
-  currentRevisionId: 'currentRevisionId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PageTemplateScalarFieldEnum = (typeof PageTemplateScalarFieldEnum)[keyof typeof PageTemplateScalarFieldEnum]
-
-
-export const PageTemplateRevisionScalarFieldEnum = {
-  id: 'id',
-  pageTemplateId: 'pageTemplateId',
-  revisionNumber: 'revisionNumber',
-  config: 'config',
-  createdBy: 'createdBy',
-  createdAt: 'createdAt',
-  publishedAt: 'publishedAt'
-} as const
-
-export type PageTemplateRevisionScalarFieldEnum = (typeof PageTemplateRevisionScalarFieldEnum)[keyof typeof PageTemplateRevisionScalarFieldEnum]
-
-
 export const CategoryScalarFieldEnum = {
   id: 'id',
   siteId: 'siteId',
@@ -271,6 +262,7 @@ export const SiteContentScalarFieldEnum = {
   excerptOverride: 'excerptOverride',
   seoMetadata: 'seoMetadata',
   status: 'status',
+  isFeatured: 'isFeatured',
   publishedAt: 'publishedAt',
   scheduledAt: 'scheduledAt',
   createdAt: 'createdAt',
@@ -480,6 +472,7 @@ export const AffiliateLinkScalarFieldEnum = {
   merchantId: 'merchantId',
   destinationUrl: 'destinationUrl',
   trackingUrl: 'trackingUrl',
+  tagId: 'tagId',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -494,7 +487,8 @@ export const AffiliateClickScalarFieldEnum = {
   siteId: 'siteId',
   clickedAt: 'clickedAt',
   referrer: 'referrer',
-  userAgentHash: 'userAgentHash'
+  userAgentHash: 'userAgentHash',
+  dedupeKey: 'dedupeKey'
 } as const
 
 export type AffiliateClickScalarFieldEnum = (typeof AffiliateClickScalarFieldEnum)[keyof typeof AffiliateClickScalarFieldEnum]
@@ -739,13 +733,6 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

@@ -1,0 +1,1 @@
+export const PUBLIC_CACHE_CONTROL = 'public, max-age=60, stale-while-revalidate=300';

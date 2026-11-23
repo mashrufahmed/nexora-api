@@ -58,7 +58,8 @@ async function bootstrap() {
   // Cookie
   await app.register(fastifyCookie);
   await app.register(multipart, {
-    limits: { fileSize: 10 * 1024 * 1024, files: 1 },
+    limits: { fileSize: 10 * 1024 * 1024, files: 1, parts: 20 },
+    throwFileSizeLimit: true,
   });
 
   // Session

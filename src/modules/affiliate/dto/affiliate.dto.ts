@@ -14,6 +14,7 @@ export class MerchantDto {
 export class AffiliateLinkDto {
   @IsString() siteId!: string;
   @IsOptional() @IsString() siteProductId?: string;
+  @IsOptional() @IsString() tagId?: string;
   @IsString() merchantId!: string;
   @IsUrl({ require_protocol: true }) destinationUrl!: string;
   @IsOptional() @IsUrl({ require_protocol: true }) trackingUrl?: string;

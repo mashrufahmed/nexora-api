@@ -18,6 +18,7 @@ import { AuthorsService } from './authors.service.js';
 import { AssignAuthorsDto } from './dto/assign-author.dto.js';
 import { CreateAuthorDto } from './dto/create-author.dto.js';
 import { UpdateAuthorDto } from './dto/update-author.dto.js';
+import { AuthorListQueryDto } from './dto/author-list-query.dto.js';
 
 @Controller('authors')
 @UseGuards(AdminAuthGuard, PermissionGuard)
@@ -30,10 +31,10 @@ export class AuthorsController {
     return this.authors.create(dto, req.admin!.id);
   }
   @Get() @Permissions('author.manage') list(
-    @Query('siteId') siteId: string | undefined,
+    @Query() query: AuthorListQueryDto,
     @Req() req: FastifyRequest,
   ) {
-    return this.authors.list(req.admin!.id, siteId);
+    return this.authors.list(req.admin!.id, query);
   }
   @Patch(':id') @Permissions('author.manage') update(
     @Param('id') id: string,

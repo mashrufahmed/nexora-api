@@ -401,11 +401,10 @@ export const ModelName = {
   AdminUser: 'AdminUser',
   Site: 'Site',
   Content: 'Content',
+  ContentRevision: 'ContentRevision',
   Author: 'Author',
   ContentAuthor: 'ContentAuthor',
   MediaAsset: 'MediaAsset',
-  PageTemplate: 'PageTemplate',
-  PageTemplateRevision: 'PageTemplateRevision',
   Category: 'Category',
   SiteContent: 'SiteContent',
   Tag: 'Tag',
@@ -457,7 +456,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "systemCheck" | "adminUser" | "site" | "content" | "author" | "contentAuthor" | "mediaAsset" | "pageTemplate" | "pageTemplateRevision" | "category" | "siteContent" | "tag" | "siteContentTag" | "redirect" | "analyticsEvent" | "siteContentCategory" | "brand" | "product" | "productVariant" | "productImage" | "reviewScoreCriterion" | "review" | "reviewCriterionScore" | "siteProduct" | "productCategory" | "merchant" | "affiliateLink" | "affiliateClick" | "buyingGuide" | "buyingGuideItem" | "comparison" | "comparisonItem" | "verification" | "newsletterSubscriber" | "emailSender" | "emailTemplate" | "emailMessage" | "siteDomain" | "siteSecret" | "userSiteAccess" | "role" | "permission" | "adminRole" | "rolePermission" | "auditLog"
+    modelProps: "systemCheck" | "adminUser" | "site" | "content" | "contentRevision" | "author" | "contentAuthor" | "mediaAsset" | "category" | "siteContent" | "tag" | "siteContentTag" | "redirect" | "analyticsEvent" | "siteContentCategory" | "brand" | "product" | "productVariant" | "productImage" | "reviewScoreCriterion" | "review" | "reviewCriterionScore" | "siteProduct" | "productCategory" | "merchant" | "affiliateLink" | "affiliateClick" | "buyingGuide" | "buyingGuideItem" | "comparison" | "comparisonItem" | "verification" | "newsletterSubscriber" | "emailSender" | "emailTemplate" | "emailMessage" | "siteDomain" | "siteSecret" | "userSiteAccess" | "role" | "permission" | "adminRole" | "rolePermission" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -757,6 +756,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ContentRevision: {
+      payload: Prisma.$ContentRevisionPayload<ExtArgs>
+      fields: Prisma.ContentRevisionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContentRevisionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContentRevisionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload>
+        }
+        findFirst: {
+          args: Prisma.ContentRevisionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContentRevisionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload>
+        }
+        findMany: {
+          args: Prisma.ContentRevisionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload>[]
+        }
+        create: {
+          args: Prisma.ContentRevisionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload>
+        }
+        createMany: {
+          args: Prisma.ContentRevisionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ContentRevisionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload>[]
+        }
+        delete: {
+          args: Prisma.ContentRevisionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload>
+        }
+        update: {
+          args: Prisma.ContentRevisionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContentRevisionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContentRevisionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ContentRevisionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload>[]
+        }
+        upsert: {
+          args: Prisma.ContentRevisionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContentRevisionPayload>
+        }
+        aggregate: {
+          args: Prisma.ContentRevisionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContentRevision>
+        }
+        groupBy: {
+          args: Prisma.ContentRevisionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContentRevisionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContentRevisionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContentRevisionCountAggregateOutputType> | number
+        }
+      }
+    }
     Author: {
       payload: Prisma.$AuthorPayload<ExtArgs>
       fields: Prisma.AuthorFieldRefs
@@ -976,154 +1049,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MediaAssetCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MediaAssetCountAggregateOutputType> | number
-        }
-      }
-    }
-    PageTemplate: {
-      payload: Prisma.$PageTemplatePayload<ExtArgs>
-      fields: Prisma.PageTemplateFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PageTemplateFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PageTemplateFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload>
-        }
-        findFirst: {
-          args: Prisma.PageTemplateFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PageTemplateFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload>
-        }
-        findMany: {
-          args: Prisma.PageTemplateFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload>[]
-        }
-        create: {
-          args: Prisma.PageTemplateCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload>
-        }
-        createMany: {
-          args: Prisma.PageTemplateCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.PageTemplateCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload>[]
-        }
-        delete: {
-          args: Prisma.PageTemplateDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload>
-        }
-        update: {
-          args: Prisma.PageTemplateUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload>
-        }
-        deleteMany: {
-          args: Prisma.PageTemplateDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PageTemplateUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.PageTemplateUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload>[]
-        }
-        upsert: {
-          args: Prisma.PageTemplateUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplatePayload>
-        }
-        aggregate: {
-          args: Prisma.PageTemplateAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePageTemplate>
-        }
-        groupBy: {
-          args: Prisma.PageTemplateGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PageTemplateGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PageTemplateCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PageTemplateCountAggregateOutputType> | number
-        }
-      }
-    }
-    PageTemplateRevision: {
-      payload: Prisma.$PageTemplateRevisionPayload<ExtArgs>
-      fields: Prisma.PageTemplateRevisionFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PageTemplateRevisionFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PageTemplateRevisionFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload>
-        }
-        findFirst: {
-          args: Prisma.PageTemplateRevisionFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PageTemplateRevisionFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload>
-        }
-        findMany: {
-          args: Prisma.PageTemplateRevisionFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload>[]
-        }
-        create: {
-          args: Prisma.PageTemplateRevisionCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload>
-        }
-        createMany: {
-          args: Prisma.PageTemplateRevisionCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.PageTemplateRevisionCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload>[]
-        }
-        delete: {
-          args: Prisma.PageTemplateRevisionDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload>
-        }
-        update: {
-          args: Prisma.PageTemplateRevisionUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload>
-        }
-        deleteMany: {
-          args: Prisma.PageTemplateRevisionDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PageTemplateRevisionUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.PageTemplateRevisionUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload>[]
-        }
-        upsert: {
-          args: Prisma.PageTemplateRevisionUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageTemplateRevisionPayload>
-        }
-        aggregate: {
-          args: Prisma.PageTemplateRevisionAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePageTemplateRevision>
-        }
-        groupBy: {
-          args: Prisma.PageTemplateRevisionGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PageTemplateRevisionGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PageTemplateRevisionCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PageTemplateRevisionCountAggregateOutputType> | number
         }
       }
     }
@@ -3861,6 +3786,7 @@ export const SiteScalarFieldEnum = {
   slug: 'slug',
   status: 'status',
   logoMediaId: 'logoMediaId',
+  darkLogoMediaId: 'darkLogoMediaId',
   faviconMediaId: 'faviconMediaId',
   settings: 'settings',
   seoSettings: 'seoSettings',
@@ -3876,8 +3802,11 @@ export const ContentScalarFieldEnum = {
   type: 'type',
   title: 'title',
   slug: 'slug',
-  excerpt: 'excerpt',
-  body: 'body',
+  createdById: 'createdById',
+  description: 'description',
+  sections: 'sections',
+  reviewNote: 'reviewNote',
+  deletedAt: 'deletedAt',
   featuredMediaId: 'featuredMediaId',
   status: 'status',
   createdAt: 'createdAt',
@@ -3885,6 +3814,21 @@ export const ContentScalarFieldEnum = {
 } as const
 
 export type ContentScalarFieldEnum = (typeof ContentScalarFieldEnum)[keyof typeof ContentScalarFieldEnum]
+
+
+export const ContentRevisionScalarFieldEnum = {
+  id: 'id',
+  contentId: 'contentId',
+  revisionNumber: 'revisionNumber',
+  title: 'title',
+  description: 'description',
+  sections: 'sections',
+  note: 'note',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type ContentRevisionScalarFieldEnum = (typeof ContentRevisionScalarFieldEnum)[keyof typeof ContentRevisionScalarFieldEnum]
 
 
 export const AuthorScalarFieldEnum = {
@@ -3938,33 +3882,6 @@ export const MediaAssetScalarFieldEnum = {
 export type MediaAssetScalarFieldEnum = (typeof MediaAssetScalarFieldEnum)[keyof typeof MediaAssetScalarFieldEnum]
 
 
-export const PageTemplateScalarFieldEnum = {
-  id: 'id',
-  siteId: 'siteId',
-  name: 'name',
-  type: 'type',
-  status: 'status',
-  currentRevisionId: 'currentRevisionId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PageTemplateScalarFieldEnum = (typeof PageTemplateScalarFieldEnum)[keyof typeof PageTemplateScalarFieldEnum]
-
-
-export const PageTemplateRevisionScalarFieldEnum = {
-  id: 'id',
-  pageTemplateId: 'pageTemplateId',
-  revisionNumber: 'revisionNumber',
-  config: 'config',
-  createdBy: 'createdBy',
-  createdAt: 'createdAt',
-  publishedAt: 'publishedAt'
-} as const
-
-export type PageTemplateRevisionScalarFieldEnum = (typeof PageTemplateRevisionScalarFieldEnum)[keyof typeof PageTemplateRevisionScalarFieldEnum]
-
-
 export const CategoryScalarFieldEnum = {
   id: 'id',
   siteId: 'siteId',
@@ -3987,6 +3904,7 @@ export const SiteContentScalarFieldEnum = {
   excerptOverride: 'excerptOverride',
   seoMetadata: 'seoMetadata',
   status: 'status',
+  isFeatured: 'isFeatured',
   publishedAt: 'publishedAt',
   scheduledAt: 'scheduledAt',
   createdAt: 'createdAt',
@@ -4196,6 +4114,7 @@ export const AffiliateLinkScalarFieldEnum = {
   merchantId: 'merchantId',
   destinationUrl: 'destinationUrl',
   trackingUrl: 'trackingUrl',
+  tagId: 'tagId',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -4210,7 +4129,8 @@ export const AffiliateClickScalarFieldEnum = {
   siteId: 'siteId',
   clickedAt: 'clickedAt',
   referrer: 'referrer',
-  userAgentHash: 'userAgentHash'
+  userAgentHash: 'userAgentHash',
+  dedupeKey: 'dedupeKey'
 } as const
 
 export type AffiliateClickScalarFieldEnum = (typeof AffiliateClickScalarFieldEnum)[keyof typeof AffiliateClickScalarFieldEnum]
@@ -4457,13 +4377,6 @@ export const NullableJsonNullValueInput = {
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -4636,16 +4549,23 @@ export type ListEnumMediaStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
 
 
 /**
- * Reference to a field of type 'PageTemplateStatus'
+ * Reference to a field of type 'PublicationStatus'
  */
-export type EnumPageTemplateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PageTemplateStatus'>
+export type EnumPublicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicationStatus'>
     
 
 
 /**
- * Reference to a field of type 'PageTemplateStatus[]'
+ * Reference to a field of type 'PublicationStatus[]'
  */
-export type ListEnumPageTemplateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PageTemplateStatus[]'>
+export type ListEnumPublicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicationStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -4688,13 +4608,6 @@ export type EnumProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'ProductStatus[]'
  */
 export type ListEnumProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -4978,11 +4891,10 @@ export type GlobalOmitConfig = {
   adminUser?: Prisma.AdminUserOmit
   site?: Prisma.SiteOmit
   content?: Prisma.ContentOmit
+  contentRevision?: Prisma.ContentRevisionOmit
   author?: Prisma.AuthorOmit
   contentAuthor?: Prisma.ContentAuthorOmit
   mediaAsset?: Prisma.MediaAssetOmit
-  pageTemplate?: Prisma.PageTemplateOmit
-  pageTemplateRevision?: Prisma.PageTemplateRevisionOmit
   category?: Prisma.CategoryOmit
   siteContent?: Prisma.SiteContentOmit
   tag?: Prisma.TagOmit

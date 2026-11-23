@@ -18,6 +18,7 @@ import { PermissionGuard } from '../rbac/guards/permission.guard.js';
 import { UpdateMediaDto } from './dto/update-media.dto.js';
 import { UploadMediaDto } from './dto/upload-media.dto.js';
 import { MediaService } from './media.service.js';
+import { MAX_MEDIA_BYTES } from './media.constants.js';
 
 @Controller('media')
 @UseGuards(AdminAuthGuard, PermissionGuard)
@@ -32,7 +33,14 @@ export class MediaController {
   @Post('multipart') @Permissions('media.upload') async multipart(@Req() req: FastifyRequest) {
     const file = await req.file();
     if (!file) throw new BadRequestException('File is required');
-    const buffer = await file.toBuffer();
+    let buffer: Buffer;
+    try {
+      buffer = await file.toBuffer();
+    } catch (error) {
+      if (error instanceof Error && /file size limit/i.test(error.message))
+        throw new BadRequestException(`Media must be between 1 byte and ${MAX_MEDIA_BYTES / 1024 / 1024} MB`);
+      throw error;
+    }
     const fields = file.fields as Record<string, { value?: string }>;
     return this.media.upload({ originalFilename: file.filename, mimeType: file.mimetype, data: buffer.toString('base64'), siteId: fields.siteId?.value, alt: fields.alt?.value, caption: fields.caption?.value }, req.admin!.id);
   }

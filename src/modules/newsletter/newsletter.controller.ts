@@ -13,6 +13,7 @@ import { AdminAuthGuard } from '../admin/guards/admin-auth.guard.js';
 import { Permissions } from '../rbac/decorators/permissions.decorator.js';
 import { PermissionGuard } from '../rbac/guards/permission.guard.js';
 import { SubscribeDto, VerifySubscriberDto } from './dto/newsletter.dto.js';
+import { NewsletterListQueryDto } from './dto/newsletter-list-query.dto.js';
 import { NewsletterService } from './newsletter.service.js';
 @Controller('newsletter')
 export class NewsletterController {
@@ -35,7 +36,7 @@ export class NewsletterController {
   @Get()
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('newsletter.manage')
-  list(@Query('siteId') s: string, @Req() r: FastifyRequest) {
-    return this.service.list(s, r.admin!.id);
+  list(@Query() query: NewsletterListQueryDto, @Req() r: FastifyRequest) {
+    return this.service.list(query, r.admin!.id);
   }
 }

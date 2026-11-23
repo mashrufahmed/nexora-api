@@ -31,6 +31,7 @@ export type AffiliateLinkMinAggregateOutputType = {
   merchantId: string | null
   destinationUrl: string | null
   trackingUrl: string | null
+  tagId: string | null
   status: $Enums.AffiliateStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +44,7 @@ export type AffiliateLinkMaxAggregateOutputType = {
   merchantId: string | null
   destinationUrl: string | null
   trackingUrl: string | null
+  tagId: string | null
   status: $Enums.AffiliateStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,6 +57,7 @@ export type AffiliateLinkCountAggregateOutputType = {
   merchantId: number
   destinationUrl: number
   trackingUrl: number
+  tagId: number
   status: number
   createdAt: number
   updatedAt: number
@@ -69,6 +72,7 @@ export type AffiliateLinkMinAggregateInputType = {
   merchantId?: true
   destinationUrl?: true
   trackingUrl?: true
+  tagId?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -81,6 +85,7 @@ export type AffiliateLinkMaxAggregateInputType = {
   merchantId?: true
   destinationUrl?: true
   trackingUrl?: true
+  tagId?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -93,6 +98,7 @@ export type AffiliateLinkCountAggregateInputType = {
   merchantId?: true
   destinationUrl?: true
   trackingUrl?: true
+  tagId?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -178,6 +184,7 @@ export type AffiliateLinkGroupByOutputType = {
   merchantId: string
   destinationUrl: string
   trackingUrl: string | null
+  tagId: string | null
   status: $Enums.AffiliateStatus
   createdAt: Date
   updatedAt: Date
@@ -211,12 +218,14 @@ export type AffiliateLinkWhereInput = {
   merchantId?: Prisma.StringFilter<"AffiliateLink"> | string
   destinationUrl?: Prisma.StringFilter<"AffiliateLink"> | string
   trackingUrl?: Prisma.StringNullableFilter<"AffiliateLink"> | string | null
+  tagId?: Prisma.StringNullableFilter<"AffiliateLink"> | string | null
   status?: Prisma.EnumAffiliateStatusFilter<"AffiliateLink"> | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFilter<"AffiliateLink"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AffiliateLink"> | Date | string
   site?: Prisma.XOR<Prisma.SiteScalarRelationFilter, Prisma.SiteWhereInput>
   siteProduct?: Prisma.XOR<Prisma.SiteProductNullableScalarRelationFilter, Prisma.SiteProductWhereInput> | null
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
+  tag?: Prisma.XOR<Prisma.TagNullableScalarRelationFilter, Prisma.TagWhereInput> | null
   clicks?: Prisma.AffiliateClickListRelationFilter
 }
 
@@ -227,12 +236,14 @@ export type AffiliateLinkOrderByWithRelationInput = {
   merchantId?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   trackingUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  tagId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   site?: Prisma.SiteOrderByWithRelationInput
   siteProduct?: Prisma.SiteProductOrderByWithRelationInput
   merchant?: Prisma.MerchantOrderByWithRelationInput
+  tag?: Prisma.TagOrderByWithRelationInput
   clicks?: Prisma.AffiliateClickOrderByRelationAggregateInput
 }
 
@@ -246,12 +257,14 @@ export type AffiliateLinkWhereUniqueInput = Prisma.AtLeast<{
   merchantId?: Prisma.StringFilter<"AffiliateLink"> | string
   destinationUrl?: Prisma.StringFilter<"AffiliateLink"> | string
   trackingUrl?: Prisma.StringNullableFilter<"AffiliateLink"> | string | null
+  tagId?: Prisma.StringNullableFilter<"AffiliateLink"> | string | null
   status?: Prisma.EnumAffiliateStatusFilter<"AffiliateLink"> | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFilter<"AffiliateLink"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AffiliateLink"> | Date | string
   site?: Prisma.XOR<Prisma.SiteScalarRelationFilter, Prisma.SiteWhereInput>
   siteProduct?: Prisma.XOR<Prisma.SiteProductNullableScalarRelationFilter, Prisma.SiteProductWhereInput> | null
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
+  tag?: Prisma.XOR<Prisma.TagNullableScalarRelationFilter, Prisma.TagWhereInput> | null
   clicks?: Prisma.AffiliateClickListRelationFilter
 }, "id">
 
@@ -262,6 +275,7 @@ export type AffiliateLinkOrderByWithAggregationInput = {
   merchantId?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   trackingUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  tagId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -280,6 +294,7 @@ export type AffiliateLinkScalarWhereWithAggregatesInput = {
   merchantId?: Prisma.StringWithAggregatesFilter<"AffiliateLink"> | string
   destinationUrl?: Prisma.StringWithAggregatesFilter<"AffiliateLink"> | string
   trackingUrl?: Prisma.StringNullableWithAggregatesFilter<"AffiliateLink"> | string | null
+  tagId?: Prisma.StringNullableWithAggregatesFilter<"AffiliateLink"> | string | null
   status?: Prisma.EnumAffiliateStatusWithAggregatesFilter<"AffiliateLink"> | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AffiliateLink"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AffiliateLink"> | Date | string
@@ -295,6 +310,7 @@ export type AffiliateLinkCreateInput = {
   site: Prisma.SiteCreateNestedOneWithoutAffiliateLinksInput
   siteProduct?: Prisma.SiteProductCreateNestedOneWithoutAffiliateLinksInput
   merchant: Prisma.MerchantCreateNestedOneWithoutLinksInput
+  tag?: Prisma.TagCreateNestedOneWithoutAffiliateLinksInput
   clicks?: Prisma.AffiliateClickCreateNestedManyWithoutLinkInput
 }
 
@@ -305,6 +321,7 @@ export type AffiliateLinkUncheckedCreateInput = {
   merchantId: string
   destinationUrl: string
   trackingUrl?: string | null
+  tagId?: string | null
   status?: $Enums.AffiliateStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -321,6 +338,7 @@ export type AffiliateLinkUpdateInput = {
   site?: Prisma.SiteUpdateOneRequiredWithoutAffiliateLinksNestedInput
   siteProduct?: Prisma.SiteProductUpdateOneWithoutAffiliateLinksNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutLinksNestedInput
+  tag?: Prisma.TagUpdateOneWithoutAffiliateLinksNestedInput
   clicks?: Prisma.AffiliateClickUpdateManyWithoutLinkNestedInput
 }
 
@@ -331,6 +349,7 @@ export type AffiliateLinkUncheckedUpdateInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tagId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -344,6 +363,7 @@ export type AffiliateLinkCreateManyInput = {
   merchantId: string
   destinationUrl: string
   trackingUrl?: string | null
+  tagId?: string | null
   status?: $Enums.AffiliateStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -365,6 +385,7 @@ export type AffiliateLinkUncheckedUpdateManyInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tagId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -387,6 +408,7 @@ export type AffiliateLinkCountOrderByAggregateInput = {
   merchantId?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   trackingUrl?: Prisma.SortOrder
+  tagId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -399,6 +421,7 @@ export type AffiliateLinkMaxOrderByAggregateInput = {
   merchantId?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   trackingUrl?: Prisma.SortOrder
+  tagId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -411,6 +434,7 @@ export type AffiliateLinkMinOrderByAggregateInput = {
   merchantId?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   trackingUrl?: Prisma.SortOrder
+  tagId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -460,6 +484,48 @@ export type AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput = {
   connect?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
   update?: Prisma.AffiliateLinkUpdateWithWhereUniqueWithoutSiteInput | Prisma.AffiliateLinkUpdateWithWhereUniqueWithoutSiteInput[]
   updateMany?: Prisma.AffiliateLinkUpdateManyWithWhereWithoutSiteInput | Prisma.AffiliateLinkUpdateManyWithWhereWithoutSiteInput[]
+  deleteMany?: Prisma.AffiliateLinkScalarWhereInput | Prisma.AffiliateLinkScalarWhereInput[]
+}
+
+export type AffiliateLinkCreateNestedManyWithoutTagInput = {
+  create?: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutTagInput, Prisma.AffiliateLinkUncheckedCreateWithoutTagInput> | Prisma.AffiliateLinkCreateWithoutTagInput[] | Prisma.AffiliateLinkUncheckedCreateWithoutTagInput[]
+  connectOrCreate?: Prisma.AffiliateLinkCreateOrConnectWithoutTagInput | Prisma.AffiliateLinkCreateOrConnectWithoutTagInput[]
+  createMany?: Prisma.AffiliateLinkCreateManyTagInputEnvelope
+  connect?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+}
+
+export type AffiliateLinkUncheckedCreateNestedManyWithoutTagInput = {
+  create?: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutTagInput, Prisma.AffiliateLinkUncheckedCreateWithoutTagInput> | Prisma.AffiliateLinkCreateWithoutTagInput[] | Prisma.AffiliateLinkUncheckedCreateWithoutTagInput[]
+  connectOrCreate?: Prisma.AffiliateLinkCreateOrConnectWithoutTagInput | Prisma.AffiliateLinkCreateOrConnectWithoutTagInput[]
+  createMany?: Prisma.AffiliateLinkCreateManyTagInputEnvelope
+  connect?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+}
+
+export type AffiliateLinkUpdateManyWithoutTagNestedInput = {
+  create?: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutTagInput, Prisma.AffiliateLinkUncheckedCreateWithoutTagInput> | Prisma.AffiliateLinkCreateWithoutTagInput[] | Prisma.AffiliateLinkUncheckedCreateWithoutTagInput[]
+  connectOrCreate?: Prisma.AffiliateLinkCreateOrConnectWithoutTagInput | Prisma.AffiliateLinkCreateOrConnectWithoutTagInput[]
+  upsert?: Prisma.AffiliateLinkUpsertWithWhereUniqueWithoutTagInput | Prisma.AffiliateLinkUpsertWithWhereUniqueWithoutTagInput[]
+  createMany?: Prisma.AffiliateLinkCreateManyTagInputEnvelope
+  set?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+  disconnect?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+  delete?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+  connect?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+  update?: Prisma.AffiliateLinkUpdateWithWhereUniqueWithoutTagInput | Prisma.AffiliateLinkUpdateWithWhereUniqueWithoutTagInput[]
+  updateMany?: Prisma.AffiliateLinkUpdateManyWithWhereWithoutTagInput | Prisma.AffiliateLinkUpdateManyWithWhereWithoutTagInput[]
+  deleteMany?: Prisma.AffiliateLinkScalarWhereInput | Prisma.AffiliateLinkScalarWhereInput[]
+}
+
+export type AffiliateLinkUncheckedUpdateManyWithoutTagNestedInput = {
+  create?: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutTagInput, Prisma.AffiliateLinkUncheckedCreateWithoutTagInput> | Prisma.AffiliateLinkCreateWithoutTagInput[] | Prisma.AffiliateLinkUncheckedCreateWithoutTagInput[]
+  connectOrCreate?: Prisma.AffiliateLinkCreateOrConnectWithoutTagInput | Prisma.AffiliateLinkCreateOrConnectWithoutTagInput[]
+  upsert?: Prisma.AffiliateLinkUpsertWithWhereUniqueWithoutTagInput | Prisma.AffiliateLinkUpsertWithWhereUniqueWithoutTagInput[]
+  createMany?: Prisma.AffiliateLinkCreateManyTagInputEnvelope
+  set?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+  disconnect?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+  delete?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+  connect?: Prisma.AffiliateLinkWhereUniqueInput | Prisma.AffiliateLinkWhereUniqueInput[]
+  update?: Prisma.AffiliateLinkUpdateWithWhereUniqueWithoutTagInput | Prisma.AffiliateLinkUpdateWithWhereUniqueWithoutTagInput[]
+  updateMany?: Prisma.AffiliateLinkUpdateManyWithWhereWithoutTagInput | Prisma.AffiliateLinkUpdateManyWithWhereWithoutTagInput[]
   deleteMany?: Prisma.AffiliateLinkScalarWhereInput | Prisma.AffiliateLinkScalarWhereInput[]
 }
 
@@ -570,6 +636,7 @@ export type AffiliateLinkCreateWithoutSiteInput = {
   updatedAt?: Date | string
   siteProduct?: Prisma.SiteProductCreateNestedOneWithoutAffiliateLinksInput
   merchant: Prisma.MerchantCreateNestedOneWithoutLinksInput
+  tag?: Prisma.TagCreateNestedOneWithoutAffiliateLinksInput
   clicks?: Prisma.AffiliateClickCreateNestedManyWithoutLinkInput
 }
 
@@ -579,6 +646,7 @@ export type AffiliateLinkUncheckedCreateWithoutSiteInput = {
   merchantId: string
   destinationUrl: string
   trackingUrl?: string | null
+  tagId?: string | null
   status?: $Enums.AffiliateStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -621,9 +689,62 @@ export type AffiliateLinkScalarWhereInput = {
   merchantId?: Prisma.StringFilter<"AffiliateLink"> | string
   destinationUrl?: Prisma.StringFilter<"AffiliateLink"> | string
   trackingUrl?: Prisma.StringNullableFilter<"AffiliateLink"> | string | null
+  tagId?: Prisma.StringNullableFilter<"AffiliateLink"> | string | null
   status?: Prisma.EnumAffiliateStatusFilter<"AffiliateLink"> | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFilter<"AffiliateLink"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AffiliateLink"> | Date | string
+}
+
+export type AffiliateLinkCreateWithoutTagInput = {
+  id?: string
+  destinationUrl: string
+  trackingUrl?: string | null
+  status?: $Enums.AffiliateStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  site: Prisma.SiteCreateNestedOneWithoutAffiliateLinksInput
+  siteProduct?: Prisma.SiteProductCreateNestedOneWithoutAffiliateLinksInput
+  merchant: Prisma.MerchantCreateNestedOneWithoutLinksInput
+  clicks?: Prisma.AffiliateClickCreateNestedManyWithoutLinkInput
+}
+
+export type AffiliateLinkUncheckedCreateWithoutTagInput = {
+  id?: string
+  siteId: string
+  siteProductId?: string | null
+  merchantId: string
+  destinationUrl: string
+  trackingUrl?: string | null
+  status?: $Enums.AffiliateStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutLinkInput
+}
+
+export type AffiliateLinkCreateOrConnectWithoutTagInput = {
+  where: Prisma.AffiliateLinkWhereUniqueInput
+  create: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutTagInput, Prisma.AffiliateLinkUncheckedCreateWithoutTagInput>
+}
+
+export type AffiliateLinkCreateManyTagInputEnvelope = {
+  data: Prisma.AffiliateLinkCreateManyTagInput | Prisma.AffiliateLinkCreateManyTagInput[]
+  skipDuplicates?: boolean
+}
+
+export type AffiliateLinkUpsertWithWhereUniqueWithoutTagInput = {
+  where: Prisma.AffiliateLinkWhereUniqueInput
+  update: Prisma.XOR<Prisma.AffiliateLinkUpdateWithoutTagInput, Prisma.AffiliateLinkUncheckedUpdateWithoutTagInput>
+  create: Prisma.XOR<Prisma.AffiliateLinkCreateWithoutTagInput, Prisma.AffiliateLinkUncheckedCreateWithoutTagInput>
+}
+
+export type AffiliateLinkUpdateWithWhereUniqueWithoutTagInput = {
+  where: Prisma.AffiliateLinkWhereUniqueInput
+  data: Prisma.XOR<Prisma.AffiliateLinkUpdateWithoutTagInput, Prisma.AffiliateLinkUncheckedUpdateWithoutTagInput>
+}
+
+export type AffiliateLinkUpdateManyWithWhereWithoutTagInput = {
+  where: Prisma.AffiliateLinkScalarWhereInput
+  data: Prisma.XOR<Prisma.AffiliateLinkUpdateManyMutationInput, Prisma.AffiliateLinkUncheckedUpdateManyWithoutTagInput>
 }
 
 export type AffiliateLinkCreateWithoutSiteProductInput = {
@@ -635,6 +756,7 @@ export type AffiliateLinkCreateWithoutSiteProductInput = {
   updatedAt?: Date | string
   site: Prisma.SiteCreateNestedOneWithoutAffiliateLinksInput
   merchant: Prisma.MerchantCreateNestedOneWithoutLinksInput
+  tag?: Prisma.TagCreateNestedOneWithoutAffiliateLinksInput
   clicks?: Prisma.AffiliateClickCreateNestedManyWithoutLinkInput
 }
 
@@ -644,6 +766,7 @@ export type AffiliateLinkUncheckedCreateWithoutSiteProductInput = {
   merchantId: string
   destinationUrl: string
   trackingUrl?: string | null
+  tagId?: string | null
   status?: $Enums.AffiliateStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -685,6 +808,7 @@ export type AffiliateLinkCreateWithoutMerchantInput = {
   updatedAt?: Date | string
   site: Prisma.SiteCreateNestedOneWithoutAffiliateLinksInput
   siteProduct?: Prisma.SiteProductCreateNestedOneWithoutAffiliateLinksInput
+  tag?: Prisma.TagCreateNestedOneWithoutAffiliateLinksInput
   clicks?: Prisma.AffiliateClickCreateNestedManyWithoutLinkInput
 }
 
@@ -694,6 +818,7 @@ export type AffiliateLinkUncheckedCreateWithoutMerchantInput = {
   siteProductId?: string | null
   destinationUrl: string
   trackingUrl?: string | null
+  tagId?: string | null
   status?: $Enums.AffiliateStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -736,6 +861,7 @@ export type AffiliateLinkCreateWithoutClicksInput = {
   site: Prisma.SiteCreateNestedOneWithoutAffiliateLinksInput
   siteProduct?: Prisma.SiteProductCreateNestedOneWithoutAffiliateLinksInput
   merchant: Prisma.MerchantCreateNestedOneWithoutLinksInput
+  tag?: Prisma.TagCreateNestedOneWithoutAffiliateLinksInput
 }
 
 export type AffiliateLinkUncheckedCreateWithoutClicksInput = {
@@ -745,6 +871,7 @@ export type AffiliateLinkUncheckedCreateWithoutClicksInput = {
   merchantId: string
   destinationUrl: string
   trackingUrl?: string | null
+  tagId?: string | null
   status?: $Enums.AffiliateStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -776,6 +903,7 @@ export type AffiliateLinkUpdateWithoutClicksInput = {
   site?: Prisma.SiteUpdateOneRequiredWithoutAffiliateLinksNestedInput
   siteProduct?: Prisma.SiteProductUpdateOneWithoutAffiliateLinksNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutLinksNestedInput
+  tag?: Prisma.TagUpdateOneWithoutAffiliateLinksNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateWithoutClicksInput = {
@@ -785,6 +913,7 @@ export type AffiliateLinkUncheckedUpdateWithoutClicksInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tagId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -796,6 +925,7 @@ export type AffiliateLinkCreateManySiteInput = {
   merchantId: string
   destinationUrl: string
   trackingUrl?: string | null
+  tagId?: string | null
   status?: $Enums.AffiliateStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -810,11 +940,63 @@ export type AffiliateLinkUpdateWithoutSiteInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   siteProduct?: Prisma.SiteProductUpdateOneWithoutAffiliateLinksNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutLinksNestedInput
+  tag?: Prisma.TagUpdateOneWithoutAffiliateLinksNestedInput
   clicks?: Prisma.AffiliateClickUpdateManyWithoutLinkNestedInput
 }
 
 export type AffiliateLinkUncheckedUpdateWithoutSiteInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  siteProductId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tagId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutLinkNestedInput
+}
+
+export type AffiliateLinkUncheckedUpdateManyWithoutSiteInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  siteProductId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  merchantId?: Prisma.StringFieldUpdateOperationsInput | string
+  destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tagId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AffiliateLinkCreateManyTagInput = {
+  id?: string
+  siteId: string
+  siteProductId?: string | null
+  merchantId: string
+  destinationUrl: string
+  trackingUrl?: string | null
+  status?: $Enums.AffiliateStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AffiliateLinkUpdateWithoutTagInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  site?: Prisma.SiteUpdateOneRequiredWithoutAffiliateLinksNestedInput
+  siteProduct?: Prisma.SiteProductUpdateOneWithoutAffiliateLinksNestedInput
+  merchant?: Prisma.MerchantUpdateOneRequiredWithoutLinksNestedInput
+  clicks?: Prisma.AffiliateClickUpdateManyWithoutLinkNestedInput
+}
+
+export type AffiliateLinkUncheckedUpdateWithoutTagInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  siteId?: Prisma.StringFieldUpdateOperationsInput | string
   siteProductId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
@@ -825,8 +1007,9 @@ export type AffiliateLinkUncheckedUpdateWithoutSiteInput = {
   clicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutLinkNestedInput
 }
 
-export type AffiliateLinkUncheckedUpdateManyWithoutSiteInput = {
+export type AffiliateLinkUncheckedUpdateManyWithoutTagInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  siteId?: Prisma.StringFieldUpdateOperationsInput | string
   siteProductId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
@@ -842,6 +1025,7 @@ export type AffiliateLinkCreateManySiteProductInput = {
   merchantId: string
   destinationUrl: string
   trackingUrl?: string | null
+  tagId?: string | null
   status?: $Enums.AffiliateStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -856,6 +1040,7 @@ export type AffiliateLinkUpdateWithoutSiteProductInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   site?: Prisma.SiteUpdateOneRequiredWithoutAffiliateLinksNestedInput
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutLinksNestedInput
+  tag?: Prisma.TagUpdateOneWithoutAffiliateLinksNestedInput
   clicks?: Prisma.AffiliateClickUpdateManyWithoutLinkNestedInput
 }
 
@@ -865,6 +1050,7 @@ export type AffiliateLinkUncheckedUpdateWithoutSiteProductInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tagId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -877,6 +1063,7 @@ export type AffiliateLinkUncheckedUpdateManyWithoutSiteProductInput = {
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tagId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -888,6 +1075,7 @@ export type AffiliateLinkCreateManyMerchantInput = {
   siteProductId?: string | null
   destinationUrl: string
   trackingUrl?: string | null
+  tagId?: string | null
   status?: $Enums.AffiliateStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -902,6 +1090,7 @@ export type AffiliateLinkUpdateWithoutMerchantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   site?: Prisma.SiteUpdateOneRequiredWithoutAffiliateLinksNestedInput
   siteProduct?: Prisma.SiteProductUpdateOneWithoutAffiliateLinksNestedInput
+  tag?: Prisma.TagUpdateOneWithoutAffiliateLinksNestedInput
   clicks?: Prisma.AffiliateClickUpdateManyWithoutLinkNestedInput
 }
 
@@ -911,6 +1100,7 @@ export type AffiliateLinkUncheckedUpdateWithoutMerchantInput = {
   siteProductId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tagId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -923,6 +1113,7 @@ export type AffiliateLinkUncheckedUpdateManyWithoutMerchantInput = {
   siteProductId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   trackingUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tagId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -966,12 +1157,14 @@ export type AffiliateLinkSelect<ExtArgs extends runtime.Types.Extensions.Interna
   merchantId?: boolean
   destinationUrl?: boolean
   trackingUrl?: boolean
+  tagId?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
   siteProduct?: boolean | Prisma.AffiliateLink$siteProductArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  tag?: boolean | Prisma.AffiliateLink$tagArgs<ExtArgs>
   clicks?: boolean | Prisma.AffiliateLink$clicksArgs<ExtArgs>
   _count?: boolean | Prisma.AffiliateLinkCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateLink"]>
@@ -983,12 +1176,14 @@ export type AffiliateLinkSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   merchantId?: boolean
   destinationUrl?: boolean
   trackingUrl?: boolean
+  tagId?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
   siteProduct?: boolean | Prisma.AffiliateLink$siteProductArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  tag?: boolean | Prisma.AffiliateLink$tagArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateLink"]>
 
 export type AffiliateLinkSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -998,12 +1193,14 @@ export type AffiliateLinkSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   merchantId?: boolean
   destinationUrl?: boolean
   trackingUrl?: boolean
+  tagId?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
   siteProduct?: boolean | Prisma.AffiliateLink$siteProductArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  tag?: boolean | Prisma.AffiliateLink$tagArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateLink"]>
 
 export type AffiliateLinkSelectScalar = {
@@ -1013,16 +1210,18 @@ export type AffiliateLinkSelectScalar = {
   merchantId?: boolean
   destinationUrl?: boolean
   trackingUrl?: boolean
+  tagId?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AffiliateLinkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "siteId" | "siteProductId" | "merchantId" | "destinationUrl" | "trackingUrl" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliateLink"]>
+export type AffiliateLinkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "siteId" | "siteProductId" | "merchantId" | "destinationUrl" | "trackingUrl" | "tagId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliateLink"]>
 export type AffiliateLinkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
   siteProduct?: boolean | Prisma.AffiliateLink$siteProductArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  tag?: boolean | Prisma.AffiliateLink$tagArgs<ExtArgs>
   clicks?: boolean | Prisma.AffiliateLink$clicksArgs<ExtArgs>
   _count?: boolean | Prisma.AffiliateLinkCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1030,11 +1229,13 @@ export type AffiliateLinkIncludeCreateManyAndReturn<ExtArgs extends runtime.Type
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
   siteProduct?: boolean | Prisma.AffiliateLink$siteProductArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  tag?: boolean | Prisma.AffiliateLink$tagArgs<ExtArgs>
 }
 export type AffiliateLinkIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
   siteProduct?: boolean | Prisma.AffiliateLink$siteProductArgs<ExtArgs>
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
+  tag?: boolean | Prisma.AffiliateLink$tagArgs<ExtArgs>
 }
 
 export type $AffiliateLinkPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1043,6 +1244,7 @@ export type $AffiliateLinkPayload<ExtArgs extends runtime.Types.Extensions.Inter
     site: Prisma.$SitePayload<ExtArgs>
     siteProduct: Prisma.$SiteProductPayload<ExtArgs> | null
     merchant: Prisma.$MerchantPayload<ExtArgs>
+    tag: Prisma.$TagPayload<ExtArgs> | null
     clicks: Prisma.$AffiliateClickPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1052,6 +1254,7 @@ export type $AffiliateLinkPayload<ExtArgs extends runtime.Types.Extensions.Inter
     merchantId: string
     destinationUrl: string
     trackingUrl: string | null
+    tagId: string | null
     status: $Enums.AffiliateStatus
     createdAt: Date
     updatedAt: Date
@@ -1452,6 +1655,7 @@ export interface Prisma__AffiliateLinkClient<T, Null = never, ExtArgs extends ru
   site<T extends Prisma.SiteDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SiteDefaultArgs<ExtArgs>>): Prisma.Prisma__SiteClient<runtime.Types.Result.GetResult<Prisma.$SitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   siteProduct<T extends Prisma.AffiliateLink$siteProductArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateLink$siteProductArgs<ExtArgs>>): Prisma.Prisma__SiteProductClient<runtime.Types.Result.GetResult<Prisma.$SiteProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   merchant<T extends Prisma.MerchantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MerchantDefaultArgs<ExtArgs>>): Prisma.Prisma__MerchantClient<runtime.Types.Result.GetResult<Prisma.$MerchantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tag<T extends Prisma.AffiliateLink$tagArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateLink$tagArgs<ExtArgs>>): Prisma.Prisma__TagClient<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   clicks<T extends Prisma.AffiliateLink$clicksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateLink$clicksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AffiliateClickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1488,6 +1692,7 @@ export interface AffiliateLinkFieldRefs {
   readonly merchantId: Prisma.FieldRef<"AffiliateLink", 'String'>
   readonly destinationUrl: Prisma.FieldRef<"AffiliateLink", 'String'>
   readonly trackingUrl: Prisma.FieldRef<"AffiliateLink", 'String'>
+  readonly tagId: Prisma.FieldRef<"AffiliateLink", 'String'>
   readonly status: Prisma.FieldRef<"AffiliateLink", 'AffiliateStatus'>
   readonly createdAt: Prisma.FieldRef<"AffiliateLink", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AffiliateLink", 'DateTime'>
@@ -1908,6 +2113,25 @@ export type AffiliateLink$siteProductArgs<ExtArgs extends runtime.Types.Extensio
    */
   include?: Prisma.SiteProductInclude<ExtArgs> | null
   where?: Prisma.SiteProductWhereInput
+}
+
+/**
+ * AffiliateLink.tag
+ */
+export type AffiliateLink$tagArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Tag
+   */
+  select?: Prisma.TagSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Tag
+   */
+  omit?: Prisma.TagOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TagInclude<ExtArgs> | null
+  where?: Prisma.TagWhereInput
 }
 
 /**

@@ -30,6 +30,7 @@ export type SiteMinAggregateOutputType = {
   slug: string | null
   status: $Enums.SiteStatus | null
   logoMediaId: string | null
+  darkLogoMediaId: string | null
   faviconMediaId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -41,6 +42,7 @@ export type SiteMaxAggregateOutputType = {
   slug: string | null
   status: $Enums.SiteStatus | null
   logoMediaId: string | null
+  darkLogoMediaId: string | null
   faviconMediaId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,6 +54,7 @@ export type SiteCountAggregateOutputType = {
   slug: number
   status: number
   logoMediaId: number
+  darkLogoMediaId: number
   faviconMediaId: number
   settings: number
   seoSettings: number
@@ -67,6 +70,7 @@ export type SiteMinAggregateInputType = {
   slug?: true
   status?: true
   logoMediaId?: true
+  darkLogoMediaId?: true
   faviconMediaId?: true
   createdAt?: true
   updatedAt?: true
@@ -78,6 +82,7 @@ export type SiteMaxAggregateInputType = {
   slug?: true
   status?: true
   logoMediaId?: true
+  darkLogoMediaId?: true
   faviconMediaId?: true
   createdAt?: true
   updatedAt?: true
@@ -89,6 +94,7 @@ export type SiteCountAggregateInputType = {
   slug?: true
   status?: true
   logoMediaId?: true
+  darkLogoMediaId?: true
   faviconMediaId?: true
   settings?: true
   seoSettings?: true
@@ -175,6 +181,7 @@ export type SiteGroupByOutputType = {
   slug: string
   status: $Enums.SiteStatus
   logoMediaId: string | null
+  darkLogoMediaId: string | null
   faviconMediaId: string | null
   settings: runtime.JsonValue | null
   seoSettings: runtime.JsonValue | null
@@ -209,6 +216,7 @@ export type SiteWhereInput = {
   slug?: Prisma.StringFilter<"Site"> | string
   status?: Prisma.EnumSiteStatusFilter<"Site"> | $Enums.SiteStatus
   logoMediaId?: Prisma.StringNullableFilter<"Site"> | string | null
+  darkLogoMediaId?: Prisma.StringNullableFilter<"Site"> | string | null
   faviconMediaId?: Prisma.StringNullableFilter<"Site"> | string | null
   settings?: Prisma.JsonNullableFilter<"Site">
   seoSettings?: Prisma.JsonNullableFilter<"Site">
@@ -223,7 +231,6 @@ export type SiteWhereInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionListRelationFilter
   mediaAssets?: Prisma.MediaAssetListRelationFilter
   authors?: Prisma.AuthorListRelationFilter
-  pageTemplates?: Prisma.PageTemplateListRelationFilter
   affiliateLinks?: Prisma.AffiliateLinkListRelationFilter
   guides?: Prisma.BuyingGuideListRelationFilter
   comparisons?: Prisma.ComparisonListRelationFilter
@@ -243,6 +250,7 @@ export type SiteOrderByWithRelationInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   logoMediaId?: Prisma.SortOrderInput | Prisma.SortOrder
+  darkLogoMediaId?: Prisma.SortOrderInput | Prisma.SortOrder
   faviconMediaId?: Prisma.SortOrderInput | Prisma.SortOrder
   settings?: Prisma.SortOrderInput | Prisma.SortOrder
   seoSettings?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -257,7 +265,6 @@ export type SiteOrderByWithRelationInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionOrderByRelationAggregateInput
   mediaAssets?: Prisma.MediaAssetOrderByRelationAggregateInput
   authors?: Prisma.AuthorOrderByRelationAggregateInput
-  pageTemplates?: Prisma.PageTemplateOrderByRelationAggregateInput
   affiliateLinks?: Prisma.AffiliateLinkOrderByRelationAggregateInput
   guides?: Prisma.BuyingGuideOrderByRelationAggregateInput
   comparisons?: Prisma.ComparisonOrderByRelationAggregateInput
@@ -280,6 +287,7 @@ export type SiteWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Site"> | string
   status?: Prisma.EnumSiteStatusFilter<"Site"> | $Enums.SiteStatus
   logoMediaId?: Prisma.StringNullableFilter<"Site"> | string | null
+  darkLogoMediaId?: Prisma.StringNullableFilter<"Site"> | string | null
   faviconMediaId?: Prisma.StringNullableFilter<"Site"> | string | null
   settings?: Prisma.JsonNullableFilter<"Site">
   seoSettings?: Prisma.JsonNullableFilter<"Site">
@@ -294,7 +302,6 @@ export type SiteWhereUniqueInput = Prisma.AtLeast<{
   reviewCriteria?: Prisma.ReviewScoreCriterionListRelationFilter
   mediaAssets?: Prisma.MediaAssetListRelationFilter
   authors?: Prisma.AuthorListRelationFilter
-  pageTemplates?: Prisma.PageTemplateListRelationFilter
   affiliateLinks?: Prisma.AffiliateLinkListRelationFilter
   guides?: Prisma.BuyingGuideListRelationFilter
   comparisons?: Prisma.ComparisonListRelationFilter
@@ -314,6 +321,7 @@ export type SiteOrderByWithAggregationInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   logoMediaId?: Prisma.SortOrderInput | Prisma.SortOrder
+  darkLogoMediaId?: Prisma.SortOrderInput | Prisma.SortOrder
   faviconMediaId?: Prisma.SortOrderInput | Prisma.SortOrder
   settings?: Prisma.SortOrderInput | Prisma.SortOrder
   seoSettings?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -333,6 +341,7 @@ export type SiteScalarWhereWithAggregatesInput = {
   slug?: Prisma.StringWithAggregatesFilter<"Site"> | string
   status?: Prisma.EnumSiteStatusWithAggregatesFilter<"Site"> | $Enums.SiteStatus
   logoMediaId?: Prisma.StringNullableWithAggregatesFilter<"Site"> | string | null
+  darkLogoMediaId?: Prisma.StringNullableWithAggregatesFilter<"Site"> | string | null
   faviconMediaId?: Prisma.StringNullableWithAggregatesFilter<"Site"> | string | null
   settings?: Prisma.JsonNullableWithAggregatesFilter<"Site">
   seoSettings?: Prisma.JsonNullableWithAggregatesFilter<"Site">
@@ -346,6 +355,7 @@ export type SiteCreateInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -360,7 +370,6 @@ export type SiteCreateInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -380,6 +389,7 @@ export type SiteUncheckedCreateInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -394,7 +404,6 @@ export type SiteUncheckedCreateInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -414,6 +423,7 @@ export type SiteUpdateInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -428,7 +438,6 @@ export type SiteUpdateInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -448,6 +457,7 @@ export type SiteUncheckedUpdateInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -462,7 +472,6 @@ export type SiteUncheckedUpdateInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -482,6 +491,7 @@ export type SiteCreateManyInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -495,6 +505,7 @@ export type SiteUpdateManyMutationInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -508,6 +519,7 @@ export type SiteUncheckedUpdateManyInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -521,6 +533,7 @@ export type SiteCountOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   logoMediaId?: Prisma.SortOrder
+  darkLogoMediaId?: Prisma.SortOrder
   faviconMediaId?: Prisma.SortOrder
   settings?: Prisma.SortOrder
   seoSettings?: Prisma.SortOrder
@@ -534,6 +547,7 @@ export type SiteMaxOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   logoMediaId?: Prisma.SortOrder
+  darkLogoMediaId?: Prisma.SortOrder
   faviconMediaId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -545,6 +559,7 @@ export type SiteMinOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   logoMediaId?: Prisma.SortOrder
+  darkLogoMediaId?: Prisma.SortOrder
   faviconMediaId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -598,20 +613,6 @@ export type SiteUpdateOneWithoutMediaAssetsNestedInput = {
   delete?: Prisma.SiteWhereInput | boolean
   connect?: Prisma.SiteWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.SiteUpdateToOneWithWhereWithoutMediaAssetsInput, Prisma.SiteUpdateWithoutMediaAssetsInput>, Prisma.SiteUncheckedUpdateWithoutMediaAssetsInput>
-}
-
-export type SiteCreateNestedOneWithoutPageTemplatesInput = {
-  create?: Prisma.XOR<Prisma.SiteCreateWithoutPageTemplatesInput, Prisma.SiteUncheckedCreateWithoutPageTemplatesInput>
-  connectOrCreate?: Prisma.SiteCreateOrConnectWithoutPageTemplatesInput
-  connect?: Prisma.SiteWhereUniqueInput
-}
-
-export type SiteUpdateOneRequiredWithoutPageTemplatesNestedInput = {
-  create?: Prisma.XOR<Prisma.SiteCreateWithoutPageTemplatesInput, Prisma.SiteUncheckedCreateWithoutPageTemplatesInput>
-  connectOrCreate?: Prisma.SiteCreateOrConnectWithoutPageTemplatesInput
-  upsert?: Prisma.SiteUpsertWithoutPageTemplatesInput
-  connect?: Prisma.SiteWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SiteUpdateToOneWithWhereWithoutPageTemplatesInput, Prisma.SiteUpdateWithoutPageTemplatesInput>, Prisma.SiteUncheckedUpdateWithoutPageTemplatesInput>
 }
 
 export type SiteCreateNestedOneWithoutCategoriesInput = {
@@ -872,6 +873,7 @@ export type SiteCreateWithoutAuthorsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -885,7 +887,6 @@ export type SiteCreateWithoutAuthorsInput = {
   siteProducts?: Prisma.SiteProductCreateNestedManyWithoutSiteInput
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -905,6 +906,7 @@ export type SiteUncheckedCreateWithoutAuthorsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -918,7 +920,6 @@ export type SiteUncheckedCreateWithoutAuthorsInput = {
   siteProducts?: Prisma.SiteProductUncheckedCreateNestedManyWithoutSiteInput
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -954,6 +955,7 @@ export type SiteUpdateWithoutAuthorsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -967,7 +969,6 @@ export type SiteUpdateWithoutAuthorsInput = {
   siteProducts?: Prisma.SiteProductUpdateManyWithoutSiteNestedInput
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -987,6 +988,7 @@ export type SiteUncheckedUpdateWithoutAuthorsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1000,7 +1002,6 @@ export type SiteUncheckedUpdateWithoutAuthorsInput = {
   siteProducts?: Prisma.SiteProductUncheckedUpdateManyWithoutSiteNestedInput
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -1020,6 +1021,7 @@ export type SiteCreateWithoutMediaAssetsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1033,7 +1035,6 @@ export type SiteCreateWithoutMediaAssetsInput = {
   siteProducts?: Prisma.SiteProductCreateNestedManyWithoutSiteInput
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -1053,6 +1054,7 @@ export type SiteUncheckedCreateWithoutMediaAssetsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1066,7 +1068,6 @@ export type SiteUncheckedCreateWithoutMediaAssetsInput = {
   siteProducts?: Prisma.SiteProductUncheckedCreateNestedManyWithoutSiteInput
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -1102,6 +1103,7 @@ export type SiteUpdateWithoutMediaAssetsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1115,7 +1117,6 @@ export type SiteUpdateWithoutMediaAssetsInput = {
   siteProducts?: Prisma.SiteProductUpdateManyWithoutSiteNestedInput
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -1135,6 +1136,7 @@ export type SiteUncheckedUpdateWithoutMediaAssetsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1147,155 +1149,6 @@ export type SiteUncheckedUpdateWithoutMediaAssetsInput = {
   siteContents?: Prisma.SiteContentUncheckedUpdateManyWithoutSiteNestedInput
   siteProducts?: Prisma.SiteProductUncheckedUpdateManyWithoutSiteNestedInput
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
-  authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
-  affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
-  guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
-  comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
-  subscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutSiteNestedInput
-  emailSenders?: Prisma.EmailSenderUncheckedUpdateManyWithoutSiteNestedInput
-  emailTemplates?: Prisma.EmailTemplateUncheckedUpdateManyWithoutSiteNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutSiteNestedInput
-  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutSiteNestedInput
-  analyticsEvents?: Prisma.AnalyticsEventUncheckedUpdateManyWithoutSiteNestedInput
-  affiliateClicks?: Prisma.AffiliateClickUncheckedUpdateManyWithoutSiteNestedInput
-  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutSiteNestedInput
-}
-
-export type SiteCreateWithoutPageTemplatesInput = {
-  id?: string
-  name: string
-  slug: string
-  status?: $Enums.SiteStatus
-  logoMediaId?: string | null
-  faviconMediaId?: string | null
-  settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  domains?: Prisma.SiteDomainCreateNestedManyWithoutSiteInput
-  secrets?: Prisma.SiteSecretCreateNestedManyWithoutSiteInput
-  userAccess?: Prisma.UserSiteAccessCreateNestedManyWithoutSiteInput
-  categories?: Prisma.CategoryCreateNestedManyWithoutSiteInput
-  siteContents?: Prisma.SiteContentCreateNestedManyWithoutSiteInput
-  siteProducts?: Prisma.SiteProductCreateNestedManyWithoutSiteInput
-  reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
-  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
-  authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
-  guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
-  comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
-  subscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutSiteInput
-  emailSenders?: Prisma.EmailSenderCreateNestedManyWithoutSiteInput
-  emailTemplates?: Prisma.EmailTemplateCreateNestedManyWithoutSiteInput
-  tags?: Prisma.TagCreateNestedManyWithoutSiteInput
-  redirects?: Prisma.RedirectCreateNestedManyWithoutSiteInput
-  analyticsEvents?: Prisma.AnalyticsEventCreateNestedManyWithoutSiteInput
-  affiliateClicks?: Prisma.AffiliateClickCreateNestedManyWithoutSiteInput
-  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutSiteInput
-}
-
-export type SiteUncheckedCreateWithoutPageTemplatesInput = {
-  id?: string
-  name: string
-  slug: string
-  status?: $Enums.SiteStatus
-  logoMediaId?: string | null
-  faviconMediaId?: string | null
-  settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  domains?: Prisma.SiteDomainUncheckedCreateNestedManyWithoutSiteInput
-  secrets?: Prisma.SiteSecretUncheckedCreateNestedManyWithoutSiteInput
-  userAccess?: Prisma.UserSiteAccessUncheckedCreateNestedManyWithoutSiteInput
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutSiteInput
-  siteContents?: Prisma.SiteContentUncheckedCreateNestedManyWithoutSiteInput
-  siteProducts?: Prisma.SiteProductUncheckedCreateNestedManyWithoutSiteInput
-  reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
-  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
-  authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
-  guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
-  comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
-  subscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutSiteInput
-  emailSenders?: Prisma.EmailSenderUncheckedCreateNestedManyWithoutSiteInput
-  emailTemplates?: Prisma.EmailTemplateUncheckedCreateNestedManyWithoutSiteInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutSiteInput
-  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutSiteInput
-  analyticsEvents?: Prisma.AnalyticsEventUncheckedCreateNestedManyWithoutSiteInput
-  affiliateClicks?: Prisma.AffiliateClickUncheckedCreateNestedManyWithoutSiteInput
-  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutSiteInput
-}
-
-export type SiteCreateOrConnectWithoutPageTemplatesInput = {
-  where: Prisma.SiteWhereUniqueInput
-  create: Prisma.XOR<Prisma.SiteCreateWithoutPageTemplatesInput, Prisma.SiteUncheckedCreateWithoutPageTemplatesInput>
-}
-
-export type SiteUpsertWithoutPageTemplatesInput = {
-  update: Prisma.XOR<Prisma.SiteUpdateWithoutPageTemplatesInput, Prisma.SiteUncheckedUpdateWithoutPageTemplatesInput>
-  create: Prisma.XOR<Prisma.SiteCreateWithoutPageTemplatesInput, Prisma.SiteUncheckedCreateWithoutPageTemplatesInput>
-  where?: Prisma.SiteWhereInput
-}
-
-export type SiteUpdateToOneWithWhereWithoutPageTemplatesInput = {
-  where?: Prisma.SiteWhereInput
-  data: Prisma.XOR<Prisma.SiteUpdateWithoutPageTemplatesInput, Prisma.SiteUncheckedUpdateWithoutPageTemplatesInput>
-}
-
-export type SiteUpdateWithoutPageTemplatesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
-  logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  domains?: Prisma.SiteDomainUpdateManyWithoutSiteNestedInput
-  secrets?: Prisma.SiteSecretUpdateManyWithoutSiteNestedInput
-  userAccess?: Prisma.UserSiteAccessUpdateManyWithoutSiteNestedInput
-  categories?: Prisma.CategoryUpdateManyWithoutSiteNestedInput
-  siteContents?: Prisma.SiteContentUpdateManyWithoutSiteNestedInput
-  siteProducts?: Prisma.SiteProductUpdateManyWithoutSiteNestedInput
-  reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
-  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
-  authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
-  guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
-  comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
-  subscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutSiteNestedInput
-  emailSenders?: Prisma.EmailSenderUpdateManyWithoutSiteNestedInput
-  emailTemplates?: Prisma.EmailTemplateUpdateManyWithoutSiteNestedInput
-  tags?: Prisma.TagUpdateManyWithoutSiteNestedInput
-  redirects?: Prisma.RedirectUpdateManyWithoutSiteNestedInput
-  analyticsEvents?: Prisma.AnalyticsEventUpdateManyWithoutSiteNestedInput
-  affiliateClicks?: Prisma.AffiliateClickUpdateManyWithoutSiteNestedInput
-  emailMessages?: Prisma.EmailMessageUpdateManyWithoutSiteNestedInput
-}
-
-export type SiteUncheckedUpdateWithoutPageTemplatesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
-  logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  domains?: Prisma.SiteDomainUncheckedUpdateManyWithoutSiteNestedInput
-  secrets?: Prisma.SiteSecretUncheckedUpdateManyWithoutSiteNestedInput
-  userAccess?: Prisma.UserSiteAccessUncheckedUpdateManyWithoutSiteNestedInput
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutSiteNestedInput
-  siteContents?: Prisma.SiteContentUncheckedUpdateManyWithoutSiteNestedInput
-  siteProducts?: Prisma.SiteProductUncheckedUpdateManyWithoutSiteNestedInput
-  reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
-  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
@@ -1316,6 +1169,7 @@ export type SiteCreateWithoutCategoriesInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1329,7 +1183,6 @@ export type SiteCreateWithoutCategoriesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -1349,6 +1202,7 @@ export type SiteUncheckedCreateWithoutCategoriesInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1362,7 +1216,6 @@ export type SiteUncheckedCreateWithoutCategoriesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -1398,6 +1251,7 @@ export type SiteUpdateWithoutCategoriesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1411,7 +1265,6 @@ export type SiteUpdateWithoutCategoriesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -1431,6 +1284,7 @@ export type SiteUncheckedUpdateWithoutCategoriesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1444,7 +1298,6 @@ export type SiteUncheckedUpdateWithoutCategoriesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -1464,6 +1317,7 @@ export type SiteCreateWithoutSiteContentsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1477,7 +1331,6 @@ export type SiteCreateWithoutSiteContentsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -1497,6 +1350,7 @@ export type SiteUncheckedCreateWithoutSiteContentsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1510,7 +1364,6 @@ export type SiteUncheckedCreateWithoutSiteContentsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -1546,6 +1399,7 @@ export type SiteUpdateWithoutSiteContentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1559,7 +1413,6 @@ export type SiteUpdateWithoutSiteContentsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -1579,6 +1432,7 @@ export type SiteUncheckedUpdateWithoutSiteContentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1592,7 +1446,6 @@ export type SiteUncheckedUpdateWithoutSiteContentsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -1612,6 +1465,7 @@ export type SiteCreateWithoutTagsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1626,7 +1480,6 @@ export type SiteCreateWithoutTagsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -1645,6 +1498,7 @@ export type SiteUncheckedCreateWithoutTagsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1659,7 +1513,6 @@ export type SiteUncheckedCreateWithoutTagsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -1694,6 +1547,7 @@ export type SiteUpdateWithoutTagsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1708,7 +1562,6 @@ export type SiteUpdateWithoutTagsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -1727,6 +1580,7 @@ export type SiteUncheckedUpdateWithoutTagsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1741,7 +1595,6 @@ export type SiteUncheckedUpdateWithoutTagsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -1760,6 +1613,7 @@ export type SiteCreateWithoutRedirectsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1774,7 +1628,6 @@ export type SiteCreateWithoutRedirectsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -1793,6 +1646,7 @@ export type SiteUncheckedCreateWithoutRedirectsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1807,7 +1661,6 @@ export type SiteUncheckedCreateWithoutRedirectsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -1842,6 +1695,7 @@ export type SiteUpdateWithoutRedirectsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1856,7 +1710,6 @@ export type SiteUpdateWithoutRedirectsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -1875,6 +1728,7 @@ export type SiteUncheckedUpdateWithoutRedirectsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1889,7 +1743,6 @@ export type SiteUncheckedUpdateWithoutRedirectsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -1908,6 +1761,7 @@ export type SiteCreateWithoutAnalyticsEventsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1922,7 +1776,6 @@ export type SiteCreateWithoutAnalyticsEventsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -1941,6 +1794,7 @@ export type SiteUncheckedCreateWithoutAnalyticsEventsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1955,7 +1809,6 @@ export type SiteUncheckedCreateWithoutAnalyticsEventsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -1990,6 +1843,7 @@ export type SiteUpdateWithoutAnalyticsEventsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2004,7 +1858,6 @@ export type SiteUpdateWithoutAnalyticsEventsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -2023,6 +1876,7 @@ export type SiteUncheckedUpdateWithoutAnalyticsEventsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2037,7 +1891,6 @@ export type SiteUncheckedUpdateWithoutAnalyticsEventsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -2056,6 +1909,7 @@ export type SiteCreateWithoutReviewCriteriaInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2069,7 +1923,6 @@ export type SiteCreateWithoutReviewCriteriaInput = {
   siteProducts?: Prisma.SiteProductCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -2089,6 +1942,7 @@ export type SiteUncheckedCreateWithoutReviewCriteriaInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2102,7 +1956,6 @@ export type SiteUncheckedCreateWithoutReviewCriteriaInput = {
   siteProducts?: Prisma.SiteProductUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -2138,6 +1991,7 @@ export type SiteUpdateWithoutReviewCriteriaInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2151,7 +2005,6 @@ export type SiteUpdateWithoutReviewCriteriaInput = {
   siteProducts?: Prisma.SiteProductUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -2171,6 +2024,7 @@ export type SiteUncheckedUpdateWithoutReviewCriteriaInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2184,7 +2038,6 @@ export type SiteUncheckedUpdateWithoutReviewCriteriaInput = {
   siteProducts?: Prisma.SiteProductUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -2204,6 +2057,7 @@ export type SiteCreateWithoutSiteProductsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2217,7 +2071,6 @@ export type SiteCreateWithoutSiteProductsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -2237,6 +2090,7 @@ export type SiteUncheckedCreateWithoutSiteProductsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2250,7 +2104,6 @@ export type SiteUncheckedCreateWithoutSiteProductsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -2286,6 +2139,7 @@ export type SiteUpdateWithoutSiteProductsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2299,7 +2153,6 @@ export type SiteUpdateWithoutSiteProductsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -2319,6 +2172,7 @@ export type SiteUncheckedUpdateWithoutSiteProductsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2332,7 +2186,6 @@ export type SiteUncheckedUpdateWithoutSiteProductsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -2352,6 +2205,7 @@ export type SiteCreateWithoutAffiliateLinksInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2366,7 +2220,6 @@ export type SiteCreateWithoutAffiliateLinksInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
   subscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutSiteInput
@@ -2385,6 +2238,7 @@ export type SiteUncheckedCreateWithoutAffiliateLinksInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2399,7 +2253,6 @@ export type SiteUncheckedCreateWithoutAffiliateLinksInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
   subscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutSiteInput
@@ -2434,6 +2287,7 @@ export type SiteUpdateWithoutAffiliateLinksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2448,7 +2302,6 @@ export type SiteUpdateWithoutAffiliateLinksInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
   subscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutSiteNestedInput
@@ -2467,6 +2320,7 @@ export type SiteUncheckedUpdateWithoutAffiliateLinksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2481,7 +2335,6 @@ export type SiteUncheckedUpdateWithoutAffiliateLinksInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
   subscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutSiteNestedInput
@@ -2500,6 +2353,7 @@ export type SiteCreateWithoutAffiliateClicksInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2514,7 +2368,6 @@ export type SiteCreateWithoutAffiliateClicksInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -2533,6 +2386,7 @@ export type SiteUncheckedCreateWithoutAffiliateClicksInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2547,7 +2401,6 @@ export type SiteUncheckedCreateWithoutAffiliateClicksInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -2582,6 +2435,7 @@ export type SiteUpdateWithoutAffiliateClicksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2596,7 +2450,6 @@ export type SiteUpdateWithoutAffiliateClicksInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -2615,6 +2468,7 @@ export type SiteUncheckedUpdateWithoutAffiliateClicksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2629,7 +2483,6 @@ export type SiteUncheckedUpdateWithoutAffiliateClicksInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -2648,6 +2501,7 @@ export type SiteCreateWithoutGuidesInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2662,7 +2516,6 @@ export type SiteCreateWithoutGuidesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
   subscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutSiteInput
@@ -2681,6 +2534,7 @@ export type SiteUncheckedCreateWithoutGuidesInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2695,7 +2549,6 @@ export type SiteUncheckedCreateWithoutGuidesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
   subscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutSiteInput
@@ -2730,6 +2583,7 @@ export type SiteUpdateWithoutGuidesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2744,7 +2598,6 @@ export type SiteUpdateWithoutGuidesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
   subscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutSiteNestedInput
@@ -2763,6 +2616,7 @@ export type SiteUncheckedUpdateWithoutGuidesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2777,7 +2631,6 @@ export type SiteUncheckedUpdateWithoutGuidesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
   subscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutSiteNestedInput
@@ -2796,6 +2649,7 @@ export type SiteCreateWithoutComparisonsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2810,7 +2664,6 @@ export type SiteCreateWithoutComparisonsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   subscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutSiteInput
@@ -2829,6 +2682,7 @@ export type SiteUncheckedCreateWithoutComparisonsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2843,7 +2697,6 @@ export type SiteUncheckedCreateWithoutComparisonsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   subscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutSiteInput
@@ -2878,6 +2731,7 @@ export type SiteUpdateWithoutComparisonsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2892,7 +2746,6 @@ export type SiteUpdateWithoutComparisonsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   subscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutSiteNestedInput
@@ -2911,6 +2764,7 @@ export type SiteUncheckedUpdateWithoutComparisonsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2925,7 +2779,6 @@ export type SiteUncheckedUpdateWithoutComparisonsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   subscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutSiteNestedInput
@@ -2944,6 +2797,7 @@ export type SiteCreateWithoutSubscribersInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2958,7 +2812,6 @@ export type SiteCreateWithoutSubscribersInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -2977,6 +2830,7 @@ export type SiteUncheckedCreateWithoutSubscribersInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2991,7 +2845,6 @@ export type SiteUncheckedCreateWithoutSubscribersInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -3026,6 +2879,7 @@ export type SiteUpdateWithoutSubscribersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3040,7 +2894,6 @@ export type SiteUpdateWithoutSubscribersInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -3059,6 +2912,7 @@ export type SiteUncheckedUpdateWithoutSubscribersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3073,7 +2927,6 @@ export type SiteUncheckedUpdateWithoutSubscribersInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -3092,6 +2945,7 @@ export type SiteCreateWithoutEmailSendersInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3106,7 +2960,6 @@ export type SiteCreateWithoutEmailSendersInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -3125,6 +2978,7 @@ export type SiteUncheckedCreateWithoutEmailSendersInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3139,7 +2993,6 @@ export type SiteUncheckedCreateWithoutEmailSendersInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -3174,6 +3027,7 @@ export type SiteUpdateWithoutEmailSendersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3188,7 +3042,6 @@ export type SiteUpdateWithoutEmailSendersInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -3207,6 +3060,7 @@ export type SiteUncheckedUpdateWithoutEmailSendersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3221,7 +3075,6 @@ export type SiteUncheckedUpdateWithoutEmailSendersInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -3240,6 +3093,7 @@ export type SiteCreateWithoutEmailTemplatesInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3254,7 +3108,6 @@ export type SiteCreateWithoutEmailTemplatesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -3273,6 +3126,7 @@ export type SiteUncheckedCreateWithoutEmailTemplatesInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3287,7 +3141,6 @@ export type SiteUncheckedCreateWithoutEmailTemplatesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -3322,6 +3175,7 @@ export type SiteUpdateWithoutEmailTemplatesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3336,7 +3190,6 @@ export type SiteUpdateWithoutEmailTemplatesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -3355,6 +3208,7 @@ export type SiteUncheckedUpdateWithoutEmailTemplatesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3369,7 +3223,6 @@ export type SiteUncheckedUpdateWithoutEmailTemplatesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -3388,6 +3241,7 @@ export type SiteCreateWithoutEmailMessagesInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3402,7 +3256,6 @@ export type SiteCreateWithoutEmailMessagesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -3421,6 +3274,7 @@ export type SiteUncheckedCreateWithoutEmailMessagesInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3435,7 +3289,6 @@ export type SiteUncheckedCreateWithoutEmailMessagesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -3470,6 +3323,7 @@ export type SiteUpdateWithoutEmailMessagesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3484,7 +3338,6 @@ export type SiteUpdateWithoutEmailMessagesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -3503,6 +3356,7 @@ export type SiteUncheckedUpdateWithoutEmailMessagesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3517,7 +3371,6 @@ export type SiteUncheckedUpdateWithoutEmailMessagesInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -3536,6 +3389,7 @@ export type SiteCreateWithoutDomainsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3549,7 +3403,6 @@ export type SiteCreateWithoutDomainsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -3569,6 +3422,7 @@ export type SiteUncheckedCreateWithoutDomainsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3582,7 +3436,6 @@ export type SiteUncheckedCreateWithoutDomainsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -3618,6 +3471,7 @@ export type SiteUpdateWithoutDomainsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3631,7 +3485,6 @@ export type SiteUpdateWithoutDomainsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -3651,6 +3504,7 @@ export type SiteUncheckedUpdateWithoutDomainsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3664,7 +3518,6 @@ export type SiteUncheckedUpdateWithoutDomainsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -3684,6 +3537,7 @@ export type SiteCreateWithoutSecretsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3697,7 +3551,6 @@ export type SiteCreateWithoutSecretsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -3717,6 +3570,7 @@ export type SiteUncheckedCreateWithoutSecretsInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3730,7 +3584,6 @@ export type SiteUncheckedCreateWithoutSecretsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -3766,6 +3619,7 @@ export type SiteUpdateWithoutSecretsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3779,7 +3633,6 @@ export type SiteUpdateWithoutSecretsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -3799,6 +3652,7 @@ export type SiteUncheckedUpdateWithoutSecretsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3812,7 +3666,6 @@ export type SiteUncheckedUpdateWithoutSecretsInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -3832,6 +3685,7 @@ export type SiteCreateWithoutUserAccessInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3845,7 +3699,6 @@ export type SiteCreateWithoutUserAccessInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonCreateNestedManyWithoutSiteInput
@@ -3865,6 +3718,7 @@ export type SiteUncheckedCreateWithoutUserAccessInput = {
   slug: string
   status?: $Enums.SiteStatus
   logoMediaId?: string | null
+  darkLogoMediaId?: string | null
   faviconMediaId?: string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3878,7 +3732,6 @@ export type SiteUncheckedCreateWithoutUserAccessInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedCreateNestedManyWithoutSiteInput
   mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutSiteInput
   authors?: Prisma.AuthorUncheckedCreateNestedManyWithoutSiteInput
-  pageTemplates?: Prisma.PageTemplateUncheckedCreateNestedManyWithoutSiteInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedCreateNestedManyWithoutSiteInput
   guides?: Prisma.BuyingGuideUncheckedCreateNestedManyWithoutSiteInput
   comparisons?: Prisma.ComparisonUncheckedCreateNestedManyWithoutSiteInput
@@ -3914,6 +3767,7 @@ export type SiteUpdateWithoutUserAccessInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3927,7 +3781,6 @@ export type SiteUpdateWithoutUserAccessInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUpdateManyWithoutSiteNestedInput
@@ -3947,6 +3800,7 @@ export type SiteUncheckedUpdateWithoutUserAccessInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
   logoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  darkLogoMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   faviconMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   settings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoSettings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3960,7 +3814,6 @@ export type SiteUncheckedUpdateWithoutUserAccessInput = {
   reviewCriteria?: Prisma.ReviewScoreCriterionUncheckedUpdateManyWithoutSiteNestedInput
   mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutSiteNestedInput
   authors?: Prisma.AuthorUncheckedUpdateManyWithoutSiteNestedInput
-  pageTemplates?: Prisma.PageTemplateUncheckedUpdateManyWithoutSiteNestedInput
   affiliateLinks?: Prisma.AffiliateLinkUncheckedUpdateManyWithoutSiteNestedInput
   guides?: Prisma.BuyingGuideUncheckedUpdateManyWithoutSiteNestedInput
   comparisons?: Prisma.ComparisonUncheckedUpdateManyWithoutSiteNestedInput
@@ -3989,7 +3842,6 @@ export type SiteCountOutputType = {
   reviewCriteria: number
   mediaAssets: number
   authors: number
-  pageTemplates: number
   affiliateLinks: number
   guides: number
   comparisons: number
@@ -4013,7 +3865,6 @@ export type SiteCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   reviewCriteria?: boolean | SiteCountOutputTypeCountReviewCriteriaArgs
   mediaAssets?: boolean | SiteCountOutputTypeCountMediaAssetsArgs
   authors?: boolean | SiteCountOutputTypeCountAuthorsArgs
-  pageTemplates?: boolean | SiteCountOutputTypeCountPageTemplatesArgs
   affiliateLinks?: boolean | SiteCountOutputTypeCountAffiliateLinksArgs
   guides?: boolean | SiteCountOutputTypeCountGuidesArgs
   comparisons?: boolean | SiteCountOutputTypeCountComparisonsArgs
@@ -4103,13 +3954,6 @@ export type SiteCountOutputTypeCountAuthorsArgs<ExtArgs extends runtime.Types.Ex
 /**
  * SiteCountOutputType without action
  */
-export type SiteCountOutputTypeCountPageTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PageTemplateWhereInput
-}
-
-/**
- * SiteCountOutputType without action
- */
 export type SiteCountOutputTypeCountAffiliateLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AffiliateLinkWhereInput
 }
@@ -4191,6 +4035,7 @@ export type SiteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   slug?: boolean
   status?: boolean
   logoMediaId?: boolean
+  darkLogoMediaId?: boolean
   faviconMediaId?: boolean
   settings?: boolean
   seoSettings?: boolean
@@ -4205,7 +4050,6 @@ export type SiteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   reviewCriteria?: boolean | Prisma.Site$reviewCriteriaArgs<ExtArgs>
   mediaAssets?: boolean | Prisma.Site$mediaAssetsArgs<ExtArgs>
   authors?: boolean | Prisma.Site$authorsArgs<ExtArgs>
-  pageTemplates?: boolean | Prisma.Site$pageTemplatesArgs<ExtArgs>
   affiliateLinks?: boolean | Prisma.Site$affiliateLinksArgs<ExtArgs>
   guides?: boolean | Prisma.Site$guidesArgs<ExtArgs>
   comparisons?: boolean | Prisma.Site$comparisonsArgs<ExtArgs>
@@ -4226,6 +4070,7 @@ export type SiteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   slug?: boolean
   status?: boolean
   logoMediaId?: boolean
+  darkLogoMediaId?: boolean
   faviconMediaId?: boolean
   settings?: boolean
   seoSettings?: boolean
@@ -4239,6 +4084,7 @@ export type SiteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   slug?: boolean
   status?: boolean
   logoMediaId?: boolean
+  darkLogoMediaId?: boolean
   faviconMediaId?: boolean
   settings?: boolean
   seoSettings?: boolean
@@ -4252,6 +4098,7 @@ export type SiteSelectScalar = {
   slug?: boolean
   status?: boolean
   logoMediaId?: boolean
+  darkLogoMediaId?: boolean
   faviconMediaId?: boolean
   settings?: boolean
   seoSettings?: boolean
@@ -4259,7 +4106,7 @@ export type SiteSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SiteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "status" | "logoMediaId" | "faviconMediaId" | "settings" | "seoSettings" | "createdAt" | "updatedAt", ExtArgs["result"]["site"]>
+export type SiteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "status" | "logoMediaId" | "darkLogoMediaId" | "faviconMediaId" | "settings" | "seoSettings" | "createdAt" | "updatedAt", ExtArgs["result"]["site"]>
 export type SiteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domains?: boolean | Prisma.Site$domainsArgs<ExtArgs>
   secrets?: boolean | Prisma.Site$secretsArgs<ExtArgs>
@@ -4270,7 +4117,6 @@ export type SiteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   reviewCriteria?: boolean | Prisma.Site$reviewCriteriaArgs<ExtArgs>
   mediaAssets?: boolean | Prisma.Site$mediaAssetsArgs<ExtArgs>
   authors?: boolean | Prisma.Site$authorsArgs<ExtArgs>
-  pageTemplates?: boolean | Prisma.Site$pageTemplatesArgs<ExtArgs>
   affiliateLinks?: boolean | Prisma.Site$affiliateLinksArgs<ExtArgs>
   guides?: boolean | Prisma.Site$guidesArgs<ExtArgs>
   comparisons?: boolean | Prisma.Site$comparisonsArgs<ExtArgs>
@@ -4299,7 +4145,6 @@ export type $SitePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviewCriteria: Prisma.$ReviewScoreCriterionPayload<ExtArgs>[]
     mediaAssets: Prisma.$MediaAssetPayload<ExtArgs>[]
     authors: Prisma.$AuthorPayload<ExtArgs>[]
-    pageTemplates: Prisma.$PageTemplatePayload<ExtArgs>[]
     affiliateLinks: Prisma.$AffiliateLinkPayload<ExtArgs>[]
     guides: Prisma.$BuyingGuidePayload<ExtArgs>[]
     comparisons: Prisma.$ComparisonPayload<ExtArgs>[]
@@ -4318,6 +4163,7 @@ export type $SitePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     slug: string
     status: $Enums.SiteStatus
     logoMediaId: string | null
+    darkLogoMediaId: string | null
     faviconMediaId: string | null
     settings: runtime.JsonValue | null
     seoSettings: runtime.JsonValue | null
@@ -4726,7 +4572,6 @@ export interface Prisma__SiteClient<T, Null = never, ExtArgs extends runtime.Typ
   reviewCriteria<T extends Prisma.Site$reviewCriteriaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Site$reviewCriteriaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewScoreCriterionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   mediaAssets<T extends Prisma.Site$mediaAssetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Site$mediaAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MediaAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   authors<T extends Prisma.Site$authorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Site$authorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuthorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  pageTemplates<T extends Prisma.Site$pageTemplatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Site$pageTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PageTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   affiliateLinks<T extends Prisma.Site$affiliateLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Site$affiliateLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AffiliateLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   guides<T extends Prisma.Site$guidesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Site$guidesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BuyingGuidePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comparisons<T extends Prisma.Site$comparisonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Site$comparisonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComparisonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4772,6 +4617,7 @@ export interface SiteFieldRefs {
   readonly slug: Prisma.FieldRef<"Site", 'String'>
   readonly status: Prisma.FieldRef<"Site", 'SiteStatus'>
   readonly logoMediaId: Prisma.FieldRef<"Site", 'String'>
+  readonly darkLogoMediaId: Prisma.FieldRef<"Site", 'String'>
   readonly faviconMediaId: Prisma.FieldRef<"Site", 'String'>
   readonly settings: Prisma.FieldRef<"Site", 'Json'>
   readonly seoSettings: Prisma.FieldRef<"Site", 'Json'>
@@ -5383,30 +5229,6 @@ export type Site$authorsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.AuthorScalarFieldEnum | Prisma.AuthorScalarFieldEnum[]
-}
-
-/**
- * Site.pageTemplates
- */
-export type Site$pageTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PageTemplate
-   */
-  select?: Prisma.PageTemplateSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PageTemplate
-   */
-  omit?: Prisma.PageTemplateOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PageTemplateInclude<ExtArgs> | null
-  where?: Prisma.PageTemplateWhereInput
-  orderBy?: Prisma.PageTemplateOrderByWithRelationInput | Prisma.PageTemplateOrderByWithRelationInput[]
-  cursor?: Prisma.PageTemplateWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PageTemplateScalarFieldEnum | Prisma.PageTemplateScalarFieldEnum[]
 }
 
 /**

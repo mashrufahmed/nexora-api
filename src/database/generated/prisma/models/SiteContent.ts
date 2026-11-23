@@ -31,7 +31,8 @@ export type SiteContentMinAggregateOutputType = {
   slug: string | null
   titleOverride: string | null
   excerptOverride: string | null
-  status: $Enums.ContentStatus | null
+  status: $Enums.PublicationStatus | null
+  isFeatured: boolean | null
   publishedAt: Date | null
   scheduledAt: Date | null
   createdAt: Date | null
@@ -45,7 +46,8 @@ export type SiteContentMaxAggregateOutputType = {
   slug: string | null
   titleOverride: string | null
   excerptOverride: string | null
-  status: $Enums.ContentStatus | null
+  status: $Enums.PublicationStatus | null
+  isFeatured: boolean | null
   publishedAt: Date | null
   scheduledAt: Date | null
   createdAt: Date | null
@@ -61,6 +63,7 @@ export type SiteContentCountAggregateOutputType = {
   excerptOverride: number
   seoMetadata: number
   status: number
+  isFeatured: number
   publishedAt: number
   scheduledAt: number
   createdAt: number
@@ -77,6 +80,7 @@ export type SiteContentMinAggregateInputType = {
   titleOverride?: true
   excerptOverride?: true
   status?: true
+  isFeatured?: true
   publishedAt?: true
   scheduledAt?: true
   createdAt?: true
@@ -91,6 +95,7 @@ export type SiteContentMaxAggregateInputType = {
   titleOverride?: true
   excerptOverride?: true
   status?: true
+  isFeatured?: true
   publishedAt?: true
   scheduledAt?: true
   createdAt?: true
@@ -106,6 +111,7 @@ export type SiteContentCountAggregateInputType = {
   excerptOverride?: true
   seoMetadata?: true
   status?: true
+  isFeatured?: true
   publishedAt?: true
   scheduledAt?: true
   createdAt?: true
@@ -193,7 +199,8 @@ export type SiteContentGroupByOutputType = {
   titleOverride: string | null
   excerptOverride: string | null
   seoMetadata: runtime.JsonValue | null
-  status: $Enums.ContentStatus
+  status: $Enums.PublicationStatus
+  isFeatured: boolean
   publishedAt: Date | null
   scheduledAt: Date | null
   createdAt: Date
@@ -229,7 +236,8 @@ export type SiteContentWhereInput = {
   titleOverride?: Prisma.StringNullableFilter<"SiteContent"> | string | null
   excerptOverride?: Prisma.StringNullableFilter<"SiteContent"> | string | null
   seoMetadata?: Prisma.JsonNullableFilter<"SiteContent">
-  status?: Prisma.EnumContentStatusFilter<"SiteContent"> | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFilter<"SiteContent"> | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFilter<"SiteContent"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"SiteContent"> | Date | string | null
   scheduledAt?: Prisma.DateTimeNullableFilter<"SiteContent"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SiteContent"> | Date | string
@@ -249,6 +257,7 @@ export type SiteContentOrderByWithRelationInput = {
   excerptOverride?: Prisma.SortOrderInput | Prisma.SortOrder
   seoMetadata?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   scheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -272,7 +281,8 @@ export type SiteContentWhereUniqueInput = Prisma.AtLeast<{
   titleOverride?: Prisma.StringNullableFilter<"SiteContent"> | string | null
   excerptOverride?: Prisma.StringNullableFilter<"SiteContent"> | string | null
   seoMetadata?: Prisma.JsonNullableFilter<"SiteContent">
-  status?: Prisma.EnumContentStatusFilter<"SiteContent"> | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFilter<"SiteContent"> | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFilter<"SiteContent"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"SiteContent"> | Date | string | null
   scheduledAt?: Prisma.DateTimeNullableFilter<"SiteContent"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SiteContent"> | Date | string
@@ -292,6 +302,7 @@ export type SiteContentOrderByWithAggregationInput = {
   excerptOverride?: Prisma.SortOrderInput | Prisma.SortOrder
   seoMetadata?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   scheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -312,7 +323,8 @@ export type SiteContentScalarWhereWithAggregatesInput = {
   titleOverride?: Prisma.StringNullableWithAggregatesFilter<"SiteContent"> | string | null
   excerptOverride?: Prisma.StringNullableWithAggregatesFilter<"SiteContent"> | string | null
   seoMetadata?: Prisma.JsonNullableWithAggregatesFilter<"SiteContent">
-  status?: Prisma.EnumContentStatusWithAggregatesFilter<"SiteContent"> | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusWithAggregatesFilter<"SiteContent"> | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolWithAggregatesFilter<"SiteContent"> | boolean
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SiteContent"> | Date | string | null
   scheduledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SiteContent"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SiteContent"> | Date | string
@@ -325,7 +337,8 @@ export type SiteContentCreateInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -344,7 +357,8 @@ export type SiteContentUncheckedCreateInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -359,7 +373,8 @@ export type SiteContentUpdateInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -378,7 +393,8 @@ export type SiteContentUncheckedUpdateInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -395,7 +411,8 @@ export type SiteContentCreateManyInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -408,7 +425,8 @@ export type SiteContentUpdateManyMutationInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -423,7 +441,8 @@ export type SiteContentUncheckedUpdateManyInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -459,6 +478,7 @@ export type SiteContentCountOrderByAggregateInput = {
   excerptOverride?: Prisma.SortOrder
   seoMetadata?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -473,6 +493,7 @@ export type SiteContentMaxOrderByAggregateInput = {
   titleOverride?: Prisma.SortOrder
   excerptOverride?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -487,6 +508,7 @@ export type SiteContentMinOrderByAggregateInput = {
   titleOverride?: Prisma.SortOrder
   excerptOverride?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -582,6 +604,14 @@ export type SiteContentUncheckedUpdateManyWithoutContentNestedInput = {
   deleteMany?: Prisma.SiteContentScalarWhereInput | Prisma.SiteContentScalarWhereInput[]
 }
 
+export type EnumPublicationStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PublicationStatus
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type SiteContentCreateNestedOneWithoutTagsInput = {
   create?: Prisma.XOR<Prisma.SiteContentCreateWithoutTagsInput, Prisma.SiteContentUncheckedCreateWithoutTagsInput>
   connectOrCreate?: Prisma.SiteContentCreateOrConnectWithoutTagsInput
@@ -616,7 +646,8 @@ export type SiteContentCreateWithoutSiteInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -633,7 +664,8 @@ export type SiteContentUncheckedCreateWithoutSiteInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -679,7 +711,8 @@ export type SiteContentScalarWhereInput = {
   titleOverride?: Prisma.StringNullableFilter<"SiteContent"> | string | null
   excerptOverride?: Prisma.StringNullableFilter<"SiteContent"> | string | null
   seoMetadata?: Prisma.JsonNullableFilter<"SiteContent">
-  status?: Prisma.EnumContentStatusFilter<"SiteContent"> | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFilter<"SiteContent"> | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFilter<"SiteContent"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"SiteContent"> | Date | string | null
   scheduledAt?: Prisma.DateTimeNullableFilter<"SiteContent"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SiteContent"> | Date | string
@@ -692,7 +725,8 @@ export type SiteContentCreateWithoutContentInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -709,7 +743,8 @@ export type SiteContentUncheckedCreateWithoutContentInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -750,7 +785,8 @@ export type SiteContentCreateWithoutTagsInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -768,7 +804,8 @@ export type SiteContentUncheckedCreateWithoutTagsInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -798,7 +835,8 @@ export type SiteContentUpdateWithoutTagsInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -816,7 +854,8 @@ export type SiteContentUncheckedUpdateWithoutTagsInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -830,7 +869,8 @@ export type SiteContentCreateWithoutCategoriesInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -848,7 +888,8 @@ export type SiteContentUncheckedCreateWithoutCategoriesInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -878,7 +919,8 @@ export type SiteContentUpdateWithoutCategoriesInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -896,7 +938,8 @@ export type SiteContentUncheckedUpdateWithoutCategoriesInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -911,7 +954,8 @@ export type SiteContentCreateManySiteInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -924,7 +968,8 @@ export type SiteContentUpdateWithoutSiteInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -941,7 +986,8 @@ export type SiteContentUncheckedUpdateWithoutSiteInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -957,7 +1003,8 @@ export type SiteContentUncheckedUpdateManyWithoutSiteInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -971,7 +1018,8 @@ export type SiteContentCreateManyContentInput = {
   titleOverride?: string | null
   excerptOverride?: string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.ContentStatus
+  status?: $Enums.PublicationStatus
+  isFeatured?: boolean
   publishedAt?: Date | string | null
   scheduledAt?: Date | string | null
   createdAt?: Date | string
@@ -984,7 +1032,8 @@ export type SiteContentUpdateWithoutContentInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1001,7 +1050,8 @@ export type SiteContentUncheckedUpdateWithoutContentInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1017,7 +1067,8 @@ export type SiteContentUncheckedUpdateManyWithoutContentInput = {
   titleOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   excerptOverride?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  status?: Prisma.EnumPublicationStatusFieldUpdateOperationsInput | $Enums.PublicationStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1073,6 +1124,7 @@ export type SiteContentSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   excerptOverride?: boolean
   seoMetadata?: boolean
   status?: boolean
+  isFeatured?: boolean
   publishedAt?: boolean
   scheduledAt?: boolean
   createdAt?: boolean
@@ -1093,6 +1145,7 @@ export type SiteContentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   excerptOverride?: boolean
   seoMetadata?: boolean
   status?: boolean
+  isFeatured?: boolean
   publishedAt?: boolean
   scheduledAt?: boolean
   createdAt?: boolean
@@ -1110,6 +1163,7 @@ export type SiteContentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   excerptOverride?: boolean
   seoMetadata?: boolean
   status?: boolean
+  isFeatured?: boolean
   publishedAt?: boolean
   scheduledAt?: boolean
   createdAt?: boolean
@@ -1127,13 +1181,14 @@ export type SiteContentSelectScalar = {
   excerptOverride?: boolean
   seoMetadata?: boolean
   status?: boolean
+  isFeatured?: boolean
   publishedAt?: boolean
   scheduledAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SiteContentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "siteId" | "contentId" | "slug" | "titleOverride" | "excerptOverride" | "seoMetadata" | "status" | "publishedAt" | "scheduledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["siteContent"]>
+export type SiteContentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "siteId" | "contentId" | "slug" | "titleOverride" | "excerptOverride" | "seoMetadata" | "status" | "isFeatured" | "publishedAt" | "scheduledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["siteContent"]>
 export type SiteContentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
   content?: boolean | Prisma.ContentDefaultArgs<ExtArgs>
@@ -1166,7 +1221,8 @@ export type $SiteContentPayload<ExtArgs extends runtime.Types.Extensions.Interna
     titleOverride: string | null
     excerptOverride: string | null
     seoMetadata: runtime.JsonValue | null
-    status: $Enums.ContentStatus
+    status: $Enums.PublicationStatus
+    isFeatured: boolean
     publishedAt: Date | null
     scheduledAt: Date | null
     createdAt: Date
@@ -1605,7 +1661,8 @@ export interface SiteContentFieldRefs {
   readonly titleOverride: Prisma.FieldRef<"SiteContent", 'String'>
   readonly excerptOverride: Prisma.FieldRef<"SiteContent", 'String'>
   readonly seoMetadata: Prisma.FieldRef<"SiteContent", 'Json'>
-  readonly status: Prisma.FieldRef<"SiteContent", 'ContentStatus'>
+  readonly status: Prisma.FieldRef<"SiteContent", 'PublicationStatus'>
+  readonly isFeatured: Prisma.FieldRef<"SiteContent", 'Boolean'>
   readonly publishedAt: Prisma.FieldRef<"SiteContent", 'DateTime'>
   readonly scheduledAt: Prisma.FieldRef<"SiteContent", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"SiteContent", 'DateTime'>

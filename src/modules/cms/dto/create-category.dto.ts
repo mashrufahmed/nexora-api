@@ -22,3 +22,14 @@ export class CreateCategoryDto {
   @IsString()
   parentId?: string;
 }
+
+export class UpdateCategoryDto {
+  @IsOptional() @IsString() @MinLength(2) @MaxLength(100) name?: string;
+  @IsOptional()
+  @IsString()
+  @MinLength(2)
+  @MaxLength(120)
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+  slug?: string;
+  @IsOptional() @IsString() parentId?: string | null;
+}

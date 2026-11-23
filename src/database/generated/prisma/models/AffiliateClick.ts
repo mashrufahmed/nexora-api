@@ -31,6 +31,7 @@ export type AffiliateClickMinAggregateOutputType = {
   clickedAt: Date | null
   referrer: string | null
   userAgentHash: string | null
+  dedupeKey: string | null
 }
 
 export type AffiliateClickMaxAggregateOutputType = {
@@ -40,6 +41,7 @@ export type AffiliateClickMaxAggregateOutputType = {
   clickedAt: Date | null
   referrer: string | null
   userAgentHash: string | null
+  dedupeKey: string | null
 }
 
 export type AffiliateClickCountAggregateOutputType = {
@@ -49,6 +51,7 @@ export type AffiliateClickCountAggregateOutputType = {
   clickedAt: number
   referrer: number
   userAgentHash: number
+  dedupeKey: number
   _all: number
 }
 
@@ -60,6 +63,7 @@ export type AffiliateClickMinAggregateInputType = {
   clickedAt?: true
   referrer?: true
   userAgentHash?: true
+  dedupeKey?: true
 }
 
 export type AffiliateClickMaxAggregateInputType = {
@@ -69,6 +73,7 @@ export type AffiliateClickMaxAggregateInputType = {
   clickedAt?: true
   referrer?: true
   userAgentHash?: true
+  dedupeKey?: true
 }
 
 export type AffiliateClickCountAggregateInputType = {
@@ -78,6 +83,7 @@ export type AffiliateClickCountAggregateInputType = {
   clickedAt?: true
   referrer?: true
   userAgentHash?: true
+  dedupeKey?: true
   _all?: true
 }
 
@@ -160,6 +166,7 @@ export type AffiliateClickGroupByOutputType = {
   clickedAt: Date
   referrer: string | null
   userAgentHash: string | null
+  dedupeKey: string
   _count: AffiliateClickCountAggregateOutputType | null
   _min: AffiliateClickMinAggregateOutputType | null
   _max: AffiliateClickMaxAggregateOutputType | null
@@ -190,6 +197,7 @@ export type AffiliateClickWhereInput = {
   clickedAt?: Prisma.DateTimeFilter<"AffiliateClick"> | Date | string
   referrer?: Prisma.StringNullableFilter<"AffiliateClick"> | string | null
   userAgentHash?: Prisma.StringNullableFilter<"AffiliateClick"> | string | null
+  dedupeKey?: Prisma.StringFilter<"AffiliateClick"> | string
   link?: Prisma.XOR<Prisma.AffiliateLinkScalarRelationFilter, Prisma.AffiliateLinkWhereInput>
   site?: Prisma.XOR<Prisma.SiteScalarRelationFilter, Prisma.SiteWhereInput>
 }
@@ -201,12 +209,14 @@ export type AffiliateClickOrderByWithRelationInput = {
   clickedAt?: Prisma.SortOrder
   referrer?: Prisma.SortOrderInput | Prisma.SortOrder
   userAgentHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  dedupeKey?: Prisma.SortOrder
   link?: Prisma.AffiliateLinkOrderByWithRelationInput
   site?: Prisma.SiteOrderByWithRelationInput
 }
 
 export type AffiliateClickWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  dedupeKey?: string
   AND?: Prisma.AffiliateClickWhereInput | Prisma.AffiliateClickWhereInput[]
   OR?: Prisma.AffiliateClickWhereInput[]
   NOT?: Prisma.AffiliateClickWhereInput | Prisma.AffiliateClickWhereInput[]
@@ -217,7 +227,7 @@ export type AffiliateClickWhereUniqueInput = Prisma.AtLeast<{
   userAgentHash?: Prisma.StringNullableFilter<"AffiliateClick"> | string | null
   link?: Prisma.XOR<Prisma.AffiliateLinkScalarRelationFilter, Prisma.AffiliateLinkWhereInput>
   site?: Prisma.XOR<Prisma.SiteScalarRelationFilter, Prisma.SiteWhereInput>
-}, "id">
+}, "id" | "dedupeKey">
 
 export type AffiliateClickOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -226,6 +236,7 @@ export type AffiliateClickOrderByWithAggregationInput = {
   clickedAt?: Prisma.SortOrder
   referrer?: Prisma.SortOrderInput | Prisma.SortOrder
   userAgentHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  dedupeKey?: Prisma.SortOrder
   _count?: Prisma.AffiliateClickCountOrderByAggregateInput
   _max?: Prisma.AffiliateClickMaxOrderByAggregateInput
   _min?: Prisma.AffiliateClickMinOrderByAggregateInput
@@ -241,6 +252,7 @@ export type AffiliateClickScalarWhereWithAggregatesInput = {
   clickedAt?: Prisma.DateTimeWithAggregatesFilter<"AffiliateClick"> | Date | string
   referrer?: Prisma.StringNullableWithAggregatesFilter<"AffiliateClick"> | string | null
   userAgentHash?: Prisma.StringNullableWithAggregatesFilter<"AffiliateClick"> | string | null
+  dedupeKey?: Prisma.StringWithAggregatesFilter<"AffiliateClick"> | string
 }
 
 export type AffiliateClickCreateInput = {
@@ -248,6 +260,7 @@ export type AffiliateClickCreateInput = {
   clickedAt?: Date | string
   referrer?: string | null
   userAgentHash?: string | null
+  dedupeKey: string
   link: Prisma.AffiliateLinkCreateNestedOneWithoutClicksInput
   site: Prisma.SiteCreateNestedOneWithoutAffiliateClicksInput
 }
@@ -259,6 +272,7 @@ export type AffiliateClickUncheckedCreateInput = {
   clickedAt?: Date | string
   referrer?: string | null
   userAgentHash?: string | null
+  dedupeKey: string
 }
 
 export type AffiliateClickUpdateInput = {
@@ -266,6 +280,7 @@ export type AffiliateClickUpdateInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.AffiliateLinkUpdateOneRequiredWithoutClicksNestedInput
   site?: Prisma.SiteUpdateOneRequiredWithoutAffiliateClicksNestedInput
 }
@@ -277,6 +292,7 @@ export type AffiliateClickUncheckedUpdateInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AffiliateClickCreateManyInput = {
@@ -286,6 +302,7 @@ export type AffiliateClickCreateManyInput = {
   clickedAt?: Date | string
   referrer?: string | null
   userAgentHash?: string | null
+  dedupeKey: string
 }
 
 export type AffiliateClickUpdateManyMutationInput = {
@@ -293,6 +310,7 @@ export type AffiliateClickUpdateManyMutationInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AffiliateClickUncheckedUpdateManyInput = {
@@ -302,6 +320,7 @@ export type AffiliateClickUncheckedUpdateManyInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AffiliateClickListRelationFilter = {
@@ -321,6 +340,7 @@ export type AffiliateClickCountOrderByAggregateInput = {
   clickedAt?: Prisma.SortOrder
   referrer?: Prisma.SortOrder
   userAgentHash?: Prisma.SortOrder
+  dedupeKey?: Prisma.SortOrder
 }
 
 export type AffiliateClickMaxOrderByAggregateInput = {
@@ -330,6 +350,7 @@ export type AffiliateClickMaxOrderByAggregateInput = {
   clickedAt?: Prisma.SortOrder
   referrer?: Prisma.SortOrder
   userAgentHash?: Prisma.SortOrder
+  dedupeKey?: Prisma.SortOrder
 }
 
 export type AffiliateClickMinOrderByAggregateInput = {
@@ -339,6 +360,7 @@ export type AffiliateClickMinOrderByAggregateInput = {
   clickedAt?: Prisma.SortOrder
   referrer?: Prisma.SortOrder
   userAgentHash?: Prisma.SortOrder
+  dedupeKey?: Prisma.SortOrder
 }
 
 export type AffiliateClickCreateNestedManyWithoutSiteInput = {
@@ -430,6 +452,7 @@ export type AffiliateClickCreateWithoutSiteInput = {
   clickedAt?: Date | string
   referrer?: string | null
   userAgentHash?: string | null
+  dedupeKey: string
   link: Prisma.AffiliateLinkCreateNestedOneWithoutClicksInput
 }
 
@@ -439,6 +462,7 @@ export type AffiliateClickUncheckedCreateWithoutSiteInput = {
   clickedAt?: Date | string
   referrer?: string | null
   userAgentHash?: string | null
+  dedupeKey: string
 }
 
 export type AffiliateClickCreateOrConnectWithoutSiteInput = {
@@ -477,6 +501,7 @@ export type AffiliateClickScalarWhereInput = {
   clickedAt?: Prisma.DateTimeFilter<"AffiliateClick"> | Date | string
   referrer?: Prisma.StringNullableFilter<"AffiliateClick"> | string | null
   userAgentHash?: Prisma.StringNullableFilter<"AffiliateClick"> | string | null
+  dedupeKey?: Prisma.StringFilter<"AffiliateClick"> | string
 }
 
 export type AffiliateClickCreateWithoutLinkInput = {
@@ -484,6 +509,7 @@ export type AffiliateClickCreateWithoutLinkInput = {
   clickedAt?: Date | string
   referrer?: string | null
   userAgentHash?: string | null
+  dedupeKey: string
   site: Prisma.SiteCreateNestedOneWithoutAffiliateClicksInput
 }
 
@@ -493,6 +519,7 @@ export type AffiliateClickUncheckedCreateWithoutLinkInput = {
   clickedAt?: Date | string
   referrer?: string | null
   userAgentHash?: string | null
+  dedupeKey: string
 }
 
 export type AffiliateClickCreateOrConnectWithoutLinkInput = {
@@ -527,6 +554,7 @@ export type AffiliateClickCreateManySiteInput = {
   clickedAt?: Date | string
   referrer?: string | null
   userAgentHash?: string | null
+  dedupeKey: string
 }
 
 export type AffiliateClickUpdateWithoutSiteInput = {
@@ -534,6 +562,7 @@ export type AffiliateClickUpdateWithoutSiteInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.AffiliateLinkUpdateOneRequiredWithoutClicksNestedInput
 }
 
@@ -543,6 +572,7 @@ export type AffiliateClickUncheckedUpdateWithoutSiteInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AffiliateClickUncheckedUpdateManyWithoutSiteInput = {
@@ -551,6 +581,7 @@ export type AffiliateClickUncheckedUpdateManyWithoutSiteInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AffiliateClickCreateManyLinkInput = {
@@ -559,6 +590,7 @@ export type AffiliateClickCreateManyLinkInput = {
   clickedAt?: Date | string
   referrer?: string | null
   userAgentHash?: string | null
+  dedupeKey: string
 }
 
 export type AffiliateClickUpdateWithoutLinkInput = {
@@ -566,6 +598,7 @@ export type AffiliateClickUpdateWithoutLinkInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
   site?: Prisma.SiteUpdateOneRequiredWithoutAffiliateClicksNestedInput
 }
 
@@ -575,6 +608,7 @@ export type AffiliateClickUncheckedUpdateWithoutLinkInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AffiliateClickUncheckedUpdateManyWithoutLinkInput = {
@@ -583,6 +617,7 @@ export type AffiliateClickUncheckedUpdateManyWithoutLinkInput = {
   clickedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   referrer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dedupeKey?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -594,6 +629,7 @@ export type AffiliateClickSelect<ExtArgs extends runtime.Types.Extensions.Intern
   clickedAt?: boolean
   referrer?: boolean
   userAgentHash?: boolean
+  dedupeKey?: boolean
   link?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateClick"]>
@@ -605,6 +641,7 @@ export type AffiliateClickSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   clickedAt?: boolean
   referrer?: boolean
   userAgentHash?: boolean
+  dedupeKey?: boolean
   link?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateClick"]>
@@ -616,6 +653,7 @@ export type AffiliateClickSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   clickedAt?: boolean
   referrer?: boolean
   userAgentHash?: boolean
+  dedupeKey?: boolean
   link?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateClick"]>
@@ -627,9 +665,10 @@ export type AffiliateClickSelectScalar = {
   clickedAt?: boolean
   referrer?: boolean
   userAgentHash?: boolean
+  dedupeKey?: boolean
 }
 
-export type AffiliateClickOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "affiliateLinkId" | "siteId" | "clickedAt" | "referrer" | "userAgentHash", ExtArgs["result"]["affiliateClick"]>
+export type AffiliateClickOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "affiliateLinkId" | "siteId" | "clickedAt" | "referrer" | "userAgentHash" | "dedupeKey", ExtArgs["result"]["affiliateClick"]>
 export type AffiliateClickInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   link?: boolean | Prisma.AffiliateLinkDefaultArgs<ExtArgs>
   site?: boolean | Prisma.SiteDefaultArgs<ExtArgs>
@@ -656,6 +695,7 @@ export type $AffiliateClickPayload<ExtArgs extends runtime.Types.Extensions.Inte
     clickedAt: Date
     referrer: string | null
     userAgentHash: string | null
+    dedupeKey: string
   }, ExtArgs["result"]["affiliateClick"]>
   composites: {}
 }
@@ -1087,6 +1127,7 @@ export interface AffiliateClickFieldRefs {
   readonly clickedAt: Prisma.FieldRef<"AffiliateClick", 'DateTime'>
   readonly referrer: Prisma.FieldRef<"AffiliateClick", 'String'>
   readonly userAgentHash: Prisma.FieldRef<"AffiliateClick", 'String'>
+  readonly dedupeKey: Prisma.FieldRef<"AffiliateClick", 'String'>
 }
     
 

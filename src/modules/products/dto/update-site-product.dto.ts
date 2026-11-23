@@ -2,6 +2,8 @@ import {
   IsBoolean,
   IsOptional,
   IsString,
+  IsArray,
+  IsObject,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -27,4 +29,7 @@ export class UpdateSiteProductDto {
   @IsOptional()
   @IsBoolean()
   isFeatured?: boolean;
+
+  @IsOptional() @IsObject() seoMetadata?: Record<string, unknown>;
+  @IsOptional() @IsArray() @IsString({ each: true }) categoryIds?: string[];
 }

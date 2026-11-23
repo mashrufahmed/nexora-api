@@ -29,7 +29,10 @@ export type ContentMinAggregateOutputType = {
   type: $Enums.ContentType | null
   title: string | null
   slug: string | null
-  excerpt: string | null
+  createdById: string | null
+  description: string | null
+  reviewNote: string | null
+  deletedAt: Date | null
   featuredMediaId: string | null
   status: $Enums.ContentStatus | null
   createdAt: Date | null
@@ -41,7 +44,10 @@ export type ContentMaxAggregateOutputType = {
   type: $Enums.ContentType | null
   title: string | null
   slug: string | null
-  excerpt: string | null
+  createdById: string | null
+  description: string | null
+  reviewNote: string | null
+  deletedAt: Date | null
   featuredMediaId: string | null
   status: $Enums.ContentStatus | null
   createdAt: Date | null
@@ -53,8 +59,11 @@ export type ContentCountAggregateOutputType = {
   type: number
   title: number
   slug: number
-  excerpt: number
-  body: number
+  createdById: number
+  description: number
+  sections: number
+  reviewNote: number
+  deletedAt: number
   featuredMediaId: number
   status: number
   createdAt: number
@@ -68,7 +77,10 @@ export type ContentMinAggregateInputType = {
   type?: true
   title?: true
   slug?: true
-  excerpt?: true
+  createdById?: true
+  description?: true
+  reviewNote?: true
+  deletedAt?: true
   featuredMediaId?: true
   status?: true
   createdAt?: true
@@ -80,7 +92,10 @@ export type ContentMaxAggregateInputType = {
   type?: true
   title?: true
   slug?: true
-  excerpt?: true
+  createdById?: true
+  description?: true
+  reviewNote?: true
+  deletedAt?: true
   featuredMediaId?: true
   status?: true
   createdAt?: true
@@ -92,8 +107,11 @@ export type ContentCountAggregateInputType = {
   type?: true
   title?: true
   slug?: true
-  excerpt?: true
-  body?: true
+  createdById?: true
+  description?: true
+  sections?: true
+  reviewNote?: true
+  deletedAt?: true
   featuredMediaId?: true
   status?: true
   createdAt?: true
@@ -178,8 +196,11 @@ export type ContentGroupByOutputType = {
   type: $Enums.ContentType
   title: string
   slug: string
-  excerpt: string | null
-  body: runtime.JsonValue | null
+  createdById: string | null
+  description: string | null
+  sections: runtime.JsonValue | null
+  reviewNote: string | null
+  deletedAt: Date | null
   featuredMediaId: string | null
   status: $Enums.ContentStatus
   createdAt: Date
@@ -212,14 +233,19 @@ export type ContentWhereInput = {
   type?: Prisma.EnumContentTypeFilter<"Content"> | $Enums.ContentType
   title?: Prisma.StringFilter<"Content"> | string
   slug?: Prisma.StringFilter<"Content"> | string
-  excerpt?: Prisma.StringNullableFilter<"Content"> | string | null
-  body?: Prisma.JsonNullableFilter<"Content">
+  createdById?: Prisma.StringNullableFilter<"Content"> | string | null
+  description?: Prisma.StringNullableFilter<"Content"> | string | null
+  sections?: Prisma.JsonNullableFilter<"Content">
+  reviewNote?: Prisma.StringNullableFilter<"Content"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Content"> | Date | string | null
   featuredMediaId?: Prisma.StringNullableFilter<"Content"> | string | null
   status?: Prisma.EnumContentStatusFilter<"Content"> | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFilter<"Content"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Content"> | Date | string
   authors?: Prisma.ContentAuthorListRelationFilter
   siteContents?: Prisma.SiteContentListRelationFilter
+  revisions?: Prisma.ContentRevisionListRelationFilter
+  createdBy?: Prisma.XOR<Prisma.AdminUserNullableScalarRelationFilter, Prisma.AdminUserWhereInput> | null
 }
 
 export type ContentOrderByWithRelationInput = {
@@ -227,14 +253,19 @@ export type ContentOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrderInput | Prisma.SortOrder
-  body?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdById?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  sections?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   featuredMediaId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   authors?: Prisma.ContentAuthorOrderByRelationAggregateInput
   siteContents?: Prisma.SiteContentOrderByRelationAggregateInput
+  revisions?: Prisma.ContentRevisionOrderByRelationAggregateInput
+  createdBy?: Prisma.AdminUserOrderByWithRelationInput
 }
 
 export type ContentWhereUniqueInput = Prisma.AtLeast<{
@@ -245,14 +276,19 @@ export type ContentWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.EnumContentTypeFilter<"Content"> | $Enums.ContentType
   title?: Prisma.StringFilter<"Content"> | string
   slug?: Prisma.StringFilter<"Content"> | string
-  excerpt?: Prisma.StringNullableFilter<"Content"> | string | null
-  body?: Prisma.JsonNullableFilter<"Content">
+  createdById?: Prisma.StringNullableFilter<"Content"> | string | null
+  description?: Prisma.StringNullableFilter<"Content"> | string | null
+  sections?: Prisma.JsonNullableFilter<"Content">
+  reviewNote?: Prisma.StringNullableFilter<"Content"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Content"> | Date | string | null
   featuredMediaId?: Prisma.StringNullableFilter<"Content"> | string | null
   status?: Prisma.EnumContentStatusFilter<"Content"> | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFilter<"Content"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Content"> | Date | string
   authors?: Prisma.ContentAuthorListRelationFilter
   siteContents?: Prisma.SiteContentListRelationFilter
+  revisions?: Prisma.ContentRevisionListRelationFilter
+  createdBy?: Prisma.XOR<Prisma.AdminUserNullableScalarRelationFilter, Prisma.AdminUserWhereInput> | null
 }, "id">
 
 export type ContentOrderByWithAggregationInput = {
@@ -260,8 +296,11 @@ export type ContentOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrderInput | Prisma.SortOrder
-  body?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdById?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  sections?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   featuredMediaId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -279,8 +318,11 @@ export type ContentScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumContentTypeWithAggregatesFilter<"Content"> | $Enums.ContentType
   title?: Prisma.StringWithAggregatesFilter<"Content"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Content"> | string
-  excerpt?: Prisma.StringNullableWithAggregatesFilter<"Content"> | string | null
-  body?: Prisma.JsonNullableWithAggregatesFilter<"Content">
+  createdById?: Prisma.StringNullableWithAggregatesFilter<"Content"> | string | null
+  description?: Prisma.StringNullableWithAggregatesFilter<"Content"> | string | null
+  sections?: Prisma.JsonNullableWithAggregatesFilter<"Content">
+  reviewNote?: Prisma.StringNullableWithAggregatesFilter<"Content"> | string | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Content"> | Date | string | null
   featuredMediaId?: Prisma.StringNullableWithAggregatesFilter<"Content"> | string | null
   status?: Prisma.EnumContentStatusWithAggregatesFilter<"Content"> | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Content"> | Date | string
@@ -292,14 +334,18 @@ export type ContentCreateInput = {
   type: $Enums.ContentType
   title: string
   slug: string
-  excerpt?: string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
   featuredMediaId?: string | null
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   authors?: Prisma.ContentAuthorCreateNestedManyWithoutContentInput
   siteContents?: Prisma.SiteContentCreateNestedManyWithoutContentInput
+  revisions?: Prisma.ContentRevisionCreateNestedManyWithoutContentInput
+  createdBy?: Prisma.AdminUserCreateNestedOneWithoutCreatedContentInput
 }
 
 export type ContentUncheckedCreateInput = {
@@ -307,14 +353,18 @@ export type ContentUncheckedCreateInput = {
   type: $Enums.ContentType
   title: string
   slug: string
-  excerpt?: string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdById?: string | null
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
   featuredMediaId?: string | null
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   authors?: Prisma.ContentAuthorUncheckedCreateNestedManyWithoutContentInput
   siteContents?: Prisma.SiteContentUncheckedCreateNestedManyWithoutContentInput
+  revisions?: Prisma.ContentRevisionUncheckedCreateNestedManyWithoutContentInput
 }
 
 export type ContentUpdateInput = {
@@ -322,14 +372,18 @@ export type ContentUpdateInput = {
   type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authors?: Prisma.ContentAuthorUpdateManyWithoutContentNestedInput
   siteContents?: Prisma.SiteContentUpdateManyWithoutContentNestedInput
+  revisions?: Prisma.ContentRevisionUpdateManyWithoutContentNestedInput
+  createdBy?: Prisma.AdminUserUpdateOneWithoutCreatedContentNestedInput
 }
 
 export type ContentUncheckedUpdateInput = {
@@ -337,14 +391,18 @@ export type ContentUncheckedUpdateInput = {
   type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authors?: Prisma.ContentAuthorUncheckedUpdateManyWithoutContentNestedInput
   siteContents?: Prisma.SiteContentUncheckedUpdateManyWithoutContentNestedInput
+  revisions?: Prisma.ContentRevisionUncheckedUpdateManyWithoutContentNestedInput
 }
 
 export type ContentCreateManyInput = {
@@ -352,8 +410,11 @@ export type ContentCreateManyInput = {
   type: $Enums.ContentType
   title: string
   slug: string
-  excerpt?: string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdById?: string | null
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
   featuredMediaId?: string | null
   status?: $Enums.ContentStatus
   createdAt?: Date | string
@@ -365,8 +426,10 @@ export type ContentUpdateManyMutationInput = {
   type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -378,12 +441,25 @@ export type ContentUncheckedUpdateManyInput = {
   type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ContentListRelationFilter = {
+  every?: Prisma.ContentWhereInput
+  some?: Prisma.ContentWhereInput
+  none?: Prisma.ContentWhereInput
+}
+
+export type ContentOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type ContentCountOrderByAggregateInput = {
@@ -391,8 +467,11 @@ export type ContentCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrder
-  body?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  sections?: Prisma.SortOrder
+  reviewNote?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   featuredMediaId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -404,7 +483,10 @@ export type ContentMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  reviewNote?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   featuredMediaId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -416,7 +498,10 @@ export type ContentMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  reviewNote?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   featuredMediaId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -428,12 +513,68 @@ export type ContentScalarRelationFilter = {
   isNot?: Prisma.ContentWhereInput
 }
 
+export type ContentCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.ContentCreateWithoutCreatedByInput, Prisma.ContentUncheckedCreateWithoutCreatedByInput> | Prisma.ContentCreateWithoutCreatedByInput[] | Prisma.ContentUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.ContentCreateOrConnectWithoutCreatedByInput | Prisma.ContentCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.ContentCreateManyCreatedByInputEnvelope
+  connect?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+}
+
+export type ContentUncheckedCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.ContentCreateWithoutCreatedByInput, Prisma.ContentUncheckedCreateWithoutCreatedByInput> | Prisma.ContentCreateWithoutCreatedByInput[] | Prisma.ContentUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.ContentCreateOrConnectWithoutCreatedByInput | Prisma.ContentCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.ContentCreateManyCreatedByInputEnvelope
+  connect?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+}
+
+export type ContentUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContentCreateWithoutCreatedByInput, Prisma.ContentUncheckedCreateWithoutCreatedByInput> | Prisma.ContentCreateWithoutCreatedByInput[] | Prisma.ContentUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.ContentCreateOrConnectWithoutCreatedByInput | Prisma.ContentCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.ContentUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.ContentUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.ContentCreateManyCreatedByInputEnvelope
+  set?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+  disconnect?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+  delete?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+  connect?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+  update?: Prisma.ContentUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.ContentUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.ContentUpdateManyWithWhereWithoutCreatedByInput | Prisma.ContentUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.ContentScalarWhereInput | Prisma.ContentScalarWhereInput[]
+}
+
+export type ContentUncheckedUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContentCreateWithoutCreatedByInput, Prisma.ContentUncheckedCreateWithoutCreatedByInput> | Prisma.ContentCreateWithoutCreatedByInput[] | Prisma.ContentUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.ContentCreateOrConnectWithoutCreatedByInput | Prisma.ContentCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.ContentUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.ContentUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.ContentCreateManyCreatedByInputEnvelope
+  set?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+  disconnect?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+  delete?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+  connect?: Prisma.ContentWhereUniqueInput | Prisma.ContentWhereUniqueInput[]
+  update?: Prisma.ContentUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.ContentUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.ContentUpdateManyWithWhereWithoutCreatedByInput | Prisma.ContentUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.ContentScalarWhereInput | Prisma.ContentScalarWhereInput[]
+}
+
 export type EnumContentTypeFieldUpdateOperationsInput = {
   set?: $Enums.ContentType
 }
 
 export type EnumContentStatusFieldUpdateOperationsInput = {
   set?: $Enums.ContentStatus
+}
+
+export type ContentCreateNestedOneWithoutRevisionsInput = {
+  create?: Prisma.XOR<Prisma.ContentCreateWithoutRevisionsInput, Prisma.ContentUncheckedCreateWithoutRevisionsInput>
+  connectOrCreate?: Prisma.ContentCreateOrConnectWithoutRevisionsInput
+  connect?: Prisma.ContentWhereUniqueInput
+}
+
+export type ContentUpdateOneRequiredWithoutRevisionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContentCreateWithoutRevisionsInput, Prisma.ContentUncheckedCreateWithoutRevisionsInput>
+  connectOrCreate?: Prisma.ContentCreateOrConnectWithoutRevisionsInput
+  upsert?: Prisma.ContentUpsertWithoutRevisionsInput
+  connect?: Prisma.ContentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContentUpdateToOneWithWhereWithoutRevisionsInput, Prisma.ContentUpdateWithoutRevisionsInput>, Prisma.ContentUncheckedUpdateWithoutRevisionsInput>
 }
 
 export type ContentCreateNestedOneWithoutAuthorsInput = {
@@ -464,18 +605,191 @@ export type ContentUpdateOneRequiredWithoutSiteContentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContentUpdateToOneWithWhereWithoutSiteContentsInput, Prisma.ContentUpdateWithoutSiteContentsInput>, Prisma.ContentUncheckedUpdateWithoutSiteContentsInput>
 }
 
+export type ContentCreateWithoutCreatedByInput = {
+  id?: string
+  type: $Enums.ContentType
+  title: string
+  slug: string
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
+  featuredMediaId?: string | null
+  status?: $Enums.ContentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authors?: Prisma.ContentAuthorCreateNestedManyWithoutContentInput
+  siteContents?: Prisma.SiteContentCreateNestedManyWithoutContentInput
+  revisions?: Prisma.ContentRevisionCreateNestedManyWithoutContentInput
+}
+
+export type ContentUncheckedCreateWithoutCreatedByInput = {
+  id?: string
+  type: $Enums.ContentType
+  title: string
+  slug: string
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
+  featuredMediaId?: string | null
+  status?: $Enums.ContentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authors?: Prisma.ContentAuthorUncheckedCreateNestedManyWithoutContentInput
+  siteContents?: Prisma.SiteContentUncheckedCreateNestedManyWithoutContentInput
+  revisions?: Prisma.ContentRevisionUncheckedCreateNestedManyWithoutContentInput
+}
+
+export type ContentCreateOrConnectWithoutCreatedByInput = {
+  where: Prisma.ContentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContentCreateWithoutCreatedByInput, Prisma.ContentUncheckedCreateWithoutCreatedByInput>
+}
+
+export type ContentCreateManyCreatedByInputEnvelope = {
+  data: Prisma.ContentCreateManyCreatedByInput | Prisma.ContentCreateManyCreatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContentUpsertWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.ContentWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContentUpdateWithoutCreatedByInput, Prisma.ContentUncheckedUpdateWithoutCreatedByInput>
+  create: Prisma.XOR<Prisma.ContentCreateWithoutCreatedByInput, Prisma.ContentUncheckedCreateWithoutCreatedByInput>
+}
+
+export type ContentUpdateWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.ContentWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContentUpdateWithoutCreatedByInput, Prisma.ContentUncheckedUpdateWithoutCreatedByInput>
+}
+
+export type ContentUpdateManyWithWhereWithoutCreatedByInput = {
+  where: Prisma.ContentScalarWhereInput
+  data: Prisma.XOR<Prisma.ContentUpdateManyMutationInput, Prisma.ContentUncheckedUpdateManyWithoutCreatedByInput>
+}
+
+export type ContentScalarWhereInput = {
+  AND?: Prisma.ContentScalarWhereInput | Prisma.ContentScalarWhereInput[]
+  OR?: Prisma.ContentScalarWhereInput[]
+  NOT?: Prisma.ContentScalarWhereInput | Prisma.ContentScalarWhereInput[]
+  id?: Prisma.StringFilter<"Content"> | string
+  type?: Prisma.EnumContentTypeFilter<"Content"> | $Enums.ContentType
+  title?: Prisma.StringFilter<"Content"> | string
+  slug?: Prisma.StringFilter<"Content"> | string
+  createdById?: Prisma.StringNullableFilter<"Content"> | string | null
+  description?: Prisma.StringNullableFilter<"Content"> | string | null
+  sections?: Prisma.JsonNullableFilter<"Content">
+  reviewNote?: Prisma.StringNullableFilter<"Content"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Content"> | Date | string | null
+  featuredMediaId?: Prisma.StringNullableFilter<"Content"> | string | null
+  status?: Prisma.EnumContentStatusFilter<"Content"> | $Enums.ContentStatus
+  createdAt?: Prisma.DateTimeFilter<"Content"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Content"> | Date | string
+}
+
+export type ContentCreateWithoutRevisionsInput = {
+  id?: string
+  type: $Enums.ContentType
+  title: string
+  slug: string
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
+  featuredMediaId?: string | null
+  status?: $Enums.ContentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authors?: Prisma.ContentAuthorCreateNestedManyWithoutContentInput
+  siteContents?: Prisma.SiteContentCreateNestedManyWithoutContentInput
+  createdBy?: Prisma.AdminUserCreateNestedOneWithoutCreatedContentInput
+}
+
+export type ContentUncheckedCreateWithoutRevisionsInput = {
+  id?: string
+  type: $Enums.ContentType
+  title: string
+  slug: string
+  createdById?: string | null
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
+  featuredMediaId?: string | null
+  status?: $Enums.ContentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authors?: Prisma.ContentAuthorUncheckedCreateNestedManyWithoutContentInput
+  siteContents?: Prisma.SiteContentUncheckedCreateNestedManyWithoutContentInput
+}
+
+export type ContentCreateOrConnectWithoutRevisionsInput = {
+  where: Prisma.ContentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContentCreateWithoutRevisionsInput, Prisma.ContentUncheckedCreateWithoutRevisionsInput>
+}
+
+export type ContentUpsertWithoutRevisionsInput = {
+  update: Prisma.XOR<Prisma.ContentUpdateWithoutRevisionsInput, Prisma.ContentUncheckedUpdateWithoutRevisionsInput>
+  create: Prisma.XOR<Prisma.ContentCreateWithoutRevisionsInput, Prisma.ContentUncheckedCreateWithoutRevisionsInput>
+  where?: Prisma.ContentWhereInput
+}
+
+export type ContentUpdateToOneWithWhereWithoutRevisionsInput = {
+  where?: Prisma.ContentWhereInput
+  data: Prisma.XOR<Prisma.ContentUpdateWithoutRevisionsInput, Prisma.ContentUncheckedUpdateWithoutRevisionsInput>
+}
+
+export type ContentUpdateWithoutRevisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authors?: Prisma.ContentAuthorUpdateManyWithoutContentNestedInput
+  siteContents?: Prisma.SiteContentUpdateManyWithoutContentNestedInput
+  createdBy?: Prisma.AdminUserUpdateOneWithoutCreatedContentNestedInput
+}
+
+export type ContentUncheckedUpdateWithoutRevisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authors?: Prisma.ContentAuthorUncheckedUpdateManyWithoutContentNestedInput
+  siteContents?: Prisma.SiteContentUncheckedUpdateManyWithoutContentNestedInput
+}
+
 export type ContentCreateWithoutAuthorsInput = {
   id?: string
   type: $Enums.ContentType
   title: string
   slug: string
-  excerpt?: string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
   featuredMediaId?: string | null
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   siteContents?: Prisma.SiteContentCreateNestedManyWithoutContentInput
+  revisions?: Prisma.ContentRevisionCreateNestedManyWithoutContentInput
+  createdBy?: Prisma.AdminUserCreateNestedOneWithoutCreatedContentInput
 }
 
 export type ContentUncheckedCreateWithoutAuthorsInput = {
@@ -483,13 +797,17 @@ export type ContentUncheckedCreateWithoutAuthorsInput = {
   type: $Enums.ContentType
   title: string
   slug: string
-  excerpt?: string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdById?: string | null
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
   featuredMediaId?: string | null
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   siteContents?: Prisma.SiteContentUncheckedCreateNestedManyWithoutContentInput
+  revisions?: Prisma.ContentRevisionUncheckedCreateNestedManyWithoutContentInput
 }
 
 export type ContentCreateOrConnectWithoutAuthorsInput = {
@@ -513,13 +831,17 @@ export type ContentUpdateWithoutAuthorsInput = {
   type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   siteContents?: Prisma.SiteContentUpdateManyWithoutContentNestedInput
+  revisions?: Prisma.ContentRevisionUpdateManyWithoutContentNestedInput
+  createdBy?: Prisma.AdminUserUpdateOneWithoutCreatedContentNestedInput
 }
 
 export type ContentUncheckedUpdateWithoutAuthorsInput = {
@@ -527,13 +849,17 @@ export type ContentUncheckedUpdateWithoutAuthorsInput = {
   type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   siteContents?: Prisma.SiteContentUncheckedUpdateManyWithoutContentNestedInput
+  revisions?: Prisma.ContentRevisionUncheckedUpdateManyWithoutContentNestedInput
 }
 
 export type ContentCreateWithoutSiteContentsInput = {
@@ -541,13 +867,17 @@ export type ContentCreateWithoutSiteContentsInput = {
   type: $Enums.ContentType
   title: string
   slug: string
-  excerpt?: string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
   featuredMediaId?: string | null
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   authors?: Prisma.ContentAuthorCreateNestedManyWithoutContentInput
+  revisions?: Prisma.ContentRevisionCreateNestedManyWithoutContentInput
+  createdBy?: Prisma.AdminUserCreateNestedOneWithoutCreatedContentInput
 }
 
 export type ContentUncheckedCreateWithoutSiteContentsInput = {
@@ -555,13 +885,17 @@ export type ContentUncheckedCreateWithoutSiteContentsInput = {
   type: $Enums.ContentType
   title: string
   slug: string
-  excerpt?: string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdById?: string | null
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
   featuredMediaId?: string | null
   status?: $Enums.ContentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   authors?: Prisma.ContentAuthorUncheckedCreateNestedManyWithoutContentInput
+  revisions?: Prisma.ContentRevisionUncheckedCreateNestedManyWithoutContentInput
 }
 
 export type ContentCreateOrConnectWithoutSiteContentsInput = {
@@ -585,13 +919,17 @@ export type ContentUpdateWithoutSiteContentsInput = {
   type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authors?: Prisma.ContentAuthorUpdateManyWithoutContentNestedInput
+  revisions?: Prisma.ContentRevisionUpdateManyWithoutContentNestedInput
+  createdBy?: Prisma.AdminUserUpdateOneWithoutCreatedContentNestedInput
 }
 
 export type ContentUncheckedUpdateWithoutSiteContentsInput = {
@@ -599,13 +937,83 @@ export type ContentUncheckedUpdateWithoutSiteContentsInput = {
   type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authors?: Prisma.ContentAuthorUncheckedUpdateManyWithoutContentNestedInput
+  revisions?: Prisma.ContentRevisionUncheckedUpdateManyWithoutContentNestedInput
+}
+
+export type ContentCreateManyCreatedByInput = {
+  id?: string
+  type: $Enums.ContentType
+  title: string
+  slug: string
+  description?: string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: string | null
+  deletedAt?: Date | string | null
+  featuredMediaId?: string | null
+  status?: $Enums.ContentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ContentUpdateWithoutCreatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authors?: Prisma.ContentAuthorUpdateManyWithoutContentNestedInput
+  siteContents?: Prisma.SiteContentUpdateManyWithoutContentNestedInput
+  revisions?: Prisma.ContentRevisionUpdateManyWithoutContentNestedInput
+}
+
+export type ContentUncheckedUpdateWithoutCreatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authors?: Prisma.ContentAuthorUncheckedUpdateManyWithoutContentNestedInput
+  siteContents?: Prisma.SiteContentUncheckedUpdateManyWithoutContentNestedInput
+  revisions?: Prisma.ContentRevisionUncheckedUpdateManyWithoutContentNestedInput
+}
+
+export type ContentUncheckedUpdateManyWithoutCreatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContentTypeFieldUpdateOperationsInput | $Enums.ContentType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sections?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  featuredMediaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -616,11 +1024,13 @@ export type ContentUncheckedUpdateWithoutSiteContentsInput = {
 export type ContentCountOutputType = {
   authors: number
   siteContents: number
+  revisions: number
 }
 
 export type ContentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authors?: boolean | ContentCountOutputTypeCountAuthorsArgs
   siteContents?: boolean | ContentCountOutputTypeCountSiteContentsArgs
+  revisions?: boolean | ContentCountOutputTypeCountRevisionsArgs
 }
 
 /**
@@ -647,20 +1057,32 @@ export type ContentCountOutputTypeCountSiteContentsArgs<ExtArgs extends runtime.
   where?: Prisma.SiteContentWhereInput
 }
 
+/**
+ * ContentCountOutputType without action
+ */
+export type ContentCountOutputTypeCountRevisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContentRevisionWhereInput
+}
+
 
 export type ContentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   type?: boolean
   title?: boolean
   slug?: boolean
-  excerpt?: boolean
-  body?: boolean
+  createdById?: boolean
+  description?: boolean
+  sections?: boolean
+  reviewNote?: boolean
+  deletedAt?: boolean
   featuredMediaId?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   authors?: boolean | Prisma.Content$authorsArgs<ExtArgs>
   siteContents?: boolean | Prisma.Content$siteContentsArgs<ExtArgs>
+  revisions?: boolean | Prisma.Content$revisionsArgs<ExtArgs>
+  createdBy?: boolean | Prisma.Content$createdByArgs<ExtArgs>
   _count?: boolean | Prisma.ContentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["content"]>
 
@@ -669,12 +1091,16 @@ export type ContentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   type?: boolean
   title?: boolean
   slug?: boolean
-  excerpt?: boolean
-  body?: boolean
+  createdById?: boolean
+  description?: boolean
+  sections?: boolean
+  reviewNote?: boolean
+  deletedAt?: boolean
   featuredMediaId?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean | Prisma.Content$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["content"]>
 
 export type ContentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -682,12 +1108,16 @@ export type ContentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   type?: boolean
   title?: boolean
   slug?: boolean
-  excerpt?: boolean
-  body?: boolean
+  createdById?: boolean
+  description?: boolean
+  sections?: boolean
+  reviewNote?: boolean
+  deletedAt?: boolean
   featuredMediaId?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean | Prisma.Content$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["content"]>
 
 export type ContentSelectScalar = {
@@ -695,36 +1125,50 @@ export type ContentSelectScalar = {
   type?: boolean
   title?: boolean
   slug?: boolean
-  excerpt?: boolean
-  body?: boolean
+  createdById?: boolean
+  description?: boolean
+  sections?: boolean
+  reviewNote?: boolean
+  deletedAt?: boolean
   featuredMediaId?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ContentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "title" | "slug" | "excerpt" | "body" | "featuredMediaId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["content"]>
+export type ContentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "title" | "slug" | "createdById" | "description" | "sections" | "reviewNote" | "deletedAt" | "featuredMediaId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["content"]>
 export type ContentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authors?: boolean | Prisma.Content$authorsArgs<ExtArgs>
   siteContents?: boolean | Prisma.Content$siteContentsArgs<ExtArgs>
+  revisions?: boolean | Prisma.Content$revisionsArgs<ExtArgs>
+  createdBy?: boolean | Prisma.Content$createdByArgs<ExtArgs>
   _count?: boolean | Prisma.ContentCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ContentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type ContentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ContentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  createdBy?: boolean | Prisma.Content$createdByArgs<ExtArgs>
+}
+export type ContentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  createdBy?: boolean | Prisma.Content$createdByArgs<ExtArgs>
+}
 
 export type $ContentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Content"
   objects: {
     authors: Prisma.$ContentAuthorPayload<ExtArgs>[]
     siteContents: Prisma.$SiteContentPayload<ExtArgs>[]
+    revisions: Prisma.$ContentRevisionPayload<ExtArgs>[]
+    createdBy: Prisma.$AdminUserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     type: $Enums.ContentType
     title: string
     slug: string
-    excerpt: string | null
-    body: runtime.JsonValue | null
+    createdById: string | null
+    description: string | null
+    sections: runtime.JsonValue | null
+    reviewNote: string | null
+    deletedAt: Date | null
     featuredMediaId: string | null
     status: $Enums.ContentStatus
     createdAt: Date
@@ -1125,6 +1569,8 @@ export interface Prisma__ContentClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   authors<T extends Prisma.Content$authorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Content$authorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentAuthorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   siteContents<T extends Prisma.Content$siteContentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Content$siteContentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SiteContentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  revisions<T extends Prisma.Content$revisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Content$revisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentRevisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdBy<T extends Prisma.Content$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Content$createdByArgs<ExtArgs>>): Prisma.Prisma__AdminUserClient<runtime.Types.Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1158,8 +1604,11 @@ export interface ContentFieldRefs {
   readonly type: Prisma.FieldRef<"Content", 'ContentType'>
   readonly title: Prisma.FieldRef<"Content", 'String'>
   readonly slug: Prisma.FieldRef<"Content", 'String'>
-  readonly excerpt: Prisma.FieldRef<"Content", 'String'>
-  readonly body: Prisma.FieldRef<"Content", 'Json'>
+  readonly createdById: Prisma.FieldRef<"Content", 'String'>
+  readonly description: Prisma.FieldRef<"Content", 'String'>
+  readonly sections: Prisma.FieldRef<"Content", 'Json'>
+  readonly reviewNote: Prisma.FieldRef<"Content", 'String'>
+  readonly deletedAt: Prisma.FieldRef<"Content", 'DateTime'>
   readonly featuredMediaId: Prisma.FieldRef<"Content", 'String'>
   readonly status: Prisma.FieldRef<"Content", 'ContentStatus'>
   readonly createdAt: Prisma.FieldRef<"Content", 'DateTime'>
@@ -1418,6 +1867,10 @@ export type ContentCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.ContentCreateManyInput | Prisma.ContentCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContentIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1488,6 +1941,10 @@ export type ContentUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many Contents to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContentIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1602,6 +2059,49 @@ export type Content$siteContentsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.SiteContentScalarFieldEnum | Prisma.SiteContentScalarFieldEnum[]
+}
+
+/**
+ * Content.revisions
+ */
+export type Content$revisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContentRevision
+   */
+  select?: Prisma.ContentRevisionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContentRevision
+   */
+  omit?: Prisma.ContentRevisionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContentRevisionInclude<ExtArgs> | null
+  where?: Prisma.ContentRevisionWhereInput
+  orderBy?: Prisma.ContentRevisionOrderByWithRelationInput | Prisma.ContentRevisionOrderByWithRelationInput[]
+  cursor?: Prisma.ContentRevisionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContentRevisionScalarFieldEnum | Prisma.ContentRevisionScalarFieldEnum[]
+}
+
+/**
+ * Content.createdBy
+ */
+export type Content$createdByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminUser
+   */
+  select?: Prisma.AdminUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdminUser
+   */
+  omit?: Prisma.AdminUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  where?: Prisma.AdminUserWhereInput
 }
 
 /**

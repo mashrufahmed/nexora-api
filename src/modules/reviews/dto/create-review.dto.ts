@@ -20,6 +20,7 @@ export class ReviewScoreDto {
 
 export class CreateReviewDto {
   @IsString() siteProductId!: string;
+  @IsOptional() @IsString() authorId?: string;
   @IsString() @MinLength(2) @MaxLength(200) title!: string;
   @IsOptional() @IsString() @MaxLength(1000) verdict?: string;
   @IsOptional() @IsObject() body?: Record<string, unknown>;

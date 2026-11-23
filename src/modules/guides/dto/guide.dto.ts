@@ -1,5 +1,6 @@
 import {
   IsArray,
+  ArrayNotEmpty,
   IsObject,
   IsOptional,
   IsString,
@@ -7,6 +8,7 @@ import {
   MinLength,
   Min,
   ValidateNested,
+  MaxLength,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 export class GuideDto {
@@ -17,11 +19,11 @@ export class GuideDto {
   @IsOptional() @IsObject() body?: Record<string, unknown>;
 }
 export class GuideItemsDto {
-  @IsArray() @ValidateNested({ each: true }) @Type(() => GuideItemDto) items!: GuideItemDto[];
+  @IsArray() @ArrayNotEmpty() @ValidateNested({ each: true }) @Type(() => GuideItemDto) items!: GuideItemDto[];
 }
 
 export class GuideItemDto {
   @IsString() siteProductId!: string;
   @Type(() => Number) @IsInt() @Min(0) position!: number;
-  @IsOptional() @IsString() note?: string;
+  @IsOptional() @IsString() @MaxLength(1000) note?: string;
 }

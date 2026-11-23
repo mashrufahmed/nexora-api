@@ -55,6 +55,28 @@ export class SitesController {
     return this.sites.createSecret(id, request.admin!.id);
   }
 
+  @Delete(':id/domains/:domainId')
+  @UseGuards(AdminAuthGuard, PermissionGuard)
+  @Permissions('site.manage')
+  removeDomain(
+    @Param('id') id: string,
+    @Param('domainId') domainId: string,
+    @Req() request: FastifyRequest,
+  ) {
+    return this.sites.removeDomain(id, domainId, request.admin!.id);
+  }
+
+  @Patch(':id/domains/:domainId/primary')
+  @UseGuards(AdminAuthGuard, PermissionGuard)
+  @Permissions('site.manage')
+  primaryDomain(
+    @Param('id') id: string,
+    @Param('domainId') domainId: string,
+    @Req() request: FastifyRequest,
+  ) {
+    return this.sites.setPrimaryDomain(id, domainId, request.admin!.id);
+  }
+
   @Delete(':id/secrets/:secretId')
   @UseGuards(AdminAuthGuard, PermissionGuard)
   @Permissions('site.manage')

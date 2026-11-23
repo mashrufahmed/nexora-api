@@ -15,6 +15,7 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { UpdateMediaDto } from './dto/update-media.dto.js';
 import { UploadMediaDto } from './dto/upload-media.dto.js';
+import { MAX_BASE64_LENGTH, MAX_MEDIA_BYTES } from './media.constants.js';
 
 @Injectable()
 export class MediaService {
@@ -24,6 +25,7 @@ export class MediaService {
     private readonly storage: StorageService,
     private readonly siteAccess: SiteAccessService,
     @InjectQueue('media-thumbnails') private readonly thumbnailQueue: Queue,
+    @InjectQueue('media-storage-delete') private readonly storageDeleteQueue: Queue,
   ) {}
   private json(
     value: Record<string, unknown> | undefined,
@@ -32,7 +34,11 @@ export class MediaService {
       ? undefined
       : (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue);
   }
-  private access(adminId: string, siteId?: string) { return siteId ? this.siteAccess.assertSiteAccess(adminId, siteId) : Promise.resolve(); }
+  private access(adminId: string, siteId?: string) {
+    return siteId
+      ? this.siteAccess.assertSiteAccess(adminId, siteId)
+      : Promise.resolve();
+  }
   private signature(buffer: Buffer): string | undefined {
     if (
       buffer
@@ -68,8 +74,11 @@ export class MediaService {
     };
     if (!allowed[extension]?.includes(dto.mimeType))
       throw new BadRequestException('Extension and MIME type do not match');
+    const encodedLength = dto.data.replace(/\s/g, '').length;
+    if (!encodedLength || encodedLength > MAX_BASE64_LENGTH)
+      throw new BadRequestException('Media must be between 1 byte and 10 MB');
     const buffer = Buffer.from(dto.data, 'base64');
-    if (!buffer.length || buffer.length > 10 * 1024 * 1024)
+    if (!buffer.length || buffer.length > MAX_MEDIA_BYTES)
       throw new BadRequestException('Media must be between 1 byte and 10 MB');
     if (this.signature(buffer) !== dto.mimeType)
       throw new BadRequestException('File signature does not match MIME type');
@@ -78,22 +87,24 @@ export class MediaService {
       ...dto.metadata,
       sha256: createHash('sha256').update(buffer).digest('hex'),
     };
-    await this.storage.put(storageKey, buffer, dto.mimeType, { sha256: metadata.sha256 });
+    await this.storage.put(storageKey, buffer, dto.mimeType, {
+      sha256: metadata.sha256,
+    });
     let asset;
     try {
       asset = await this.prisma.mediaAsset.create({
         data: {
-        siteId: dto.siteId,
-        originalFilename: dto.originalFilename,
-        storageKey,
-        mimeType: dto.mimeType,
-        extension,
-        size: buffer.length,
-        width: dto.width,
-        height: dto.height,
-        alt: dto.alt?.trim(),
-        caption: dto.caption?.trim(),
-        metadata: this.json(metadata),
+          siteId: dto.siteId,
+          originalFilename: dto.originalFilename,
+          storageKey,
+          mimeType: dto.mimeType,
+          extension,
+          size: buffer.length,
+          width: dto.width,
+          height: dto.height,
+          alt: dto.alt?.trim(),
+          caption: dto.caption?.trim(),
+          metadata: this.json(metadata),
         },
       });
     } catch (error) {
@@ -106,13 +117,27 @@ export class MediaService {
       entityType: 'media_asset',
       entityId: asset.id,
     });
-    await this.thumbnailQueue.add('generate', { mediaAssetId: asset.id, storageKey: asset.storageKey, mimeType: asset.mimeType }, {
-      attempts: 3,
-      backoff: { type: 'exponential', delay: 5_000 },
-      removeOnComplete: 100,
-      removeOnFail: 100,
-    });
-    return { ...asset, url: this.storage.url(asset.storageKey) ?? await this.storage.signedUrl(asset.storageKey) };
+    await this.thumbnailQueue.add(
+      'generate',
+      {
+        mediaAssetId: asset.id,
+        storageKey: asset.storageKey,
+        mimeType: asset.mimeType,
+      },
+      {
+        jobId: `media-thumbnail:${asset.id}`,
+        attempts: 3,
+        backoff: { type: 'exponential', delay: 5_000 },
+        removeOnComplete: 100,
+        removeOnFail: 100,
+      },
+    );
+    return {
+      ...asset,
+      url:
+        this.storage.url(asset.storageKey) ??
+        (await this.storage.signedUrl(asset.storageKey)),
+    };
   }
   async list(adminId: string, siteId?: string, search?: string) {
     await this.access(adminId, siteId);
@@ -164,14 +189,24 @@ export class MediaService {
     await this.access(adminId, asset.siteId ?? undefined);
     const references = await this.prisma.$queryRaw<
       { count: bigint }[]
-    >`SELECT (SELECT COUNT(*) FROM product_images WHERE media_asset_id = ${id}) + (SELECT COUNT(*) FROM contents WHERE featured_media_id = ${id}) + (SELECT COUNT(*) FROM sites WHERE logo_media_id = ${id} OR favicon_media_id = ${id}) AS count`;
+    >`SELECT (SELECT COUNT(*) FROM product_images WHERE media_asset_id = ${id}) + (SELECT COUNT(*) FROM contents WHERE featured_media_id = ${id}) + (SELECT COUNT(*) FROM sites WHERE logo_media_id = ${id} OR dark_logo_media_id = ${id} OR favicon_media_id = ${id}) AS count`;
     if (Number(references[0]?.count ?? 0) > 0)
       throw new ConflictException('Media asset is still referenced');
     await this.prisma.mediaAsset.update({
       where: { id },
       data: { status: 'DELETED' },
     });
-    await this.storage.delete((await this.prisma.mediaAsset.findUniqueOrThrow({ where: { id }, select: { storageKey: true } })).storageKey);
+    await this.storageDeleteQueue.add(
+      'delete',
+      { mediaAssetId: id },
+      {
+        jobId: `media-storage-delete:${id}`,
+        attempts: 5,
+        backoff: { type: 'exponential', delay: 5_000 },
+        removeOnComplete: 100,
+        removeOnFail: 1_000,
+      },
+    );
     await this.audit.log({
       actorAdminId: adminId,
       action: 'media.deleted',

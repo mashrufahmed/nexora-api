@@ -340,6 +340,8 @@ export class ProductsService {
       summary?: string;
       slug?: string;
       isFeatured?: boolean;
+      seoMetadata?: Record<string, unknown>;
+      categoryIds?: string[];
     },
     adminId: string,
   ) {
@@ -349,6 +351,10 @@ export class ProductsService {
     });
     if (!existing) throw new NotFoundException('Site product not found');
     await this.assertSiteAccess(adminId, existing.siteId);
+    if (data.categoryIds) {
+      const categories = await this.prisma.category.count({ where: { id: { in: data.categoryIds }, siteId: existing.siteId } });
+      if (categories !== new Set(data.categoryIds).size) throw new BadRequestException('All product categories must belong to the selected site');
+    }
     try {
       const updated = await this.prisma.siteProduct.update({
         where: { id },
@@ -359,6 +365,8 @@ export class ProductsService {
             slug: data.slug.trim().toLowerCase(),
           }),
           ...(data.isFeatured !== undefined && { isFeatured: data.isFeatured }),
+          ...(data.seoMetadata !== undefined && { seoMetadata: this.jsonValue(data.seoMetadata) }),
+          ...(data.categoryIds && { categories: { deleteMany: {}, create: data.categoryIds.map((categoryId, position) => ({ categoryId, position })) } }),
         },
       });
       await this.audit.log({

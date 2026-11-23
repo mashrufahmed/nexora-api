@@ -22,6 +22,7 @@ import { AdminAuthGuard } from '../guards/admin-auth.guard.js';
 import { AuthService } from './auth.service.js';
 import {
   destroySession,
+  regenerateSession,
   saveSession,
 } from './session-lifecycle.js';
 
@@ -55,9 +56,9 @@ export class AuthController {
     const admin = await this.authService.validateAdmin(dto.email, dto.password);
 
     try {
-      // Persist authenticated state on the current server-side session.
-      // The login page may already have an anonymous session from /me, and
-      // regenerating that Redis-backed session can fail on its generation.
+      // Rotate the session identifier before attaching authentication state.
+      // This prevents an anonymous session identifier from becoming authenticated.
+      await regenerateSession(request);
       request.session.adminId = admin.id;
       request.session.adminEmail = admin.email;
       request.session.sessionVersion = admin.sessionVersion;
